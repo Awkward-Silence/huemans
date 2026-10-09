@@ -1,0 +1,21 @@
+{
+  "name": "huemans-tools",
+  "version": "0.1.0",
+  "description": "the tools and non-production code",
+  "license": "UNLICENSED",
+  "author": "The Awkward Silence",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typecheck": "tsc -p .",
+    "validate": "tsx src/questions/validate.ts"
+  },
+  "dependencies": {
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
