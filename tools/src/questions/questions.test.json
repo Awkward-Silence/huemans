@@ -1,6 +1,7 @@
 [
   {
     "id": "q0001",
+    "theme": "home",
     "text": "Your houseplant is dying. What do you do?",
     "answers": [
       {
@@ -27,6 +28,7 @@
   },
   {
     "id": "q0002",
+    "theme": "hypothetical",
     "text": "The zombie apocalypse starts. Your first move?",
     "answers": [
       {
@@ -53,6 +55,7 @@
   },
   {
     "id": "q0003",
+    "theme": "money",
     "text": "You find a wallet with 500 euros on the street.",
     "answers": [
       {
@@ -79,6 +82,7 @@
   },
   {
     "id": "q0004",
+    "theme": "food",
     "text": "What's your buffet strategy?",
     "answers": [
       {
@@ -105,6 +109,7 @@
   },
   {
     "id": "q0005",
+    "theme": "technology",
     "text": "Your phone battery is at 1%. You…",
     "answers": [
       {
@@ -131,6 +136,7 @@
   },
   {
     "id": "q0006",
+    "theme": "hypothetical",
     "text": "Pick a superpower that will definitely come in handy:",
     "answers": [
       {
@@ -157,6 +163,7 @@
   },
   {
     "id": "q0007",
+    "theme": "friendship",
     "text": "A friend asks you to help them move.",
     "answers": [
       {
@@ -183,6 +190,7 @@
   },
   {
     "id": "q0008",
+    "theme": "weekend",
     "text": "Your ideal Saturday morning:",
     "answers": [
       {
@@ -209,6 +217,7 @@
   },
   {
     "id": "q0009",
+    "theme": "awkward-moments",
     "text": "You're stuck in an elevator with a stranger.",
     "answers": [
       {
@@ -235,6 +244,7 @@
   },
   {
     "id": "q0010",
+    "theme": "home",
     "text": "Which kitchen appliance are you?",
     "answers": [
       {
@@ -261,6 +271,7 @@
   },
   {
     "id": "q0011",
+    "theme": "money",
     "text": "You win the lottery. First purchase?",
     "answers": [
       {
@@ -287,6 +298,7 @@
   },
   {
     "id": "q0012",
+    "theme": "friendship",
     "text": "How do you handle an argument?",
     "answers": [
       {
@@ -313,6 +325,7 @@
   },
   {
     "id": "q0013",
+    "theme": "music-and-movies",
     "text": "Your karaoke song of choice:",
     "answers": [
       {
@@ -339,6 +352,7 @@
   },
   {
     "id": "q0014",
+    "theme": "home",
     "text": "You're assembling IKEA furniture.",
     "answers": [
       {
@@ -365,6 +379,7 @@
   },
   {
     "id": "q0015",
+    "theme": "weekend",
     "text": "Your plans get cancelled at the last minute. You…",
     "answers": [
       {
@@ -391,6 +406,7 @@
   },
   {
     "id": "q0016",
+    "theme": "weekend",
     "text": "How do you approach a new board game?",
     "answers": [
       {
@@ -417,6 +433,7 @@
   },
   {
     "id": "q0017",
+    "theme": "hypothetical",
     "text": "An alien lands in your garden. You…",
     "answers": [
       {
@@ -443,6 +460,7 @@
   },
   {
     "id": "q0018",
+    "theme": "technology",
     "text": "What does your computer desktop look like?",
     "answers": [
       {
@@ -469,6 +487,7 @@
   },
   {
     "id": "q0019",
+    "theme": "food",
     "text": "The waiter brings you the wrong dish.",
     "answers": [
       {
@@ -495,6 +514,7 @@
   },
   {
     "id": "q0020",
+    "theme": "travel",
     "text": "Pick your dream vacation:",
     "answers": [
       {
@@ -521,6 +541,7 @@
   },
   {
     "id": "q0021",
+    "theme": "awkward-moments",
     "text": "Someone tells a terrible joke. You…",
     "answers": [
       {
@@ -547,6 +568,7 @@
   },
   {
     "id": "q0022",
+    "theme": "hypothetical",
     "text": "What does your inner voice sound like?",
     "answers": [
       {
@@ -573,6 +595,7 @@
   },
   {
     "id": "q0023",
+    "theme": "childhood",
     "text": "You find a box of your old childhood stuff.",
     "answers": [
       {
@@ -599,6 +622,7 @@
   },
   {
     "id": "q0024",
+    "theme": "food",
     "text": "How do you choose a restaurant?",
     "answers": [
       {
@@ -625,6 +649,7 @@
   },
   {
     "id": "q0025",
+    "theme": "celebrations",
     "text": "You're asked to give a surprise speech at a wedding.",
     "answers": [
       {
@@ -651,6 +676,7 @@
   },
   {
     "id": "q0026",
+    "theme": "home",
     "text": "What's your morning alarm routine?",
     "answers": [
       {
@@ -677,6 +703,7 @@
   },
   {
     "id": "q0027",
+    "theme": "friendship",
     "text": "A friend got a terrible haircut and asks for your opinion.",
     "answers": [
       {
@@ -703,6 +730,7 @@
   },
   {
     "id": "q0028",
+    "theme": "food",
     "text": "If you were a spice, which would you be?",
     "answers": [
       {
@@ -729,6 +757,7 @@
   },
   {
     "id": "q0029",
+    "theme": "school",
     "text": "Group project: what's your role?",
     "answers": [
       {
@@ -755,6 +784,7 @@
   },
   {
     "id": "q0030",
+    "theme": "food",
     "text": "Your opinion on pineapple on pizza:",
     "answers": [
       {
@@ -781,6 +811,7 @@
   },
   {
     "id": "q0031",
+    "theme": "technology",
     "text": "What's your texting style?",
     "answers": [
       {
@@ -807,6 +838,7 @@
   },
   {
     "id": "q0032",
+    "theme": "awkward-moments",
     "text": "You see a \"Do not touch\" sign.",
     "answers": [
       {
@@ -833,6 +865,7 @@
   },
   {
     "id": "q0033",
+    "theme": "future",
     "text": "A fortune teller offers to read your future.",
     "answers": [
       {
@@ -859,6 +892,7 @@
   },
   {
     "id": "q0034",
+    "theme": "celebrations",
     "text": "You receive a gift you really don't like.",
     "answers": [
       {
@@ -885,6 +919,7 @@
   },
   {
     "id": "q0035",
+    "theme": "shopping",
     "text": "What's your shopping style?",
     "answers": [
       {
@@ -911,6 +946,7 @@
   },
   {
     "id": "q0036",
+    "theme": "food",
     "text": "How do you cook a new recipe?",
     "answers": [
       {
@@ -937,6 +973,7 @@
   },
   {
     "id": "q0037",
+    "theme": "music-and-movies",
     "text": "If your life were a movie, what genre would it be?",
     "answers": [
       {
@@ -963,6 +1000,7 @@
   },
   {
     "id": "q0038",
+    "theme": "travel",
     "text": "You're lost in a new city.",
     "answers": [
       {
@@ -989,6 +1027,7 @@
   },
   {
     "id": "q0039",
+    "theme": "work",
     "text": "What's your relationship with deadlines?",
     "answers": [
       {
@@ -1015,6 +1054,7 @@
   },
   {
     "id": "q0040",
+    "theme": "celebrations",
     "text": "You're at a party where you know nobody.",
     "answers": [
       {
@@ -1041,6 +1081,7 @@
   },
   {
     "id": "q0041",
+    "theme": "animals",
     "text": "What's your perfect pet?",
     "answers": [
       {
@@ -1067,6 +1108,7 @@
   },
   {
     "id": "q0042",
+    "theme": "awkward-moments",
     "text": "Someone cuts in line in front of you.",
     "answers": [
       {
@@ -1093,6 +1135,7 @@
   },
   {
     "id": "q0043",
+    "theme": "money",
     "text": "How do you play Monopoly?",
     "answers": [
       {
@@ -1119,6 +1162,7 @@
   },
   {
     "id": "q0044",
+    "theme": "home",
     "text": "What does your fridge look like right now?",
     "answers": [
       {
@@ -1145,6 +1189,7 @@
   },
   {
     "id": "q0045",
+    "theme": "hypothetical",
     "text": "Pick a time-travel destination:",
     "answers": [
       {
@@ -1171,6 +1216,7 @@
   },
   {
     "id": "q0046",
+    "theme": "work",
     "text": "What does your email inbox look like?",
     "answers": [
       {
@@ -1197,6 +1243,7 @@
   },
   {
     "id": "q0047",
+    "theme": "weekend",
     "text": "You pick up a new hobby. How long does it last?",
     "answers": [
       {
@@ -1223,6 +1270,7 @@
   },
   {
     "id": "q0048",
+    "theme": "music-and-movies",
     "text": "How do you watch a horror movie?",
     "answers": [
       {
@@ -1249,6 +1297,7 @@
   },
   {
     "id": "q0049",
+    "theme": "friendship",
     "text": "A friend calls you at 3 a.m.",
     "answers": [
       {
@@ -1275,6 +1324,7 @@
   },
   {
     "id": "q0050",
+    "theme": "future",
     "text": "Pick a life motto:",
     "answers": [
       {

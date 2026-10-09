@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { QuestionListSchema } from "./QuestionList.ts";
+import { THEMES } from "./Themes.ts";
 import { TRAITS } from "./Traits.ts";
 
 
@@ -15,12 +16,18 @@ if (!result.success) {
   process.exit(1);
 }
 
-const counts = new Map<string, number>(TRAITS.map((trait) => [trait, 0]));
+const themeCounts = new Map<string, number>(THEMES.map((theme) => [theme, 0]));
+const traitCounts = new Map<string, number>(TRAITS.map((trait) => [trait, 0]));
 for (const question of result.data) {
+  themeCounts.set(question.theme, themeCounts.get(question.theme)! + 1);
   for (const answer of question.answers) {
-    counts.set(answer.trait, counts.get(answer.trait)! + 1);
+    traitCounts.set(answer.trait, traitCounts.get(answer.trait)! + 1);
   }
 }
 
+const format = (counts: Map<string, number>) =>
+  [...counts].sort((a, b) => b[1] - a[1]).map(([name, n]) => `${name}: ${n}`).join(", ");
+
 console.log(`${result.data.length} questions OK`);
-console.log([...counts].sort((a, b) => b[1] - a[1]).map(([t, n]) => `${t}: ${n}`).join(", "));
+console.log(`Themes: ${format(themeCounts)}`);
+console.log(`Traits: ${format(traitCounts)}`);

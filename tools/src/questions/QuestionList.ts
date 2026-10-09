@@ -1,4 +1,5 @@
 import * as zod from "zod";
+import { ThemeSchema } from "./Themes.ts";
 import { TraitSchema } from "./Traits.ts";
 
 
@@ -13,6 +14,7 @@ const AnswerSchema = zod.object({
 /** A get-to-know-you question with exactly four answers to choose from. */
 const QuestionSchema = zod.object({
   id: zod.string().min(1),
+  theme: ThemeSchema,
   text: zod.string().min(1),
   answers: zod.array(AnswerSchema).length(4),
 });
