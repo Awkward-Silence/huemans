@@ -27,12 +27,12 @@ Each app installs its own dependencies.
 
 ## Team
 
-| Role | Owns |
+|Name| Role | Owns |
 | --- | --- |
-| Architect | Contracts, Grouping (core domain), integration and deploy |
-| Backend | Questionnaire: question bank, 20s deadline, answers |
-| Fullstack | Event + QR, host big screen, realtime gathering |
-| Frontend | Attendee mobile flow: join, quiz, color reveal, LED mode |
+| Adrián | Architect | Contracts, Grouping (core domain), integration and deploy |
+| Diego | Backend | Questionnaire: question bank, 20s deadline, answers |
+| Miguel | Fullstack | Event + QR, host big screen, realtime gathering |
+| Daniel | Frontend | Attendee mobile flow: join, quiz, color reveal, LED mode |
 
 ## Docs
 
