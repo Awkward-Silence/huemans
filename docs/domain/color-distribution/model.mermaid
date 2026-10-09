@@ -1,13 +1,13 @@
 classDiagram
   class EventDistribution {
     <<AggregateRoot>>
-    +EventId eventId
+    +SK~EventId~ eventId
     +AssignmentCollection assignments
-    +assign(AttendeeId attendeeId, TraitProfile traitProfile, TraitTypeMapping mapping) AttendeeGrouped
+    +assign(SK~AttendeeId~ attendeeId, TraitProfile traitProfile, TraitTypeMapping mapping) AttendeeGrouped
   }
 
   class Assignment {
-    +AttendeeId attendeeId
+    +SK~AttendeeId~ attendeeId
     +Color color
     +PersonalityType personalityType
   }
@@ -17,13 +17,11 @@ classDiagram
   }
 
   class EventId {
-    <<ValueObject>>
-    +string value
+    <<SharedKernel>>
   }
 
   class AttendeeId {
-    <<ValueObject>>
-    +string value
+    <<SharedKernel>>
   }
 
   class Color {
@@ -54,15 +52,15 @@ classDiagram
 
   class AttendeeGrouped {
     <<DomainEvent>>
-    +EventId eventId
-    +AttendeeId attendeeId
+    +SK~EventId~ eventId
+    +SK~AttendeeId~ attendeeId
     +Color color
     +PersonalityType personalityType
   }
 
   class EventDistributionView {
     <<ReadModel>>
-    +EventId eventId
+    +SK~EventId~ eventId
     +Color color
     +int members
     +PersonalityTypeCollection personalityTypes
@@ -70,7 +68,7 @@ classDiagram
 
   class EventDistributionRepository {
     <<Repository>>
-    +byEvent(EventId eventId) EventDistributionView
+    +byEvent(SK~EventId~ eventId) EventDistributionView
   }
 
   EventDistribution *-- EventId : eventId

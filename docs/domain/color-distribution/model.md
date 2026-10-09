@@ -1,6 +1,6 @@
 # Domain Model — Color Distribution
 
-**Version**: 1.0.0
+**Version**: 1.1.0
 **Status**: Draft
 **Date**: 2026-10-09
 **Kind**: Read-write
@@ -27,7 +27,7 @@ It is NOT responsible for:
 ### EventDistribution — Detail
 
 **Entities within this aggregate:**
-- Assignment — one attendee's final group color and personality type, identified by AttendeeId within the event
+- Assignment — one attendee's final group color and personality type, identified by SK::AttendeeId within the event
 
 **Invariants:**
 - An attendee is assigned at most once in an event.
@@ -41,14 +41,16 @@ It is NOT responsible for:
 
 | Action | Preconditions | Invariants enforced | Emits |
 |---|---|---|---|
-| assign(AttendeeId attendeeId, TraitProfile traitProfile, TraitTypeMapping mapping) | The attendee has no assignment in this event | At most one assignment per attendee; assignments never change; group sizes differ by at most 1 | AttendeeGrouped |
+| assign(SK::AttendeeId attendeeId, TraitProfile traitProfile, TraitTypeMapping mapping) | The attendee has no assignment in this event | At most one assignment per attendee; assignments never change; group sizes differ by at most 1 | AttendeeGrouped |
+
+The trait-type mapping is passed in by the caller: the catalog owns the table's contents, and the domain owns the rule that uses it.
 
 **assign rule:**
 1. Candidate types = the personality types with the most traits in the trait profile, according to the trait-type mapping (one type normally, two or more when tied).
 2. Candidate groups = the colors with the fewest members.
 3. For each (group, type) pair, score = members of that group who already have that type.
 4. Pick the pair with the lowest score. This places the attendee where they add the most diversity, and resolves ties between types in favor of the type the group lacks.
-5. Remaining ties are broken by a fixed color order (RED, YELLOW, GREEN, BLUE), so assignment is deterministic and repeatable.
+5. Remaining ties are broken by the fixed color order RED, YELLOW, GREEN, BLUE, the same for every event, so assignment is deterministic and repeatable.
 6. Record the Assignment and emit AttendeeGrouped.
 
 ---
@@ -60,13 +62,13 @@ primitives (free text, opaque payloads).
 
 | Name | Fields | Source | Read invariants |
 |---|---|---|---|
-| EventDistributionView | eventId: EventId; groups: one entry per Color with members: count, personalityTypes: PersonalityTypeCollection | EventDistribution aggregate (this context) | Only assignments of the requested event; all four colors are always present, even when empty |
+| EventDistributionView | eventId: SK::EventId; groups: one entry per Color with members: count, personalityTypes: PersonalityTypeCollection | EventDistribution aggregate (this context) | Only assignments of the requested event; all four colors are always present, even when empty |
 
 ## Queries
 
 | Repository | Accepts | Returns |
 |---|---|---|
-| EventDistributionRepository | EventId | EventDistributionView |
+| EventDistributionRepository | SK::EventId | EventDistributionView |
 
 The live distribution is always read for one event, so no SK::Criteria is needed.
 
@@ -76,13 +78,11 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 
 | Name | Kind | Base / Components | Construction Rule | Invalid States | Scope |
 |---|---|---|---|---|---|
-| EventId | basic | string | Identifies an event; issued by the Event context | empty | Local |
-| AttendeeId | basic | string | Identifies an attendee; issued by Participation | empty | Local |
 | Color | basic | string | One of RED, YELLOW, GREEN, BLUE | any other value | Local |
 | PersonalityType | basic | string | One of exactly 4 personality types | any value outside the 4 types | Local |
 | TraitProfile | collection | SK::Trait | At least 1 trait; no maximum; duplicates allowed, each occurrence counts as a vote | empty | Local |
 | TraitTypeMapping | collection | SK::Trait to PersonalityType pairs | Every one of the 33 traits is mapped to exactly one personality type | a trait missing or mapped twice | Local |
-| AssignmentCollection | collection | Assignment | No two assignments for the same AttendeeId | duplicate AttendeeId | Local |
+| AssignmentCollection | collection | Assignment | No two assignments for the same SK::AttendeeId | duplicate SK::AttendeeId | Local |
 | PersonalityTypeCollection | collection | PersonalityType | Duplicates allowed (one entry per group member) | — | Local |
 
 ### TraitProfile — Detail
@@ -93,7 +93,7 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 
 ### TraitTypeMapping — Detail
 
-**Construction rule:** places each SK::Trait in exactly one of the 4 personality types. Built from catalog content. The actual table (which traits go in which type) is deferred to the catalog lane.
+**Construction rule:** places each SK::Trait in exactly one of the 4 personality types. Built from catalog content by the application service and passed into `assign`. The actual table (which traits go in which type) is deferred to the catalog lane.
 **Immutable:** yes
 **Equality:** by value
 
@@ -103,7 +103,7 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 
 | Event | Trigger | Aggregate | Payload | Status |
 |---|---|---|---|---|
-| AttendeeGrouped | An attendee receives their group color and personality type | EventDistribution | eventId: EventId, attendeeId: AttendeeId, color: Color, personalityType: PersonalityType | Active |
+| AttendeeGrouped | An attendee receives their group color and personality type | EventDistribution | eventId: SK::EventId, attendeeId: SK::AttendeeId, color: Color, personalityType: PersonalityType | Active |
 
 ---
 
@@ -111,6 +111,8 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 
 | SK Type | Used by | Reason |
 |---|---|---|
+| SK::EventId | EventDistribution, EventDistributionView, AttendeeGrouped | Issued by the Event context and referenced by Participation, Color Distribution and icebreaker selection; one definition (UUIDv7) |
+| SK::AttendeeId | Assignment, AttendeeGrouped | Issued by Participation and referenced by Color Distribution; one definition (UUIDv7) |
 | SK::Trait | TraitProfile, TraitTypeMapping | The closed list of 33 traits is used by Catalog (answers, icebreakers), Participation (trait profiles), Color Distribution (personality types) and icebreaker selection, so it is defined once |
 
 ---
@@ -133,4 +135,3 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 ## Open Questions
 
 - Names and descriptions of the 4 personality types, and the content of the trait-type mapping (deferred to the catalog lane; does not change the model).
-- EventId and AttendeeId are modeled locally; they are likely shared with Event and Participation and may be proposed for the shared kernel.
