@@ -3,6 +3,7 @@ classDiagram
     <<AggregateRoot>>
     +SK~EventId~ eventId
     +AssignmentCollection assignments
+    +open(SK~EventId~ eventId)$ void
     +assign(SK~AttendeeId~ attendeeId, TraitProfile traitProfile, TraitTypeMapping mapping) AttendeeGrouped
   }
 

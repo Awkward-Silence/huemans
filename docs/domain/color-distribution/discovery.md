@@ -2,7 +2,7 @@
 
 **Status**: Ready for Modeling
 **Kind**: Read-write
-**Last session**: 2026-10-09
+**Last session**: 2026-10-10
 **Feature context**: OpenSpec change `color-distribution` (openspec/changes/color-distribution/proposal.md)
 **Generated with**: ddd-modeling 0.4.0-alpha
 
@@ -29,6 +29,8 @@
 ## Domain Action Candidates
 | Name | Aggregate | Trigger | Preconditions | Invariants Enforced | Emits | Status |
 |---|---|---|---|---|---|---|
+| open | EventDistribution (creation) | The Event context reports a new event (EventCreated) | No distribution exists yet for this event | Starts with all four colors present and empty | — | ✅ Confirmed |
+| withdraw | EventDistribution | An attendee leaves the event | — | — | — | ❌ Rejected: assignments are final; no reliable signal that someone left; not in the spec |
 | assign | EventDistribution | Participation reports a completed questionnaire with the attendee's trait profile | Attendee not yet assigned in this event | Assigned at most once; assignment never changes; sizes differ by at most 1. Rule: candidate types = types with most traits; candidate groups = smallest groups; pick the (group, type) pair whose group has the fewest members of that type; remaining ties broken by fixed color order | AttendeeGrouped | ✅ Confirmed |
 
 ## Value Object Candidates
@@ -74,6 +76,9 @@
 | Is Trait shared across contexts? | Used by Catalog, Participation, Distribution and icebreaker selection | Yes: Trait moves to the shared kernel as SK::Trait; TraitProfile stays local (2026-10-09) |
 | What are the names and descriptions of the 4 personality types, and which traits go in each? | Content, not structure; needed by the trait-type mapping and the reveal screen | 🕓 Deferred: content decision for the catalog lane, does not change the model |
 | Are EventId and AttendeeId local or shared? | Issued by Event and Participation, referenced by Distribution and icebreaker selection | Both move to the shared kernel (2026-10-09) |
+| Who creates an event's EventDistribution, and when? | Needed so the distribution view shows four empty groups before anyone answers | Explicitly: open(eventId) reacts to EventCreated; the aggregate exists with four empty groups before the first attendee (2026-10-10) |
+| Can an attendee leave their group? | A withdraw action would let groups drift apart in size | No: no withdraw action; an attendee who leaves still counts, so group sizes never differ by more than 1 at any time (2026-10-10) |
+| Does revealing the night's icebreaker affect the distribution? | The Event context moves the event to REVEALED; late joiners still answer | No: no close action; assign keeps working after the reveal; the distribution never needs the event's status. The attendee's color reveal is a read of their assignment, not an action (2026-10-10) |
 | Order of colors for remaining ties | Discovery confirmed a fixed order, not the sequence | Fixed sequence RED, YELLOW, GREEN, BLUE for every event (2026-10-09) |
 | Is the trait-type mapping passed into assign or held by the domain? | The model passed it as a parameter without confirmation | Passed in: the catalog owns the table (content), the domain owns the rule; the application service loads the mapping and hands it to assign (2026-10-09) |
 | What does the color reveal tell the attendee, if the color is not their personality? | The raw spec says the reveal shows "a short description of the color" | Both: the group color and the attendee's personality type, with its description. Diversity is balanced on personality type: each group aims for a mix of types (2026-10-09) |
@@ -82,3 +87,4 @@
 <!-- Append-only. One entry per session. -->
 - **2026-10-09**: Session opened. Confirmed that Color Distribution receives the trait profile from Participation. Seeded language candidates from the `color-distribution` proposal. Confirmed EventDistribution (one per event) as the aggregate root. Reframed distribution: groups are built for diversity (different personalities together, even sizes), not affinity; Affinity rejected. The reveal shows group color + personality type, and groups balance personality types. 4 personality types; each trait maps to exactly one type; ties resolved towards diversity. Confirmed the full assign rule and its three invariants. Trait approved for the shared kernel (SK::Trait); TraitProfile stays local: at least 1 trait, no max, duplicates count as votes. Live distribution read model shows counts and personality types per color. Architect moved to /ddd-model: status set to Ready for Modeling, AttendeeGrouped payload confirmed. EventId and AttendeeId added as candidate VOs (required by the primitive rule). This contradicts the raw spec example and the current proposal, which will need updating.
 - **2026-10-09 (review)**: Reopened to review model concerns. EventId and AttendeeId moved to the shared kernel. Trait-type mapping is passed into assign (catalog owns the table, domain owns the rule). Tie order fixed as RED, YELLOW, GREEN, BLUE. UUIDv7 confirmed for EventId and AttendeeId. Marked Ready for Modeling again.
+- **2026-10-10**: Reopened to discuss domain actions (only assign had been covered). Confirmed open(eventId), triggered by EventCreated, creating the distribution with four empty groups. Rejected withdraw: assignments are final. No close action: the reveal does not affect the distribution and late joiners are still assigned. Action list complete (open, assign); marked Ready for Modeling.

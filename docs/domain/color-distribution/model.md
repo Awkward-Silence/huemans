@@ -1,10 +1,10 @@
 # Domain Model — Color Distribution
 
-**Version**: 1.1.0
+**Version**: 1.2.0
 **Status**: Draft
-**Date**: 2026-10-09
+**Date**: 2026-10-10
 **Kind**: Read-write
-**Source**: discovery.md session 2026-10-09
+**Source**: discovery.md session 2026-10-10
 **Generated with**: ddd-modeling 0.4.0-alpha
 
 ---
@@ -16,7 +16,7 @@ Color Distribution splits the attendees of an event into four color groups built
 It is NOT responsible for:
 - turning answers into traits, or deciding when a questionnaire is complete (Participation);
 - the content of questions, icebreakers, or the names and descriptions of personality types (Catalog);
-- selecting the night's icebreaker.
+- selecting the night's icebreaker, or the event's status: revealing the icebreaker does not affect the distribution, and late joiners are still assigned.
 
 ## Aggregates
 
@@ -41,7 +41,12 @@ It is NOT responsible for:
 
 | Action | Preconditions | Invariants enforced | Emits |
 |---|---|---|---|
+| open(SK::EventId eventId) | No distribution exists yet for this event | Starts with all four colors present and empty | — |
 | assign(SK::AttendeeId attendeeId, TraitProfile traitProfile, TraitTypeMapping mapping) | The attendee has no assignment in this event | At most one assignment per attendee; assignments never change; group sizes differ by at most 1 | AttendeeGrouped |
+
+`open` creates the aggregate in reaction to EventCreated from the Event context, so the distribution exists with four empty groups before the first attendee answers.
+
+There is no withdraw action (an attendee who leaves still counts in their group, so sizes never differ by more than 1 at any time) and no close action (the reveal of the night's icebreaker does not stop assignment). The attendee's color reveal is a read of their assignment, not an action.
 
 The trait-type mapping is passed in by the caller: the catalog owns the table's contents, and the domain owns the rule that uses it.
 
@@ -135,3 +140,4 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 ## Open Questions
 
 - Names and descriptions of the 4 personality types, and the content of the trait-type mapping (deferred to the catalog lane; does not change the model).
+- The attendee's color reveal reads their own assignment (color and personality type). Discovery only defined EventDistributionView (per color); a per-attendee read model was not discussed.
