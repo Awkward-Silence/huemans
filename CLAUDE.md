@@ -4,35 +4,39 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-**huemans** is a web app to help people "break the ice" at events using colors. The repo is at the **pre-implementation stage**: there is no application code, tech stack, build, lint or test tooling yet. The only product input is `initial-raw-specs.md` (raw brainstorm notes). Once a stack is chosen, add its build/test/single-test commands here and record it in `openspec/config.yaml` under `context:`.
+**huemans** is a meetup gamification web app that breaks the ice at events by splitting attendees into **color groups** and nudging them to socialize. It is being built by a team of 4 during a **24h hackathon**. The repo is still **pre-implementation**: the architecture below is decided, but no app code exists yet. When `web/` and `api/` are scaffolded, add their dev/build/lint/test (and single-test) commands here.
 
-## Product vision (from `initial-raw-specs.md`)
+Plan and open decisions: `docs/next-steps.md`. Raw product brainstorm: `initial-raw-specs.md`.
 
-Problem: at an event where you don't know anyone — especially as an introvert — it's hard to start a conversation.
+## Product core (what the demo must do)
 
-Core flow:
-1. **QR code as entry point** — scanning it joins the attendee to the event (web-based, no install).
-2. **Timed questionnaire** — max **20 seconds** to answer a few multiple-choice questions (e.g. favourite colors, "do you like Julio Iglesias?"). Text answers are offered as pre-filled options drawn from a large (10,000+) database of funny questions/answers.
-3. **Matching** — an algorithm computes **% match** between attendees at the same event; each attendee ends up associated with a **color**.
-4. **Icebreaker mechanics** (still TBD, candidates):
-   - a single shared question for the whole evening that people ask each other;
-   - "LED scroller" mode: full-screen phone showing your color, held above your head;
-   - color gatherings ("all the reds meet in the beer corner in 5 minutes");
-   - opt-in 1:1 match with a specific attendee.
-5. **Profile enrichment** — before matching, attendees may add interests/tags (e.g. technologies); the app shows infographics about who is attending.
-6. **After the event** — encourage continuing contact (after-party, follow-up conversations).
-7. **Leverage existing acquaintances** — people who already know someone can be used to introduce others.
+```
+host screen shows QR -> attendee scans -> 20s multiple-choice quiz
+  -> attendee assigned to a color group -> phone shows color (LED mode)
+  -> host taps "gather" -> each group gets a meeting spot + icebreaker question
+```
 
-Open questions to resolve via specs rather than assume: which icebreaker modes ship first, the matching algorithm, identity/accounts (anonymous vs. registered), and how event organizers create events/QR codes.
+Grouping into colors is the core; 1:1 % matching, profile tags/infographics, after-event follow-up and "people you already know" are stretch goals. Attendees join anonymously (no login), so nothing may slow down the 20-second promise.
 
-## Spec-driven workflow (OpenSpec)
+## Architecture
 
-This repo uses [OpenSpec](https://github.com/Fission-AI/OpenSpec) (`schema: spec-driven`). Features are designed as change proposals before any code is written:
+Everything is TypeScript. Each app has **its own `package.json` and `node_modules`** — no monorepo workspaces, no shared dependencies.
 
-- `openspec/specs/` — current source-of-truth capability specs (empty for now).
-- `openspec/changes/<name>/` — in-flight changes (proposal, design, delta specs, tasks); `openspec/changes/archive/` holds completed ones.
-- `openspec/config.yaml` — project context and per-artifact rules fed to the AI when generating artifacts.
+```
+contracts/   types only: no package.json, no runtime imports
+web/         React (Vite) — /join/:eventId (attendee), /host/:eventId (big screen)
+api/         NestJS + Mastra, one Nest module per bounded context
+```
 
-Lifecycle, via the skills/commands in `.claude/`: `/opsx:explore` (think through an idea) → `/opsx:propose` (create a change with all artifacts) → `/opsx:apply` (implement its tasks) → `/opsx:sync` (merge delta specs into `openspec/specs/`) → `/opsx:archive`.
+- **Contracts:** `contracts/` holds REST DTOs and socket event names/payloads as plain TypeScript types. Apps consume them only with `import type ... from '../contracts/...'` so they are erased at compile time and need no package resolution. Never add a runtime import or dependency to `contracts/`. Runtime validation lives at each app's own boundary.
+- **Bounded contexts (Nest modules in `api/`):** `event` (event + QR, join), `questionnaire` (question bank, 20s deadline, answers), `grouping` (color assignment — the core domain), `gathering` (gather broadcasts + WebSocket gateway), `agents` (Mastra).
+- **Domain purity:** each module keeps a `domain/` folder free of NestJS decorators; Grouping is the one context modeled with full DDD + tests.
+- **Key seam:** Questionnaire emits `QuestionnaireCompleted { eventId, attendeeId, answers[] }` on submit or deadline; Grouping consumes it and emits `AttendeeGrouped { eventId, attendeeId, color }`, which is pushed in realtime to the phone and the host screen.
+- **Mastra runs inside the NestJS process**, provided by the `agents` module. Other modules depend only on ports (`GroupNamer`, `IcebreakerWriter`, `QuestionGenerator`), never on Mastra directly, and every port has a deterministic fallback.
+- **Rule: agents enrich, they never decide or block.** No LLM call in the quiz-submit or grouping path — push the color first, enrich asynchronously (group name, tailored icebreaker, big-screen commentary). Question-bank generation runs offline before the event.
 
-Useful CLI commands: `openspec list`, `openspec list --specs`, `openspec show <change>`, `openspec status --change <name>`, `openspec validate` / `openspec validate --specs`.
+## Spec-driven workflow
+
+- **DDD discovery** (`/ddd-bc`, `/ddd-model`, configured in `ddd-config.yml`) writes bounded-context models to `docs/domain/`. Use it for Grouping; other contexts stay light.
+- **OpenSpec** (`schema: spec-driven`): `openspec/specs/` is the source of truth, `openspec/changes/<name>/` holds in-flight changes. Lifecycle: `/opsx:explore` -> `/opsx:propose` -> `/opsx:apply` -> `/opsx:sync` -> `/opsx:archive`. Work is split as one change per team lane so changes can be applied in parallel.
+- CLI: `openspec list`, `openspec list --specs`, `openspec show <change>`, `openspec status --change <name>`, `openspec validate`.
