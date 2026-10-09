@@ -2,25 +2,25 @@
 
 ## Why
 
-Every other backend lane needs a running, deployed NestJS API with a database before it can start, and the content the game is built on (50 questions, 51 icebreakers) already exists only as JSON under `tools/`. Standing up the API and loading that content first unblocks Diego, Miguel and the distribution work within the first hours of the hackathon.
+The game is built on content that already exists only as JSON under `tools/` (50 questions, 51 icebreakers), plus the 4 personality types and the trait-to-type mapping that color distribution needs. Loading that content into the API is what lets participation, distribution and icebreaker selection work with real data. The API skeleton itself moved to the `api-skeleton` change; this change keeps its name but now covers the catalog only.
 
 ## What Changes
 
-- Scaffold `api/` as a NestJS app with its own `package.json`, Postgres (docker-compose locally, managed instance in production), ORM with migrations, and a health endpoint.
-- Set up the three test suites (Unit, Integration against a real database, Functional over HTTP).
-- Deploy the empty API to its production URL so integration can start early.
+- Add a Catalog bounded context in `api/src/Catalog/`.
 - Add a seed command that imports `tools/src/questions/questions.test.json` and `tools/src/icebreakers/icebreakers.test.json`, validating them with the API's own schema (no runtime dependency on `tools/`).
-- Define the four colors (RED, YELLOW, GREEN, BLUE), each with a name, a short description and a weight for every trait. These weights are the input to color distribution.
+- Define the 4 personality types (names and short descriptions shown at the reveal) and the trait-to-type mapping: each of the 33 traits belongs to exactly one personality type (see `docs/domain/color-distribution/model.md`).
+- Provide the trait-type mapping to color distribution through its `TraitTypeMappingProvider` port, replacing the provisional mapping.
 
 ## Capabilities
 
 ### New Capabilities
-- `catalog`: the read-only game content (questions with trait-tagged answers, icebreakers with themes and traits, and the four colors with descriptions and trait weights) and how it is loaded.
+- `catalog`: the read-only game content (questions with trait-tagged answers, icebreakers with themes and traits, the 4 personality types with descriptions, and the trait-to-type mapping) and how it is loaded.
 
 ### Modified Capabilities
 
 ## Impact
 
-- New `api/` application (NestJS, ORM, Postgres) and its deployment.
+- New `Catalog` module in `api/`, following the `api-skeleton` layout.
 - Reads the `tools/` JSON files as the content contract. `tools/` itself is unchanged.
-- Owner: Adrián (skeleton), Diego (catalog seed and colors).
+- Depends on `api-skeleton`. Consumed by `event-join-and-answers`, `color-distribution` and `night-icebreaker`.
+- Owner: Diego.
