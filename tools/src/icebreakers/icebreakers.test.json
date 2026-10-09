@@ -1,0 +1,470 @@
+[
+  {
+    "id": "i0001",
+    "theme": "food",
+    "text": "You're opening a tiny restaurant on a ferry between two islands. What's the only dish on the menu, and which memory is its secret ingredient?",
+    "traits": [
+      "creative",
+      "nostalgic"
+    ]
+  },
+  {
+    "id": "i0002",
+    "theme": "food",
+    "text": "An astronaut chef asks you to choose the first meal ever cooked on the Moon. What do you serve, and what could possibly go wrong?",
+    "traits": [
+      "adventurous",
+      "humorous"
+    ]
+  },
+  {
+    "id": "i0003",
+    "theme": "food",
+    "text": "You're the lawyer for the most hated food at the Supreme Court of Snacks. Which food do you defend, and what's your closing argument?",
+    "traits": [
+      "stubborn",
+      "rebellious"
+    ]
+  },
+  {
+    "id": "i0004",
+    "theme": "travel",
+    "text": "A travel agency for time travelers hires you as a tour guide. Which city and year do you show your tourists, and what trap do they always fall into?",
+    "traits": [
+      "curious",
+      "skeptical"
+    ]
+  },
+  {
+    "id": "i0005",
+    "theme": "travel",
+    "text": "Your fridge turns out to be a portal that opens somewhere new every Friday at lunchtime. Where do you hope it opens, and who do you drag along?",
+    "traits": [
+      "spontaneous",
+      "sociable"
+    ]
+  },
+  {
+    "id": "i0006",
+    "theme": "travel",
+    "text": "Your luggage goes on holiday without you and starts sending postcards. What does the first one say?",
+    "traits": [
+      "humorous",
+      "optimistic"
+    ]
+  },
+  {
+    "id": "i0007",
+    "theme": "work",
+    "text": "On the same day you're hired as a lighthouse keeper, a royal food taster and a circus clown. Which job goes worst, and why?",
+    "traits": [
+      "humorous",
+      "honest"
+    ]
+  },
+  {
+    "id": "i0008",
+    "theme": "work",
+    "text": "Your workplace gets a dramatic movie trailer. What's the deep-voiced tagline?",
+    "traits": [
+      "creative",
+      "dramatic"
+    ]
+  },
+  {
+    "id": "i0009",
+    "theme": "work",
+    "text": "Your colleagues secretly nominate you for an award for something very small but very impressive. What's the award called?",
+    "traits": [
+      "ambitious",
+      "perfectionist"
+    ]
+  },
+  {
+    "id": "i0010",
+    "theme": "home",
+    "text": "Your home is turned into a museum about you. Which object gets the glass case and the spotlight, and what does the little sign say?",
+    "traits": [
+      "nostalgic",
+      "dramatic"
+    ]
+  },
+  {
+    "id": "i0011",
+    "theme": "home",
+    "text": "A sloth becomes your life coach for one Sunday. What does your perfect schedule look like?",
+    "traits": [
+      "comfort-loving",
+      "introverted",
+      "easygoing"
+    ]
+  },
+  {
+    "id": "i0012",
+    "theme": "technology",
+    "text": "You're Minister of the Internet for one day. Which app do you ban, and what do you invent to replace it?",
+    "traits": [
+      "skeptical",
+      "creative"
+    ]
+  },
+  {
+    "id": "i0013",
+    "theme": "technology",
+    "text": "Your phone is called as a witness in court. What's the most suspicious evidence it brings?",
+    "traits": [
+      "humorous",
+      "chaotic"
+    ]
+  },
+  {
+    "id": "i0014",
+    "theme": "technology",
+    "text": "You can bring back one piece of old technology for everyone on Earth. What returns, and how do you sell it to teenagers?",
+    "traits": [
+      "nostalgic",
+      "traditional"
+    ]
+  },
+  {
+    "id": "i0015",
+    "theme": "animals",
+    "text": "A polar bear moves into your shared flat because the Arctic got too warm. What's the first house rule you agree on?",
+    "traits": [
+      "diplomatic",
+      "practical",
+      "empathetic"
+    ]
+  },
+  {
+    "id": "i0016",
+    "theme": "animals",
+    "text": "You may bring one animal as your sidekick on a museum heist. Which animal is it, and what's its job?",
+    "traits": [
+      "creative",
+      "adventurous"
+    ]
+  },
+  {
+    "id": "i0017",
+    "theme": "animals",
+    "text": "A wildlife documentary is made about you. Which animal does the narrator compare you to, and what's your strangest behavior in the wild?",
+    "traits": [
+      "humorous",
+      "independent"
+    ]
+  },
+  {
+    "id": "i0018",
+    "theme": "celebrations",
+    "text": "You're throwing a party on a night train through three countries. What's the theme, and who gets the first invitation?",
+    "traits": [
+      "sociable",
+      "spontaneous"
+    ]
+  },
+  {
+    "id": "i0019",
+    "theme": "celebrations",
+    "text": "You become the official inventor of new holidays. What do people celebrate, and which old tradition gets quietly retired?",
+    "traits": [
+      "traditional",
+      "rebellious"
+    ]
+  },
+  {
+    "id": "i0020",
+    "theme": "celebrations",
+    "text": "Santa outsources the hardest gift on his list to you. Who is it for, and what do you give them?",
+    "traits": [
+      "generous",
+      "empathetic"
+    ]
+  },
+  {
+    "id": "i0021",
+    "theme": "childhood",
+    "text": "Your eight-year-old self visits you for a day. What do they think of your life, and what do you have to explain very carefully?",
+    "traits": [
+      "nostalgic",
+      "honest",
+      "optimistic"
+    ]
+  },
+  {
+    "id": "i0022",
+    "theme": "childhood",
+    "text": "Your old teachers hold a reunion and swap stories about you. Which story gets the loudest laugh?",
+    "traits": [
+      "rebellious",
+      "creative"
+    ]
+  },
+  {
+    "id": "i0023",
+    "theme": "childhood",
+    "text": "The Olympics add a playground discipline. Which childhood game do you compete in, and what's your secret move?",
+    "traits": [
+      "nostalgic",
+      "competitive"
+    ]
+  },
+  {
+    "id": "i0024",
+    "theme": "friendship",
+    "text": "You hire a skywriter to thank a friend for something they did years ago. What's written in the sky, and for whom?",
+    "traits": [
+      "loyal",
+      "empathetic"
+    ]
+  },
+  {
+    "id": "i0025",
+    "theme": "friendship",
+    "text": "Your friend group is a pirate crew. What's your role on the ship?",
+    "traits": [
+      "sociable",
+      "diplomatic",
+      "humorous"
+    ]
+  },
+  {
+    "id": "i0026",
+    "theme": "friendship",
+    "text": "The story of how you met your oldest friend becomes a superhero comic. What happens on the first page?",
+    "traits": [
+      "loyal",
+      "nostalgic"
+    ]
+  },
+  {
+    "id": "i0027",
+    "theme": "future",
+    "text": "Your town builds a slightly odd statue of you. What are you doing in it, and why?",
+    "traits": [
+      "ambitious",
+      "creative"
+    ]
+  },
+  {
+    "id": "i0028",
+    "theme": "future",
+    "text": "You've been chosen for the first crew to Mars and get six months of training. Which three skills do you want to master first, and which one is secretly just for fun?",
+    "traits": [
+      "curious",
+      "patient",
+      "ambitious"
+    ]
+  },
+  {
+    "id": "i0029",
+    "theme": "future",
+    "text": "A fortune cookie says: \"Something wonderful happens next month.\" What do you hope it is?",
+    "traits": [
+      "optimistic"
+    ]
+  },
+  {
+    "id": "i0030",
+    "theme": "hypothetical",
+    "text": "You become the ghost of a very fancy hotel. How do you haunt the guests without getting fired?",
+    "traits": [
+      "humorous",
+      "rebellious"
+    ]
+  },
+  {
+    "id": "i0031",
+    "theme": "hypothetical",
+    "text": "You swap bodies with a stranger at the airport for 24 hours. Where are they flying, and what do you do first?",
+    "traits": [
+      "curious",
+      "adventurous"
+    ]
+  },
+  {
+    "id": "i0032",
+    "theme": "hypothetical",
+    "text": "You're crowned ruler of a tiny island nation for a week. What's your first law, and which one causes a revolt?",
+    "traits": [
+      "creative",
+      "stubborn"
+    ]
+  },
+  {
+    "id": "i0033",
+    "theme": "love",
+    "text": "Julio Iglesias offers to serenade one person of your choice. Who gets the serenade, and which song does he sing?",
+    "traits": [
+      "romantic",
+      "dramatic"
+    ]
+  },
+  {
+    "id": "i0034",
+    "theme": "love",
+    "text": "Cupid retires and you take over for a day, with a budget of five euros. What small gesture do you use to make people fall in love?",
+    "traits": [
+      "romantic",
+      "empathetic",
+      "thrifty"
+    ]
+  },
+  {
+    "id": "i0035",
+    "theme": "money",
+    "text": "You get 1,000 euros on one condition: you must spend it on something completely useless within 24 hours. What do you buy?",
+    "traits": [
+      "spontaneous",
+      "comfort-loving"
+    ]
+  },
+  {
+    "id": "i0036",
+    "theme": "money",
+    "text": "A billionaire hires you as their personal money-saving coach. What's your first lesson?",
+    "traits": [
+      "thrifty",
+      "practical",
+      "organized"
+    ]
+  },
+  {
+    "id": "i0037",
+    "theme": "music-and-movies",
+    "text": "A band plays your theme song every time you walk into a room. Which song is it, and how do your neighbors feel about it?",
+    "traits": [
+      "dramatic",
+      "sociable"
+    ]
+  },
+  {
+    "id": "i0038",
+    "theme": "music-and-movies",
+    "text": "You're locked in a cinema that shows only one movie, forever. Which movie do you pick, and which snack do you need in endless supply?",
+    "traits": [
+      "comfort-loving",
+      "nostalgic"
+    ]
+  },
+  {
+    "id": "i0039",
+    "theme": "music-and-movies",
+    "text": "Hollywood makes a blockbuster about the most ordinary Tuesday of your life. Who plays you, and what's the big plot twist?",
+    "traits": [
+      "dramatic",
+      "humorous"
+    ]
+  },
+  {
+    "id": "i0040",
+    "theme": "nature",
+    "text": "You can teleport anywhere in nature to watch tomorrow's sunrise. Where do you go, and who do you wake up for it?",
+    "traits": [
+      "adventurous",
+      "romantic"
+    ]
+  },
+  {
+    "id": "i0041",
+    "theme": "nature",
+    "text": "You're the weather on a stranger's wedding day. What kind of weather are you, and do you save the day or ruin it?",
+    "traits": [
+      "chaotic",
+      "creative"
+    ]
+  },
+  {
+    "id": "i0042",
+    "theme": "school",
+    "text": "Your old school adds a strange new subject, and you're the teacher. What do you teach, and what's on the final exam?",
+    "traits": [
+      "curious",
+      "analytical"
+    ]
+  },
+  {
+    "id": "i0043",
+    "theme": "school",
+    "text": "Your school yearbook gets a bonus page about you. Which prediction about you went hilariously wrong?",
+    "traits": [
+      "humorous",
+      "nostalgic"
+    ]
+  },
+  {
+    "id": "i0044",
+    "theme": "shopping",
+    "text": "Your online shopping history is read aloud at a family dinner. Which purchase needs the longest explanation?",
+    "traits": [
+      "spontaneous",
+      "curious"
+    ]
+  },
+  {
+    "id": "i0045",
+    "theme": "shopping",
+    "text": "You wrote a 40-page report before buying something that cost less than 20 euros. What was it, and what's in chapter 7?",
+    "traits": [
+      "analytical",
+      "perfectionist",
+      "cautious"
+    ]
+  },
+  {
+    "id": "i0046",
+    "theme": "sports",
+    "text": "You may add one sport to the Winter Olympics, but it has to involve a household object. What's the sport, and what are the rules?",
+    "traits": [
+      "creative",
+      "competitive"
+    ]
+  },
+  {
+    "id": "i0047",
+    "theme": "sports",
+    "text": "Which everyday task would win you an Olympic gold medal, and what does your victory dance look like?",
+    "traits": [
+      "competitive",
+      "humorous"
+    ]
+  },
+  {
+    "id": "i0048",
+    "theme": "weekend",
+    "text": "A mysterious envelope gives you a weekend with unlimited money, with one rule: you must go alone. What do you do?",
+    "traits": [
+      "spontaneous",
+      "independent"
+    ]
+  },
+  {
+    "id": "i0049",
+    "theme": "weekend",
+    "text": "A weekend course in something slightly dangerous is free for you this Saturday. Which course do you book, and what do you tell your mother?",
+    "traits": [
+      "curious",
+      "cautious"
+    ]
+  },
+  {
+    "id": "i0050",
+    "theme": "awkward-moments",
+    "text": "At a party, someone has been explaining their tax return to you for 40 minutes. What's your escape plan?",
+    "traits": [
+      "diplomatic",
+      "introverted",
+      "humorous"
+    ]
+  },
+  {
+    "id": "i0051",
+    "theme": "awkward-moments",
+    "text": "Your most embarrassing moment becomes a museum exhibition. What's the title on the poster?",
+    "traits": [
+      "humorous",
+      "honest",
+      "optimistic"
+    ]
+  }
+]
