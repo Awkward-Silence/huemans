@@ -1,0 +1,15 @@
+.rise {
+  animation: rise var(--motion-duration-fast) var(--motion-ease-out) both;
+  animation-delay: calc(var(--rise-after) + var(--rise-step) * var(--motion-stagger));
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

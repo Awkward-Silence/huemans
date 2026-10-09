@@ -1,0 +1,1352 @@
+[
+  {
+    "id": "q0001",
+    "theme": "home",
+    "text": "Your houseplant is dying. What do you do?",
+    "answers": [
+      {
+        "id": "q0001-a",
+        "text": "Hold a small but dignified funeral",
+        "trait": "dramatic"
+      },
+      {
+        "id": "q0001-b",
+        "text": "Spend three hours researching plant CPR",
+        "trait": "curious"
+      },
+      {
+        "id": "q0001-c",
+        "text": "Quietly replace it before anyone notices",
+        "trait": "practical"
+      },
+      {
+        "id": "q0001-d",
+        "text": "Tell it you believe in it",
+        "trait": "optimistic"
+      }
+    ]
+  },
+  {
+    "id": "q0002",
+    "theme": "hypothetical",
+    "text": "The zombie apocalypse starts. Your first move?",
+    "answers": [
+      {
+        "id": "q0002-a",
+        "text": "Grab my bunker key, it's been ready since 2012",
+        "trait": "cautious"
+      },
+      {
+        "id": "q0002-b",
+        "text": "Gather the neighbors and form a council",
+        "trait": "sociable"
+      },
+      {
+        "id": "q0002-c",
+        "text": "Finally, a chance to use my crossbow skills",
+        "trait": "adventurous"
+      },
+      {
+        "id": "q0002-d",
+        "text": "Stay in bed. If they want me, they know where I live",
+        "trait": "comfort-loving"
+      }
+    ]
+  },
+  {
+    "id": "q0003",
+    "theme": "money",
+    "text": "You find a wallet with 500 euros on the street.",
+    "answers": [
+      {
+        "id": "q0003-a",
+        "text": "Return it, cash untouched",
+        "trait": "honest"
+      },
+      {
+        "id": "q0003-b",
+        "text": "Return it, but only after stalking the owner's Instagram",
+        "trait": "curious"
+      },
+      {
+        "id": "q0003-c",
+        "text": "Hand it to the police with a written incident report",
+        "trait": "organized"
+      },
+      {
+        "id": "q0003-d",
+        "text": "Track down the owner and become best friends",
+        "trait": "sociable"
+      }
+    ]
+  },
+  {
+    "id": "q0004",
+    "theme": "food",
+    "text": "What's your buffet strategy?",
+    "answers": [
+      {
+        "id": "q0004-a",
+        "text": "Scout the entire buffet before taking a single plate",
+        "trait": "analytical"
+      },
+      {
+        "id": "q0004-b",
+        "text": "Dessert first. Life is short",
+        "trait": "rebellious"
+      },
+      {
+        "id": "q0004-c",
+        "text": "Go straight for the dish nobody can identify",
+        "trait": "adventurous"
+      },
+      {
+        "id": "q0004-d",
+        "text": "Six plates minimum, I'm getting my money's worth",
+        "trait": "thrifty"
+      }
+    ]
+  },
+  {
+    "id": "q0005",
+    "theme": "technology",
+    "text": "Your phone battery is at 1%. You…",
+    "answers": [
+      {
+        "id": "q0005-a",
+        "text": "Calmly switch on every power-saving mode",
+        "trait": "practical"
+      },
+      {
+        "id": "q0005-b",
+        "text": "Panic and start writing farewell messages",
+        "trait": "dramatic"
+      },
+      {
+        "id": "q0005-c",
+        "text": "Didn't notice, my phone has been dead since Tuesday",
+        "trait": "easygoing"
+      },
+      {
+        "id": "q0005-d",
+        "text": "Borrow a stranger's charger and leave with a new friend",
+        "trait": "sociable"
+      }
+    ]
+  },
+  {
+    "id": "q0006",
+    "theme": "hypothetical",
+    "text": "Pick a superpower that will definitely come in handy:",
+    "answers": [
+      {
+        "id": "q0006-a",
+        "text": "Teleporting home from any party",
+        "trait": "introverted"
+      },
+      {
+        "id": "q0006-b",
+        "text": "Flawless parallel parking, every time",
+        "trait": "perfectionist"
+      },
+      {
+        "id": "q0006-c",
+        "text": "Understanding what cats are thinking",
+        "trait": "curious"
+      },
+      {
+        "id": "q0006-d",
+        "text": "Pausing time to take naps",
+        "trait": "comfort-loving"
+      }
+    ]
+  },
+  {
+    "id": "q0007",
+    "theme": "friendship",
+    "text": "A friend asks you to help them move.",
+    "answers": [
+      {
+        "id": "q0007-a",
+        "text": "I'm there, with snacks and a van",
+        "trait": "loyal"
+      },
+      {
+        "id": "q0007-b",
+        "text": "I'll make a spreadsheet of who carries what",
+        "trait": "organized"
+      },
+      {
+        "id": "q0007-c",
+        "text": "I'll be there… for the pizza afterwards",
+        "trait": "honest"
+      },
+      {
+        "id": "q0007-d",
+        "text": "I'll pay for movers as a housewarming gift",
+        "trait": "generous"
+      }
+    ]
+  },
+  {
+    "id": "q0008",
+    "theme": "weekend",
+    "text": "Your ideal Saturday morning:",
+    "answers": [
+      {
+        "id": "q0008-a",
+        "text": "Up at 6 to crush my to-do list",
+        "trait": "ambitious"
+      },
+      {
+        "id": "q0008-b",
+        "text": "Pancakes in pajamas until noon",
+        "trait": "comfort-loving"
+      },
+      {
+        "id": "q0008-c",
+        "text": "Flea market hunting for vintage treasures",
+        "trait": "nostalgic"
+      },
+      {
+        "id": "q0008-d",
+        "text": "Whatever happens, happens",
+        "trait": "spontaneous"
+      }
+    ]
+  },
+  {
+    "id": "q0009",
+    "theme": "awkward-moments",
+    "text": "You're stuck in an elevator with a stranger.",
+    "answers": [
+      {
+        "id": "q0009-a",
+        "text": "We've exchanged numbers by minute three",
+        "trait": "sociable"
+      },
+      {
+        "id": "q0009-b",
+        "text": "Study the emergency instructions in great detail",
+        "trait": "cautious"
+      },
+      {
+        "id": "q0009-c",
+        "text": "Silently pretend this isn't happening",
+        "trait": "introverted"
+      },
+      {
+        "id": "q0009-d",
+        "text": "Suggest a round of I-spy. There's not much to spy",
+        "trait": "humorous"
+      }
+    ]
+  },
+  {
+    "id": "q0010",
+    "theme": "home",
+    "text": "Which kitchen appliance are you?",
+    "answers": [
+      {
+        "id": "q0010-a",
+        "text": "Toaster: simple, reliable, warm",
+        "trait": "loyal"
+      },
+      {
+        "id": "q0010-b",
+        "text": "Blender: loud and unpredictable",
+        "trait": "chaotic"
+      },
+      {
+        "id": "q0010-c",
+        "text": "Sous-vide machine: precise to the degree",
+        "trait": "perfectionist"
+      },
+      {
+        "id": "q0010-d",
+        "text": "Microwave: fast results, no questions asked",
+        "trait": "ambitious"
+      }
+    ]
+  },
+  {
+    "id": "q0011",
+    "theme": "money",
+    "text": "You win the lottery. First purchase?",
+    "answers": [
+      {
+        "id": "q0011-a",
+        "text": "Pay off my parents' house",
+        "trait": "generous"
+      },
+      {
+        "id": "q0011-b",
+        "text": "A one-way ticket to a place I can't pronounce",
+        "trait": "adventurous"
+      },
+      {
+        "id": "q0011-c",
+        "text": "Nothing. It all goes into an index fund",
+        "trait": "thrifty"
+      },
+      {
+        "id": "q0011-d",
+        "text": "A llama farm. It's been the dream all along",
+        "trait": "creative"
+      }
+    ]
+  },
+  {
+    "id": "q0012",
+    "theme": "friendship",
+    "text": "How do you handle an argument?",
+    "answers": [
+      {
+        "id": "q0012-a",
+        "text": "Find a compromise that makes everyone slightly unhappy",
+        "trait": "diplomatic"
+      },
+      {
+        "id": "q0012-b",
+        "text": "I never lose, I just stop explaining",
+        "trait": "stubborn"
+      },
+      {
+        "id": "q0012-c",
+        "text": "Bring sources. With footnotes",
+        "trait": "analytical"
+      },
+      {
+        "id": "q0012-d",
+        "text": "Crack jokes until everybody forgets",
+        "trait": "humorous"
+      }
+    ]
+  },
+  {
+    "id": "q0013",
+    "theme": "music-and-movies",
+    "text": "Your karaoke song of choice:",
+    "answers": [
+      {
+        "id": "q0013-a",
+        "text": "Bohemian Rhapsody, all the parts, all the voices",
+        "trait": "dramatic"
+      },
+      {
+        "id": "q0013-b",
+        "text": "A power ballad dedicated to someone in the room",
+        "trait": "romantic"
+      },
+      {
+        "id": "q0013-c",
+        "text": "Anything from my teenage years",
+        "trait": "nostalgic"
+      },
+      {
+        "id": "q0013-d",
+        "text": "I'll be holding the drinks, thanks",
+        "trait": "introverted"
+      }
+    ]
+  },
+  {
+    "id": "q0014",
+    "theme": "home",
+    "text": "You're assembling IKEA furniture.",
+    "answers": [
+      {
+        "id": "q0014-a",
+        "text": "Read the manual and sort the screws by size first",
+        "trait": "organized"
+      },
+      {
+        "id": "q0014-b",
+        "text": "Manuals are merely suggestions",
+        "trait": "rebellious"
+      },
+      {
+        "id": "q0014-c",
+        "text": "It took four hours, it's perfect, I'd do it again",
+        "trait": "patient"
+      },
+      {
+        "id": "q0014-d",
+        "text": "There's a screw left over and that's fine",
+        "trait": "easygoing"
+      }
+    ]
+  },
+  {
+    "id": "q0015",
+    "theme": "weekend",
+    "text": "Your plans get cancelled at the last minute. You…",
+    "answers": [
+      {
+        "id": "q0015-a",
+        "text": "Feel secret joy. Sweatpants activated",
+        "trait": "comfort-loving"
+      },
+      {
+        "id": "q0015-b",
+        "text": "Go anyway, on my own",
+        "trait": "independent"
+      },
+      {
+        "id": "q0015-c",
+        "text": "Send a new calendar invite within five minutes",
+        "trait": "organized"
+      },
+      {
+        "id": "q0015-d",
+        "text": "Assume something better came up for all of us",
+        "trait": "optimistic"
+      }
+    ]
+  },
+  {
+    "id": "q0016",
+    "theme": "weekend",
+    "text": "How do you approach a new board game?",
+    "answers": [
+      {
+        "id": "q0016-a",
+        "text": "Read all the rules aloud before anyone touches a piece",
+        "trait": "cautious"
+      },
+      {
+        "id": "q0016-b",
+        "text": "Learn by playing, win by accident",
+        "trait": "spontaneous"
+      },
+      {
+        "id": "q0016-c",
+        "text": "Look up the optimal strategy online",
+        "trait": "competitive"
+      },
+      {
+        "id": "q0016-d",
+        "text": "Bend the rules so the youngest player wins",
+        "trait": "empathetic"
+      }
+    ]
+  },
+  {
+    "id": "q0017",
+    "theme": "hypothetical",
+    "text": "An alien lands in your garden. You…",
+    "answers": [
+      {
+        "id": "q0017-a",
+        "text": "Offer it tea and biscuits",
+        "trait": "generous"
+      },
+      {
+        "id": "q0017-b",
+        "text": "Ask it 200 questions about physics",
+        "trait": "curious"
+      },
+      {
+        "id": "q0017-c",
+        "text": "Start negotiating the movie rights",
+        "trait": "ambitious"
+      },
+      {
+        "id": "q0017-d",
+        "text": "Call the authorities. Then hide",
+        "trait": "cautious"
+      }
+    ]
+  },
+  {
+    "id": "q0018",
+    "theme": "technology",
+    "text": "What does your computer desktop look like?",
+    "answers": [
+      {
+        "id": "q0018-a",
+        "text": "Zero icons. Folders inside folders inside folders",
+        "trait": "organized"
+      },
+      {
+        "id": "q0018-b",
+        "text": "400 files named final_v2_REAL_this_one",
+        "trait": "chaotic"
+      },
+      {
+        "id": "q0018-c",
+        "text": "A hand-picked wallpaper that changes with the seasons",
+        "trait": "creative"
+      },
+      {
+        "id": "q0018-d",
+        "text": "The same one since 2009",
+        "trait": "traditional"
+      }
+    ]
+  },
+  {
+    "id": "q0019",
+    "theme": "food",
+    "text": "The waiter brings you the wrong dish.",
+    "answers": [
+      {
+        "id": "q0019-a",
+        "text": "Eat it. Maybe it's fate",
+        "trait": "easygoing"
+      },
+      {
+        "id": "q0019-b",
+        "text": "Point it out politely and compliment the plating",
+        "trait": "diplomatic"
+      },
+      {
+        "id": "q0019-c",
+        "text": "Send it back. I ordered what I ordered",
+        "trait": "stubborn"
+      },
+      {
+        "id": "q0019-d",
+        "text": "Feel so bad for the waiter that I tip extra",
+        "trait": "empathetic"
+      }
+    ]
+  },
+  {
+    "id": "q0020",
+    "theme": "travel",
+    "text": "Pick your dream vacation:",
+    "answers": [
+      {
+        "id": "q0020-a",
+        "text": "Backpacking with no plan whatsoever",
+        "trait": "spontaneous"
+      },
+      {
+        "id": "q0020-b",
+        "text": "A cabin with no Wi-Fi and a stack of books",
+        "trait": "introverted"
+      },
+      {
+        "id": "q0020-c",
+        "text": "The same lovely place we go to every year",
+        "trait": "traditional"
+      },
+      {
+        "id": "q0020-d",
+        "text": "A 14-city tour with a color-coded itinerary",
+        "trait": "organized"
+      }
+    ]
+  },
+  {
+    "id": "q0021",
+    "theme": "awkward-moments",
+    "text": "Someone tells a terrible joke. You…",
+    "answers": [
+      {
+        "id": "q0021-a",
+        "text": "Laugh loudly so they don't feel bad",
+        "trait": "empathetic"
+      },
+      {
+        "id": "q0021-b",
+        "text": "Reply with an even worse joke",
+        "trait": "humorous"
+      },
+      {
+        "id": "q0021-c",
+        "text": "Explain, logically, why it doesn't work",
+        "trait": "analytical"
+      },
+      {
+        "id": "q0021-d",
+        "text": "Give it an honest 4 out of 10",
+        "trait": "honest"
+      }
+    ]
+  },
+  {
+    "id": "q0022",
+    "theme": "hypothetical",
+    "text": "What does your inner voice sound like?",
+    "answers": [
+      {
+        "id": "q0022-a",
+        "text": "A fitness coach yelling \"one more rep!\"",
+        "trait": "ambitious"
+      },
+      {
+        "id": "q0022-b",
+        "text": "A nature documentary narrator",
+        "trait": "curious"
+      },
+      {
+        "id": "q0022-c",
+        "text": "A soap opera star revealing a shocking twist",
+        "trait": "dramatic"
+      },
+      {
+        "id": "q0022-d",
+        "text": "A sleepy cat",
+        "trait": "easygoing"
+      }
+    ]
+  },
+  {
+    "id": "q0023",
+    "theme": "childhood",
+    "text": "You find a box of your old childhood stuff.",
+    "answers": [
+      {
+        "id": "q0023-a",
+        "text": "Spend the whole evening going through it, crying a little",
+        "trait": "nostalgic"
+      },
+      {
+        "id": "q0023-b",
+        "text": "Sell it all online",
+        "trait": "practical"
+      },
+      {
+        "id": "q0023-c",
+        "text": "Turn it into an art installation",
+        "trait": "creative"
+      },
+      {
+        "id": "q0023-d",
+        "text": "Close it again. The past is the past",
+        "trait": "independent"
+      }
+    ]
+  },
+  {
+    "id": "q0024",
+    "theme": "food",
+    "text": "How do you choose a restaurant?",
+    "answers": [
+      {
+        "id": "q0024-a",
+        "text": "Read every review and cross-check the ratings",
+        "trait": "perfectionist"
+      },
+      {
+        "id": "q0024-b",
+        "text": "Walk into whichever place smells best",
+        "trait": "spontaneous"
+      },
+      {
+        "id": "q0024-c",
+        "text": "My regular spot. They know my name",
+        "trait": "loyal"
+      },
+      {
+        "id": "q0024-d",
+        "text": "The cheapest place that still has napkins",
+        "trait": "thrifty"
+      }
+    ]
+  },
+  {
+    "id": "q0025",
+    "theme": "celebrations",
+    "text": "You're asked to give a surprise speech at a wedding.",
+    "answers": [
+      {
+        "id": "q0025-a",
+        "text": "Tell a heartfelt story that makes grandma cry",
+        "trait": "romantic"
+      },
+      {
+        "id": "q0025-b",
+        "text": "Wing it, it'll be fine",
+        "trait": "optimistic"
+      },
+      {
+        "id": "q0025-c",
+        "text": "Pull out the speech I've carried around just in case",
+        "trait": "cautious"
+      },
+      {
+        "id": "q0025-d",
+        "text": "Use the moment to announce my new podcast",
+        "trait": "rebellious"
+      }
+    ]
+  },
+  {
+    "id": "q0026",
+    "theme": "home",
+    "text": "What's your morning alarm routine?",
+    "answers": [
+      {
+        "id": "q0026-a",
+        "text": "One alarm, out of bed immediately",
+        "trait": "ambitious"
+      },
+      {
+        "id": "q0026-b",
+        "text": "Nine snoozes. It's a ritual",
+        "trait": "comfort-loving"
+      },
+      {
+        "id": "q0026-c",
+        "text": "No alarm, my body knows when it's time",
+        "trait": "independent"
+      },
+      {
+        "id": "q0026-d",
+        "text": "An upbeat song I wake up dancing to",
+        "trait": "optimistic"
+      }
+    ]
+  },
+  {
+    "id": "q0027",
+    "theme": "friendship",
+    "text": "A friend got a terrible haircut and asks for your opinion.",
+    "answers": [
+      {
+        "id": "q0027-a",
+        "text": "\"It's… bold.\"",
+        "trait": "diplomatic"
+      },
+      {
+        "id": "q0027-b",
+        "text": "\"Honestly? Hat season starts now.\"",
+        "trait": "honest"
+      },
+      {
+        "id": "q0027-c",
+        "text": "\"Let's both get bad haircuts. Solidarity!\"",
+        "trait": "loyal"
+      },
+      {
+        "id": "q0027-d",
+        "text": "\"Hair grows back. You're still awesome.\"",
+        "trait": "empathetic"
+      }
+    ]
+  },
+  {
+    "id": "q0028",
+    "theme": "food",
+    "text": "If you were a spice, which would you be?",
+    "answers": [
+      {
+        "id": "q0028-a",
+        "text": "Salt: reliable, goes with everything",
+        "trait": "practical"
+      },
+      {
+        "id": "q0028-b",
+        "text": "Chili: not everyone can handle me",
+        "trait": "adventurous"
+      },
+      {
+        "id": "q0028-c",
+        "text": "Cinnamon: warm, cozy, smells like home",
+        "trait": "nostalgic"
+      },
+      {
+        "id": "q0028-d",
+        "text": "Saffron: rare, expensive and a bit extra",
+        "trait": "dramatic"
+      }
+    ]
+  },
+  {
+    "id": "q0029",
+    "theme": "school",
+    "text": "Group project: what's your role?",
+    "answers": [
+      {
+        "id": "q0029-a",
+        "text": "The leader who draws up the timeline",
+        "trait": "ambitious"
+      },
+      {
+        "id": "q0029-b",
+        "text": "The one who does everything at 3 a.m. the night before",
+        "trait": "chaotic"
+      },
+      {
+        "id": "q0029-c",
+        "text": "The mediator keeping two teammates from fighting",
+        "trait": "diplomatic"
+      },
+      {
+        "id": "q0029-d",
+        "text": "The one who makes the slides beautiful",
+        "trait": "creative"
+      }
+    ]
+  },
+  {
+    "id": "q0030",
+    "theme": "food",
+    "text": "Your opinion on pineapple on pizza:",
+    "answers": [
+      {
+        "id": "q0030-a",
+        "text": "A crime. Some traditions must be protected",
+        "trait": "traditional"
+      },
+      {
+        "id": "q0030-b",
+        "text": "Love it. Add banana too",
+        "trait": "adventurous"
+      },
+      {
+        "id": "q0030-c",
+        "text": "Let people enjoy things",
+        "trait": "easygoing"
+      },
+      {
+        "id": "q0030-d",
+        "text": "I have a 20-minute argument prepared",
+        "trait": "stubborn"
+      }
+    ]
+  },
+  {
+    "id": "q0031",
+    "theme": "technology",
+    "text": "What's your texting style?",
+    "answers": [
+      {
+        "id": "q0031-a",
+        "text": "Perfect grammar, punctuation included.",
+        "trait": "perfectionist"
+      },
+      {
+        "id": "q0031-b",
+        "text": "Fourteen messages in a row instead of one",
+        "trait": "spontaneous"
+      },
+      {
+        "id": "q0031-c",
+        "text": "Voice messages, six minutes long",
+        "trait": "sociable"
+      },
+      {
+        "id": "q0031-d",
+        "text": "Reply three days later with \"haha\"",
+        "trait": "introverted"
+      }
+    ]
+  },
+  {
+    "id": "q0032",
+    "theme": "awkward-moments",
+    "text": "You see a \"Do not touch\" sign.",
+    "answers": [
+      {
+        "id": "q0032-a",
+        "text": "Don't touch it. Obviously",
+        "trait": "cautious"
+      },
+      {
+        "id": "q0032-b",
+        "text": "Touch it, just a little, to see what happens",
+        "trait": "curious"
+      },
+      {
+        "id": "q0032-c",
+        "text": "Touch it immediately",
+        "trait": "rebellious"
+      },
+      {
+        "id": "q0032-d",
+        "text": "Wonder who wrote the sign, and why",
+        "trait": "skeptical"
+      }
+    ]
+  },
+  {
+    "id": "q0033",
+    "theme": "future",
+    "text": "A fortune teller offers to read your future.",
+    "answers": [
+      {
+        "id": "q0033-a",
+        "text": "Only ask about love",
+        "trait": "romantic"
+      },
+      {
+        "id": "q0033-b",
+        "text": "Ask for their business license first",
+        "trait": "skeptical"
+      },
+      {
+        "id": "q0033-c",
+        "text": "Ask if I'll be rich, then plan accordingly",
+        "trait": "ambitious"
+      },
+      {
+        "id": "q0033-d",
+        "text": "Read their future instead",
+        "trait": "humorous"
+      }
+    ]
+  },
+  {
+    "id": "q0034",
+    "theme": "celebrations",
+    "text": "You receive a gift you really don't like.",
+    "answers": [
+      {
+        "id": "q0034-a",
+        "text": "Gush about it convincingly",
+        "trait": "diplomatic"
+      },
+      {
+        "id": "q0034-b",
+        "text": "Regift it within the week",
+        "trait": "thrifty"
+      },
+      {
+        "id": "q0034-c",
+        "text": "Keep it forever out of guilt",
+        "trait": "empathetic"
+      },
+      {
+        "id": "q0034-d",
+        "text": "Gently tell them and suggest a swap",
+        "trait": "honest"
+      }
+    ]
+  },
+  {
+    "id": "q0035",
+    "theme": "shopping",
+    "text": "What's your shopping style?",
+    "answers": [
+      {
+        "id": "q0035-a",
+        "text": "A list, a route, in and out in 12 minutes",
+        "trait": "organized"
+      },
+      {
+        "id": "q0035-b",
+        "text": "Came for milk, left with a kayak",
+        "trait": "spontaneous"
+      },
+      {
+        "id": "q0035-c",
+        "text": "Compare prices in three different shops",
+        "trait": "thrifty"
+      },
+      {
+        "id": "q0035-d",
+        "text": "Only the small shop around the corner",
+        "trait": "loyal"
+      }
+    ]
+  },
+  {
+    "id": "q0036",
+    "theme": "food",
+    "text": "How do you cook a new recipe?",
+    "answers": [
+      {
+        "id": "q0036-a",
+        "text": "Follow it to the gram",
+        "trait": "perfectionist"
+      },
+      {
+        "id": "q0036-b",
+        "text": "Recipe? I cook by vibes",
+        "trait": "creative"
+      },
+      {
+        "id": "q0036-c",
+        "text": "Make it twice: once to practice, once for real",
+        "trait": "patient"
+      },
+      {
+        "id": "q0036-d",
+        "text": "Order a backup pizza before I start",
+        "trait": "skeptical"
+      }
+    ]
+  },
+  {
+    "id": "q0037",
+    "theme": "music-and-movies",
+    "text": "If your life were a movie, what genre would it be?",
+    "answers": [
+      {
+        "id": "q0037-a",
+        "text": "Romantic comedy",
+        "trait": "romantic"
+      },
+      {
+        "id": "q0037-b",
+        "text": "Action-packed heist thriller",
+        "trait": "adventurous"
+      },
+      {
+        "id": "q0037-c",
+        "text": "Nature documentary, mostly sleeping",
+        "trait": "comfort-loving"
+      },
+      {
+        "id": "q0037-d",
+        "text": "Mystery: I'm still figuring out the plot",
+        "trait": "curious"
+      }
+    ]
+  },
+  {
+    "id": "q0038",
+    "theme": "travel",
+    "text": "You're lost in a new city.",
+    "answers": [
+      {
+        "id": "q0038-a",
+        "text": "Ask the locals and end up at their family dinner",
+        "trait": "sociable"
+      },
+      {
+        "id": "q0038-b",
+        "text": "Open my offline map. And my backup map",
+        "trait": "practical"
+      },
+      {
+        "id": "q0038-c",
+        "text": "Being lost is how adventures start",
+        "trait": "adventurous"
+      },
+      {
+        "id": "q0038-d",
+        "text": "Refuse to ask anyone. I'll find it myself",
+        "trait": "stubborn"
+      }
+    ]
+  },
+  {
+    "id": "q0039",
+    "theme": "work",
+    "text": "What's your relationship with deadlines?",
+    "answers": [
+      {
+        "id": "q0039-a",
+        "text": "Done two weeks early",
+        "trait": "organized"
+      },
+      {
+        "id": "q0039-b",
+        "text": "Panic is my muse",
+        "trait": "chaotic"
+      },
+      {
+        "id": "q0039-c",
+        "text": "I'll negotiate an extension",
+        "trait": "diplomatic"
+      },
+      {
+        "id": "q0039-d",
+        "text": "A deadline is just a suggestion",
+        "trait": "rebellious"
+      }
+    ]
+  },
+  {
+    "id": "q0040",
+    "theme": "celebrations",
+    "text": "You're at a party where you know nobody.",
+    "answers": [
+      {
+        "id": "q0040-a",
+        "text": "Befriend the host's dog",
+        "trait": "introverted"
+      },
+      {
+        "id": "q0040-b",
+        "text": "Introduce myself to everyone in the room",
+        "trait": "sociable"
+      },
+      {
+        "id": "q0040-c",
+        "text": "Start the dance floor",
+        "trait": "spontaneous"
+      },
+      {
+        "id": "q0040-d",
+        "text": "Help out in the kitchen so I'm useful",
+        "trait": "generous"
+      }
+    ]
+  },
+  {
+    "id": "q0041",
+    "theme": "animals",
+    "text": "What's your perfect pet?",
+    "answers": [
+      {
+        "id": "q0041-a",
+        "text": "A dog, my partner in every adventure",
+        "trait": "loyal"
+      },
+      {
+        "id": "q0041-b",
+        "text": "A cat. We respect each other's space",
+        "trait": "independent"
+      },
+      {
+        "id": "q0041-c",
+        "text": "A tarantula. Keeps visitors away",
+        "trait": "rebellious"
+      },
+      {
+        "id": "q0041-d",
+        "text": "A pet rock. Zero maintenance",
+        "trait": "practical"
+      }
+    ]
+  },
+  {
+    "id": "q0042",
+    "theme": "awkward-moments",
+    "text": "Someone cuts in line in front of you.",
+    "answers": [
+      {
+        "id": "q0042-a",
+        "text": "Say something, politely but firmly",
+        "trait": "honest"
+      },
+      {
+        "id": "q0042-b",
+        "text": "Sigh loudly and passive-aggressively",
+        "trait": "dramatic"
+      },
+      {
+        "id": "q0042-c",
+        "text": "Let it go, maybe they're in a hurry",
+        "trait": "patient"
+      },
+      {
+        "id": "q0042-d",
+        "text": "Cut back in front of them",
+        "trait": "competitive"
+      }
+    ]
+  },
+  {
+    "id": "q0043",
+    "theme": "money",
+    "text": "How do you play Monopoly?",
+    "answers": [
+      {
+        "id": "q0043-a",
+        "text": "To win. Friendships are temporary, hotels are forever",
+        "trait": "competitive"
+      },
+      {
+        "id": "q0043-b",
+        "text": "I'm the banker and my accounts are flawless",
+        "trait": "perfectionist"
+      },
+      {
+        "id": "q0043-c",
+        "text": "Secret side deals and alliances",
+        "trait": "diplomatic"
+      },
+      {
+        "id": "q0043-d",
+        "text": "I'm just here for the snacks",
+        "trait": "easygoing"
+      }
+    ]
+  },
+  {
+    "id": "q0044",
+    "theme": "home",
+    "text": "What does your fridge look like right now?",
+    "answers": [
+      {
+        "id": "q0044-a",
+        "text": "Meal-prep boxes labeled by weekday",
+        "trait": "organized"
+      },
+      {
+        "id": "q0044-b",
+        "text": "A lone jar of pickles and a bottle of champagne",
+        "trait": "chaotic"
+      },
+      {
+        "id": "q0044-c",
+        "text": "Leftovers from three cuisines I tried this week",
+        "trait": "curious"
+      },
+      {
+        "id": "q0044-d",
+        "text": "Grandma's soup recipe, always",
+        "trait": "traditional"
+      }
+    ]
+  },
+  {
+    "id": "q0045",
+    "theme": "hypothetical",
+    "text": "Pick a time-travel destination:",
+    "answers": [
+      {
+        "id": "q0045-a",
+        "text": "Back to my childhood to relive the good old days",
+        "trait": "nostalgic"
+      },
+      {
+        "id": "q0045-b",
+        "text": "The far future, it's going to be great",
+        "trait": "optimistic"
+      },
+      {
+        "id": "q0045-c",
+        "text": "Yesterday, to undo that one awkward comment",
+        "trait": "perfectionist"
+      },
+      {
+        "id": "q0045-d",
+        "text": "The age of the dinosaurs. Bring a helmet",
+        "trait": "adventurous"
+      }
+    ]
+  },
+  {
+    "id": "q0046",
+    "theme": "work",
+    "text": "What does your email inbox look like?",
+    "answers": [
+      {
+        "id": "q0046-a",
+        "text": "Inbox zero. It's a lifestyle",
+        "trait": "perfectionist"
+      },
+      {
+        "id": "q0046-b",
+        "text": "12,849 unread and I'm at peace",
+        "trait": "easygoing"
+      },
+      {
+        "id": "q0046-c",
+        "text": "Unsubscribed from everything except my grandmother",
+        "trait": "independent"
+      },
+      {
+        "id": "q0046-d",
+        "text": "I reply to everyone within minutes",
+        "trait": "sociable"
+      }
+    ]
+  },
+  {
+    "id": "q0047",
+    "theme": "weekend",
+    "text": "You pick up a new hobby. How long does it last?",
+    "answers": [
+      {
+        "id": "q0047-a",
+        "text": "Bought all the gear, used it once, still hopeful",
+        "trait": "optimistic"
+      },
+      {
+        "id": "q0047-b",
+        "text": "Ten years and counting",
+        "trait": "patient"
+      },
+      {
+        "id": "q0047-c",
+        "text": "Until I'm better at it than my friends",
+        "trait": "competitive"
+      },
+      {
+        "id": "q0047-d",
+        "text": "I invent my own hobbies",
+        "trait": "creative"
+      }
+    ]
+  },
+  {
+    "id": "q0048",
+    "theme": "music-and-movies",
+    "text": "How do you watch a horror movie?",
+    "answers": [
+      {
+        "id": "q0048-a",
+        "text": "Scream, then laugh at myself",
+        "trait": "humorous"
+      },
+      {
+        "id": "q0048-b",
+        "text": "Analyze every terrible decision the characters make",
+        "trait": "analytical"
+      },
+      {
+        "id": "q0048-c",
+        "text": "Hide behind a pillow, but refuse to turn it off",
+        "trait": "stubborn"
+      },
+      {
+        "id": "q0048-d",
+        "text": "Root for the monster",
+        "trait": "rebellious"
+      }
+    ]
+  },
+  {
+    "id": "q0049",
+    "theme": "friendship",
+    "text": "A friend calls you at 3 a.m.",
+    "answers": [
+      {
+        "id": "q0049-a",
+        "text": "Answer immediately, something must be wrong",
+        "trait": "loyal"
+      },
+      {
+        "id": "q0049-b",
+        "text": "Answer and talk until sunrise",
+        "trait": "empathetic"
+      },
+      {
+        "id": "q0049-c",
+        "text": "Let it ring, they'll text if it's urgent",
+        "trait": "practical"
+      },
+      {
+        "id": "q0049-d",
+        "text": "I was awake anyway, planning my empire",
+        "trait": "ambitious"
+      }
+    ]
+  },
+  {
+    "id": "q0050",
+    "theme": "future",
+    "text": "Pick a life motto:",
+    "answers": [
+      {
+        "id": "q0050-a",
+        "text": "\"Why not?\"",
+        "trait": "spontaneous"
+      },
+      {
+        "id": "q0050-b",
+        "text": "\"Better safe than sorry.\"",
+        "trait": "cautious"
+      },
+      {
+        "id": "q0050-c",
+        "text": "\"Measure twice, cut once.\"",
+        "trait": "patient"
+      },
+      {
+        "id": "q0050-d",
+        "text": "\"It'll be fine.\"",
+        "trait": "optimistic"
+      }
+    ]
+  }
+]

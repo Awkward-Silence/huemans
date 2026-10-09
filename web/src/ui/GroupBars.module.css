@@ -1,0 +1,51 @@
+.chart {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: var(--space-sm);
+  align-items: end;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.slot {
+  width: 100%;
+  height: clamp(110px, 20dvh, 220px);
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar {
+  width: 100%;
+  height: calc(var(--fill) * 100%);
+  min-height: 6px;
+  border-radius: var(--radius-sm) var(--radius-sm) 4px 4px;
+  background: var(--group-bg);
+  transform-origin: bottom;
+  transition: height var(--motion-duration-base) var(--motion-ease-out-expo);
+  animation: grow var(--motion-duration-base) var(--motion-ease-out-expo) both;
+  animation-delay: calc(var(--order) * var(--motion-stagger));
+}
+
+.name {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.you {
+  min-height: 1.3em;
+  font-weight: 700;
+}
+
+@keyframes grow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}

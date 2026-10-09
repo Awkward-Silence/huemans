@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-**huemans** is a meetup gamification web app that breaks the ice at events by splitting attendees into **color groups** and nudging them to socialize. It is being built by a team of 4 during a **24h hackathon**. The repo is still **pre-implementation**: the architecture below is decided, but no app code exists yet. When `web/` and `api/` are scaffolded, add their dev/build/lint/test (and single-test) commands here.
+**huemans** is a meetup gamification web app that breaks the ice at events by splitting attendees into **color groups** and nudging them to socialize. It is being built by a team of 4 during a **24h hackathon**. `web/` has the attendee flow running against an in-browser mock backend; `api/` and `contracts/` don't exist yet. When `api/` is scaffolded, add its dev/build/lint/test (and single-test) commands here.
 
 Plan and open decisions: `docs/next-steps.md`. Raw product brainstorm: `initial-raw-specs.md`.
 
@@ -34,6 +34,21 @@ api/         NestJS + Mastra, one Nest module per bounded context
 - **Key seam:** Questionnaire emits `QuestionnaireCompleted { eventId, attendeeId, answers[] }` on submit or deadline; Grouping consumes it and emits `AttendeeGrouped { eventId, attendeeId, color }`, which is pushed in realtime to the phone and the host screen.
 - **Mastra runs inside the NestJS process**, provided by the `agents` module. Other modules depend only on ports (`GroupNamer`, `IcebreakerWriter`, `QuestionGenerator`), never on Mastra directly, and every port has a deterministic fallback.
 - **Rule: agents enrich, they never decide or block.** No LLM call in the quiz-submit or grouping path — push the color first, enrich asynchronously (group name, tailored icebreaker, big-screen commentary). Question-bank generation runs offline before the event.
+
+## Commands
+
+`web/` (run inside `web/`; structure and recipes in `web/README.md`):
+
+```
+npm run dev                                   # Vite dev server; open /join/demo (mock API) or /dev/kitchen-sink
+npm run build                                 # tsc -b + vite build
+npm run typecheck | npm run lint | npm run format
+npm test                                      # vitest run
+npx vitest run src/features/join/steps.test.ts   # one file
+npx vitest run -t "redirectFor"               # by test name
+```
+
+`VITE_API_MODE=mock|http` picks the in-browser mock or the real `api/` (`VITE_API_URL`). Theme tokens live in `web/src/theme/`, copy in `web/src/content/`, API schemas in `web/src/api/schemas.ts` (to move into `contracts/` once it exists).
 
 ## Spec-driven workflow
 

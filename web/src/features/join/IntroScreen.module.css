@@ -1,0 +1,27 @@
+.wordmark {
+  margin: 0;
+  font-family: var(--type-display-l-family);
+  font-size: var(--type-display-l-size);
+  font-weight: var(--type-display-l-weight);
+  line-height: var(--type-display-l-line-height);
+  letter-spacing: var(--type-display-l-letter-spacing);
+  animation: mark var(--motion-duration-intro) var(--motion-ease-out-expo) both;
+}
+
+/* The wordmark gathers in from wide letter spacing. */
+@keyframes mark {
+  0% {
+    opacity: 0;
+    letter-spacing: 0.3em;
+  }
+  60%,
+  100% {
+    opacity: 1;
+    letter-spacing: var(--type-display-l-letter-spacing);
+  }
+}
+
+.tapAnywhere {
+  position: fixed;
+  inset: 0;
+}

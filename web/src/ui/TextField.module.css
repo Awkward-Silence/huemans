@@ -1,0 +1,29 @@
+.input {
+  width: 100%;
+  min-height: 64px;
+  padding: var(--space-2xs) 0 var(--space-xs);
+  border: 0;
+  border-bottom: 2px solid var(--color-accent);
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 46px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.5;
+}
+
+.input:focus-visible {
+  border-bottom-color: var(--color-accent-hover);
+  outline: none;
+}
+
+.invalid {
+  border-bottom-color: var(--color-danger);
+}

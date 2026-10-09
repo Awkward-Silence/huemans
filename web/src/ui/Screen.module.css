@@ -1,0 +1,56 @@
+.screen {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+}
+
+.default {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.group {
+  background: var(--group-bg);
+  color: var(--group-ink);
+}
+
+.inner {
+  position: relative;
+  width: 100%;
+  max-width: var(--layout-max-width);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.fullBleed {
+  max-width: none;
+}
+
+/* Sits above the absolutely positioned backdrop. */
+.content {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.center {
+  text-align: center;
+}
+
+.end {
+  justify-content: flex-end;
+}
+
+.pad-default {
+  padding: calc(var(--layout-screen-padding-top) + env(safe-area-inset-top, 0px))
+    var(--layout-screen-padding-x)
+    calc(var(--layout-screen-padding-bottom) + env(safe-area-inset-bottom, 0px));
+}
+
+.pad-compact {
+  padding: calc(var(--space-lg) + env(safe-area-inset-top, 0px)) var(--layout-screen-padding-x)
+    calc(var(--space-lg) + env(safe-area-inset-bottom, 0px));
+}
