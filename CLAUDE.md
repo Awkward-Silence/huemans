@@ -4,9 +4,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-**huemans** is a mobile-first web app that breaks the ice at events: attendees answer a few funny questions, are split into **diverse color groups**, and share **one icebreaker for the night**. It is being built by a team of 4 (Adrián architect, Diego backend, Miguel fullstack, Daniel frontend) during a **24h hackathon**, for a 2-3 minute live demo to 10-15 people; the hackathon requires AI features. The app (`web/`, `api/`, `contracts/`) is **not scaffolded yet** — when it is, add its dev/build/lint/test (and single-test) commands here.
+**huemans** is a mobile-first web app that breaks the ice at events: attendees answer a few funny questions, are split into **diverse color groups**, and share **one icebreaker for the night**. It is being built by a team of 4 (Adrián architect, Diego backend, Miguel fullstack, Daniel frontend) during a **24h hackathon**, for a 2-3 minute live demo to 10-15 people; the hackathon requires AI features. `api/` is scaffolded (skeleton only, no bounded context yet); `web/` and `contracts/` are not — add their commands below when they exist.
 
 Sources of truth: `initial-raw-specs.md` (product spec, written by the team), `docs/next-steps.md` (plan, owners, open decisions), `docs/domain/` (DDD models), `openspec/changes/` (one change per backend lane).
+
+## API commands (run inside `api/`)
+
+```bash
+pnpm install
+cp .env.example .env && sed 's#/huemans$#/huemans_test#' .env.example > .env.test   # first time only
+docker compose up -d                 # Postgres 17: databases huemans + huemans_test
+pnpm migration:up && pnpm migration:up:test
+pnpm start:dev                       # http://localhost:3000/health
+pnpm lint && pnpm build
+
+pnpm test                            # all suites (Integration/Functional need Postgres up)
+pnpm test:unit | test:integration | test:functional
+pnpm jest tests/Unit/Shared/Domain/ValueObject/Uuid.test.ts   # one file
+pnpm jest -t "testRejectsVersion4"                            # one test by name
+pnpm migration:create                # new migration in api/migrations
+```
+
+- Layout: NestJS bootstrap in `apps/api/src`; each bounded context in `src/<BC>/{Domain,Application,Infrastructure}` (ports in `Domain/Port`, one `Application/ApplicationService.ts`, `Infrastructure/{Http,Persistence/MikroOrm,<BC>Module.ts}`); alias `@Huemans/*` -> `src/*`.
+- Persistence is MikroORM `EntitySchema` + value-object column types (`VO.uuid/string/number/enum` in `src/Shared/Infrastructure/Persistence/MikroOrm/Types`); schema files must be named `*Schema.ts` to be discovered. Never put ORM or Nest decorators in `Domain/` — `pnpm lint` fails on it.
+- Integration tests use `tests/Support/integration.ts` (`bootIntegration`, `clearDatabase`); functional tests use `tests/Support/functional.ts` (`bootFunctional`, `getJson`, `postJson`). The MikroORM CLI does not read `.env` by itself — always go through the `migration:*` scripts.
 
 ## Product flow (what the demo must do)
 
