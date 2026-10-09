@@ -1,0 +1,88 @@
+classDiagram
+  class EventDistribution {
+    <<AggregateRoot>>
+    +EventId eventId
+    +AssignmentCollection assignments
+    +assign(AttendeeId attendeeId, TraitProfile traitProfile, TraitTypeMapping mapping) AttendeeGrouped
+  }
+
+  class Assignment {
+    +AttendeeId attendeeId
+    +Color color
+    +PersonalityType personalityType
+  }
+
+  class AssignmentCollection {
+    <<Collection>>
+  }
+
+  class EventId {
+    <<ValueObject>>
+    +string value
+  }
+
+  class AttendeeId {
+    <<ValueObject>>
+    +string value
+  }
+
+  class Color {
+    <<ValueObject>>
+    +string value
+  }
+
+  class PersonalityType {
+    <<ValueObject>>
+    +string value
+  }
+
+  class TraitProfile {
+    <<Collection>>
+  }
+
+  class TraitTypeMapping {
+    <<Collection>>
+  }
+
+  class PersonalityTypeCollection {
+    <<Collection>>
+  }
+
+  class Trait {
+    <<SharedKernel>>
+  }
+
+  class AttendeeGrouped {
+    <<DomainEvent>>
+    +EventId eventId
+    +AttendeeId attendeeId
+    +Color color
+    +PersonalityType personalityType
+  }
+
+  class EventDistributionView {
+    <<ReadModel>>
+    +EventId eventId
+    +Color color
+    +int members
+    +PersonalityTypeCollection personalityTypes
+  }
+
+  class EventDistributionRepository {
+    <<Repository>>
+    +byEvent(EventId eventId) EventDistributionView
+  }
+
+  EventDistribution *-- EventId : eventId
+  EventDistribution *-- AssignmentCollection : assignments
+  AssignmentCollection "1" o-- "*" Assignment : contains
+  Assignment *-- AttendeeId
+  Assignment *-- Color
+  Assignment *-- PersonalityType
+  TraitProfile "1" o-- "1..*" Trait : contains
+  TraitTypeMapping "1" o-- "33" Trait : maps each to one PersonalityType
+  TraitTypeMapping ..> PersonalityType : maps to
+  PersonalityTypeCollection "1" o-- "*" PersonalityType : contains
+  EventDistribution ..> AttendeeGrouped : emits
+  EventDistributionRepository ..> EventDistributionView : returns
+  EventDistributionView *-- PersonalityTypeCollection
