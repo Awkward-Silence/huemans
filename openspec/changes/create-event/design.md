@@ -2,72 +2,74 @@
 
 ## Context
 
-`api/` already has the `ColorDistribution` context, which serves as the template. The shared kernel already has `EventId` (UUIDv7, `EventId.random()`) and `EventCreated`, which carries only the event id as `aggregateId`. `InMemoryEventDispatcher.dispatchAll` awaits each subscriber in turn, and `OpenDistributionOnEventCreated` already listens for `EventCreated`. Requirements are in `specs/event/spec.md`; motivation is in `proposal.md`.
+The domain contract is `docs/domain/event/model.md`:
+- aggregate `Event`, with actions `create` and `reveal`;
+- value objects `SK::EventId`, `EventName` and `EventStatus`;
+- read model `EventView`;
+- events `EventCreated` and `EventRevealed`, owned by the Event context.
 
-There is no `docs/domain/event/` model. The context is a single aggregate with no rules beyond input invariants, so its model is recorded here instead of running `/ddd-bc` for it.
+Code uses those names. Requirements are in `specs/event/spec.md`; motivation is in `proposal.md`.
+
+`api/` already has the `ColorDistribution` context, which serves as the template. `EventCreated` exists today in `api/src/Shared/Domain/Event/`. It carries only the event id, as `aggregateId`. `OpenDistributionOnEventCreated` subscribes to it, and three Color Distribution functional tests publish it. `InMemoryEventDispatcher.dispatchAll` awaits each subscriber in turn.
 
 ## Goals / Non-Goals
 
 **Goals:**
-- An `Event` aggregate that owns its id, name, quiz settings and status, and records `EventCreated`.
-- A read other contexts can call in-process to check that an event exists and get its quiz settings.
+- `Event.create` and `EventView`, exactly as modeled.
+- `EventCreated` owned by the Event context and published after the save.
+- A read other contexts can call in-process to check that an event exists.
 
 **Non-Goals:**
-- The `open` → `revealed` transition. `night-icebreaker` adds it, together with the second status value.
-- The other contexts' adapters (`EventDirectory` in `word-suggestions`, the event lookup in `quiz-and-answers`). They are built in their own changes against the read exposed here.
-- A demo event with a fixed id (`web-live-distribution`), auth for the host, listing events and editing them.
+- `Event.reveal` and `EventRevealed`. The model defines them, and `night-icebreaker` implements them together with the host's reveal endpoint.
+- The quiz settings as domain data. Participation owns them (see the model).
+- The other contexts' adapters to this read. They are built in `quiz-and-answers` and `word-suggestions`.
+- A demo event with a fixed id (`web-live-distribution`), host auth, and listing events.
 
 ## Decisions
 
-**Model.**
-- Aggregate `Event`:
-  - `id: EventId`, `name: EventName`, `questionCount: QuestionCount`, `quizDuration: QuizDuration`, `status: EventStatus`.
-  - Factory `Event.create(id, name, questionCount?, quizDuration?)`. It defaults to 5 questions and 20 seconds, starts the event `open` and records `EventCreated`.
-  - `toDTO()` returns `EventView { id, name, questionCount, quizDurationSeconds, status }`.
-- Value objects in `Event/Domain/ValueObject`:
-  - `EventName`: a string, trimmed, 1-80 characters.
-  - `QuestionCount`: an integer from 1 to 10.
-  - `QuizDuration`: whole seconds from 5 to 300.
-  - `EventStatus`: an enum with only `open` for now.
-- The defaults live in the domain, not in the HTTP payload, so that the demo seed and any other caller get the same event as the API.
+**Model in code.**
+- `Event` has a private constructor and a factory, `Event.create(id: EventId, name: EventName)`. It starts the event `open` and records `EventCreated`. `toDTO()` returns `EventView { id, name, status }`.
+- `EventName` is a `StringValueObject` that trims the text and requires 1-255 characters. `EventStatus` is an `EnumValueObject` with `open` and `revealed`, the closed set from the model. It declares a public constructor so `VO.enum` can build it.
+- `revealed` exists in the value set now, so `night-icebreaker` adds behaviour without a new column.
 
-**Validation in two places, each with its own job.**
-- A zod schema for `POST /events`, passed through the existing `ZodValidationPipe`, checks the shape at the edge: field types, integers, optional fields. This is the first `@Body` in the API.
-- The value objects enforce the ranges and the trim, which are the invariants. They throw `InvalidArgumentError`, which `DomainErrorFilter` already turns into `400`.
-- Alternative considered: putting the ranges in zod only. Rejected, because the aggregate could then be built invalid from any other entry point.
+**`EventCreated` moves to `Event/Domain/EventCreated.ts`, unchanged.** The model makes Event's events Event's own, and consumers import them from the Event context. Its event name (`event.created`) and payload stay the same. `OpenDistributionOnEventCreated` and the three Color Distribution functional tests change only their import. Alternative considered: re-exporting it from Shared. Rejected, because it keeps the wrong owner visible.
 
-**Lowercase status on the wire.** `status: "open"`, matching the other union fields the web reads (`pending`, `assigned`, `locked`, `ready`). The domain docs keep `OPEN` / `REVEALED` as concept names. The web schema strips unknown keys, so adding `status` changes nothing on the web side.
+**Quiz settings at the boundary.** `GET /events/:eventId` must return `questionCount` and `quizDurationSeconds`, but Event's domain does not know them. For now `EventController` adds them from two constants in `Event/Infrastructure/Http`, with a comment that they are a placeholder for Participation's quiz settings. `quiz-and-answers` replaces the constants with a read from Participation's application service. Alternative considered: putting the values in Event's domain until then. Rejected, because the model puts them outside Event.
+
+**Validation.**
+- A zod schema (`{ name: string }`) for `POST /events`, through the existing `ZodValidationPipe`, checks the shape. This is the first `@Body` in the API.
+- `EventName` enforces trimming and length, and throws `InvalidArgumentError`. `DomainErrorFilter` already maps that to `400`.
+- The length lives in the value object rather than zod, so the seed in `web-live-distribution` cannot create an invalid name.
 
 **Application service.** `Event/Application/ApplicationService`:
-- `create(name, questionCount?, quizDurationSeconds?): Promise<EventView>` builds the VOs, generates the id, saves, then dispatches the pulled events.
-- `eventOf(eventId): Promise<EventView>` throws `EventNotFound` (a `NotFoundError`, so `404` through the existing filter).
+- `create(name): Promise<EventView>` builds the value objects, generates the id with `EventId.random()`, saves, then dispatches the pulled events.
+- `eventOf(eventId): Promise<EventView>` throws `EventNotFound` (a `NotFoundError`), which maps to `404`.
 
 A single insert needs no explicit transaction.
 
-**Cross-context read.** `EventModule` exports its `ApplicationService`. Other contexts call `eventOf` from an adapter in their own `Infrastructure/` behind a port in their own `Domain/Port`, so no context imports another's domain. Alternative considered: an event-existence table in each consumer, filled from `EventCreated`. Rejected, because it duplicates data in one process for no gain.
+**Cross-context read.** `EventModule` exports its `ApplicationService`. Other contexts call `eventOf` from an adapter in their own `Infrastructure/`, behind a port in their own `Domain/Port`.
 
-**Synchronous announcement.** Dispatching after the save, and awaiting it, means the distribution is open before `201` is returned. That is why the spec can promise it. If a subscriber throws, the event stays stored and the request fails with `500`. Accepted, because `open` is idempotent and the demo creates events once, before the room fills.
+**Synchronous announcement.** The service dispatches after the save and awaits it, so the distribution is open before `201` is returned. If a subscriber throws, the event stays stored and the request fails with `500`. That is accepted, because `open` is idempotent and the demo creates events before the room fills.
 
 **Persistence.**
-- Table `events(id uuid primary key, name text not null, question_count integer not null, quiz_duration_seconds integer not null, status text not null)`. It has no foreign key to `event_distributions`, because the contexts stay independent.
-- The migration is hand-written (`Migration<timestamp>_event.ts`), like the existing one.
-- `EventSchema.ts` uses `VO.uuid/string/number/enum`. `EventStatus` declares a public constructor so `VO.enum` can build it.
-- `MikroOrmEventRepository` extends `MikroOrmRepository`, with `save` and `search(id): Event | null` behind the `EVENT_REPOSITORY` port.
+- Table `events(id uuid primary key, name text not null, status text not null)`, created by a hand-written migration, `Migration<timestamp>_event.ts`.
+- `EventSchema.ts` maps the table with `VO.uuid(EventId)`, `VO.string(EventName)` and `VO.enum(EventStatus)`.
+- `MikroOrmEventRepository` extends `MikroOrmRepository`, with `save` and `search(id): Event | null` behind the `EVENT_REPOSITORY` port. That matches the model's `EventRepository.search`.
 
 **HTTP.**
 - `EventController` serves `POST /events` (`201`) and `GET /events/:eventId`.
-- The `UuidV7Param` pipe moves from the color distribution controller to `Shared/Infrastructure/Http`, so that both controllers use it.
-- Wire types go into `contracts/event.d.ts`: `CreateEventRequest` and `EventResponse`.
+- The `UuidV7Param` pipe moves from the Color Distribution controller to `Shared/Infrastructure/Http`, so both controllers use it.
+- Wire types go into `contracts/event.d.ts` as `CreateEventRequest` and `EventResponse`.
 
 **Tests (outside-in).**
-- Functional: every scenario in the spec, including the distribution being open after create (via `GET /distribution`) and `EventCreated` published once (via `recordPublished`).
-- Unit: `Event.create` (defaults, `open`, the event recorded), and each value object's bounds.
-- Integration: the repository saving and reloading an event against Postgres, plus an unknown id.
+- Functional: every scenario in the spec, including the distribution being open after create and `EventCreated` published once (`recordPublished`).
+- Unit: `Event.create` (starts `open`, records one `EventCreated`, `toDTO`), `EventName` bounds and trimming, `EventStatus` values.
+- Integration: the repository saving and reloading an event against Postgres, and an unknown id.
 - No unit tests for the application service or the payload.
 
 ## Risks / Trade-offs
 
-- [The status field is added before anything reads it] → It is one enum column. `night-icebreaker` extends it instead of adding a migration for a new column.
-- [Bounds (80 characters, 1-10 questions, 5-300 s) are guesses] → They live in one value object each, so changing them is a one-line change with its test.
+- [The quiz-settings constants could outlive their placeholder role] → `quiz-and-answers` has a task to replace them, and the functional test keeps checking 5 and 20 either way.
+- [Moving `EventCreated` touches Color Distribution] → It is an import-only change, covered by Color Distribution's existing functional tests.
 - [Anyone can create events, since there is no host auth] → Acceptable for a 24h demo. Ids are unguessable UUIDv7s.
 - [A subscriber failure returns `500` after the event is stored] → Covered by the functional flow test. `open` is idempotent if the creation is reported again.

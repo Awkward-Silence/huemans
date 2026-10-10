@@ -2,51 +2,46 @@
 
 ## Purpose
 
-Creates the event every attendee scans into, fixes the quiz settings all its phones share, and announces new events so the other contexts can prepare for them.
+Creates the event every attendee scans into and announces new events, so the other contexts can prepare for them before anyone joins.
 
 ## ADDED Requirements
 
 ### Requirement: Host creates an event
-The system SHALL create an event from a name, with optional `questionCount` and `quizDurationSeconds`. The event SHALL get a new UUIDv7 id and start with status `open`. When omitted, `questionCount` SHALL default to 5 and `quizDurationSeconds` to 20. The response SHALL be `201` with the created event, in the same shape as reading it.
+The system SHALL create an event from a name. The event SHALL get a new UUIDv7 id and start with status `open`. The response SHALL be `201` with the created event, in the same shape as reading it.
 
-#### Scenario: Event created with defaults
+#### Scenario: Event is created open
 - **WHEN** `POST /events` is called with `{ "name": "Demo night" }`
-- **THEN** the response is `201` with `{ id, name: "Demo night", questionCount: 5, quizDurationSeconds: 20, status: "open" }`, and `id` is a UUIDv7
-
-#### Scenario: Event created with explicit quiz settings
-- **WHEN** `POST /events` is called with `{ "name": "Demo night", "questionCount": 4, "quizDurationSeconds": 30 }`
-- **THEN** the response is `201` with `questionCount: 4` and `quizDurationSeconds: 30`
+- **THEN** the response is `201` with `{ id, name: "Demo night", status: "open", questionCount: 5, quizDurationSeconds: 20 }`, and `id` is a UUIDv7
 
 #### Scenario: Two events with the same name are different events
 - **WHEN** two events are created with the same name
 - **THEN** they get different ids
 
-### Requirement: Event input is validated
-The system SHALL reject a create request with `400` and create nothing when:
-- the name is missing, or is empty or longer than 80 characters after trimming;
-- `questionCount` is not an integer from 1 to 10;
-- `quizDurationSeconds` is not an integer from 5 to 300.
-
-Surrounding whitespace in the name SHALL be trimmed.
-
-#### Scenario: Blank name is rejected
-- **WHEN** `POST /events` is called with `{ "name": "   " }`
-- **THEN** the response is `400` and no event is created
+### Requirement: Event name is validated
+The system SHALL trim surrounding whitespace from the name. It SHALL reject a create request with `400` and create nothing when the name is missing, is not text, or is empty or longer than 255 characters after trimming.
 
 #### Scenario: Name is trimmed
 - **WHEN** `POST /events` is called with `{ "name": "  Demo night  " }`
 - **THEN** the created event's name is `Demo night`
 
-#### Scenario: Question count out of range is rejected
-- **WHEN** `POST /events` is called with `questionCount` set to 0, 11 or 4.5
-- **THEN** the response is `400`
+#### Scenario: Blank name is rejected
+- **WHEN** `POST /events` is called with `{ "name": "   " }`
+- **THEN** the response is `400` and no event is created
 
-#### Scenario: Quiz duration out of range is rejected
-- **WHEN** `POST /events` is called with `quizDurationSeconds` set to 4 or 301
-- **THEN** the response is `400`
+#### Scenario: Missing name is rejected
+- **WHEN** `POST /events` is called with `{}`
+- **THEN** the response is `400` and no event is created
+
+#### Scenario: Name at the limit is accepted
+- **WHEN** `POST /events` is called with a name of exactly 255 characters
+- **THEN** the response is `201`
+
+#### Scenario: Name over the limit is rejected
+- **WHEN** `POST /events` is called with a name of 256 characters
+- **THEN** the response is `400` and no event is created
 
 ### Requirement: Anyone with the event id can read it
-The system SHALL return an event by id as `200 { id, name, questionCount, quizDurationSeconds, status }`. This is the shape the attendee app reads on its intro screen. An unknown id SHALL return `404`, and an id that is not a UUIDv7 SHALL return `400`.
+The system SHALL return an event by id as `200 { id, name, status, questionCount, quizDurationSeconds }`. This is the shape the attendee app reads on its intro screen. `questionCount` and `quizDurationSeconds` SHALL be the quiz settings, which are the same for every event (5 and 20). An unknown id SHALL return `404`, and an id that is not a UUIDv7 SHALL return `400`.
 
 #### Scenario: Created event can be read
 - **WHEN** an event is created and then `GET /events/:eventId` is called with its id
