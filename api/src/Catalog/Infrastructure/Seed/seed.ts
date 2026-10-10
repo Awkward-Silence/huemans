@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from '@Huemans/app.module';
+import { CatalogSeedModule } from './CatalogSeedModule';
 import { DEFAULT_CATALOG_FILES, readCatalogFiles } from './CatalogFiles';
 import { MikroOrmCatalogSeeder } from './MikroOrmCatalogSeeder';
 
@@ -19,7 +19,7 @@ async function main(): Promise<void> {
     mapping: resolve(mapping),
   });
 
-  const app = await NestFactory.createApplicationContext(AppModule, { logger: ['error', 'warn'] });
+  const app = await NestFactory.createApplicationContext(CatalogSeedModule, { logger: ['error', 'warn'] });
   try {
     await app.get(MikroOrmCatalogSeeder).seed(content);
   } finally {

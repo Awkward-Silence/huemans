@@ -3,7 +3,6 @@ import { PersonalityTypeProfileListSchema } from "../../../api/src/Catalog/Infra
 import { checkProfileChips, TraitTypeMappingContentSchema } from "../../../api/src/Catalog/Infrastructure/Content/TraitTypeMappingContent.ts";
 import { PERSONALITY_TYPES } from "../../../api/src/Shared/Domain/ValueObject/PersonalityType.ts";
 
-
 const [profilesFile, mappingFile] = process.argv.slice(2);
 if (!profilesFile || !mappingFile) {
   console.error("Usage: npx tsx src/personality-types/validate.ts <profiles.json> <trait-types.json>");
