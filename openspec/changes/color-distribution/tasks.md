@@ -18,10 +18,10 @@
 
 ## 3. Persistence
 
-- [ ] 3.1 Add a migration for `event_distributions` and `assignments` (primary key `(event_id, attendee_id)`) and verify it applies and rolls back on a clean database
-- [ ] 3.2 Map the aggregate and assignments with MikroORM `EntitySchema` in `Infrastructure/Persistence/MikroOrm`, implement the repository (save, load with row lock, existence check), and verify integration tests persist and reload a distribution against real Postgres
-- [ ] 3.3 Implement `EventDistributionRepository.byEvent` and the single-attendee read, and verify integration tests cover all four colors present, other events excluded and unknown event or attendee
-- [ ] 3.4 Verify with an integration test that two concurrent `assign` calls on the same event serialize and keep group sizes within 1
+- [x] 3.1 Add a migration for `event_distributions` and `assignments` (primary key `(event_id, attendee_id)`) and verify it applies and rolls back on a clean database
+- [x] 3.2 Map the aggregate and assignments with MikroORM `EntitySchema` in `Infrastructure/Persistence/MikroOrm`, implement the repository (save, load with row lock, existence check), and verify integration tests persist and reload a distribution against real Postgres
+- [x] 3.3 Implement `EventDistributionRepository.byEvent` and the single-attendee read, and verify integration tests cover all four colors present, other events excluded and unknown event or attendee
+- [x] 3.4 Verify with an integration test that two concurrent `assign` calls on the same event serialize and keep group sizes within 1
 
 ## 4. Application and triggers
 

@@ -4,16 +4,12 @@ import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { Assignment } from './Assignment';
 import { AttendeeAlreadyAssigned } from './AttendeeAlreadyAssigned';
 import { AttendeeGrouped } from './AttendeeGrouped';
+import { EventDistributionView } from './EventDistributionView';
 import { AssignmentCollection } from './AssignmentCollection';
 import { Color, COLORS } from './ValueObject/Color';
 import { PersonalityType } from './ValueObject/PersonalityType';
 import { TraitProfile } from './ValueObject/TraitProfile';
 import { TraitTypeMapping } from './ValueObject/TraitTypeMapping';
-
-export interface EventDistributionDTO {
-  eventId: string;
-  groups: { color: string; members: number; personalityTypes: string[] }[];
-}
 
 export class EventDistribution extends AggregateRoot {
   private constructor(
@@ -58,7 +54,7 @@ export class EventDistribution extends AggregateRoot {
     return best!;
   }
 
-  toDTO(): EventDistributionDTO {
+  toDTO(): EventDistributionView {
     return {
       eventId: this.eventId.value,
       groups: COLORS.map((value) => {

@@ -67,7 +67,8 @@ describe('MikroORM value object types', () => {
 
   beforeAll(async () => {
     module = await bootIntegration({ entities: [BadgeSchema], providers: [MikroOrmBadgeRepository] });
-    await module.get(MikroORM).schema.updateSchema();
+    // safe: only create test_badges; never drop the migrated tables it does not know about.
+    await module.get(MikroORM).schema.updateSchema({ safe: true });
   });
 
   afterAll(async () => {
