@@ -91,4 +91,4 @@ Rules of thumb:
 
 `src/api/mock/` simulates a room of 47 other people. When you submit, about 80% of them have already answered and the rest finish over 15 seconds. Grouping takes about a second, and the icebreaker unlocks when the room is complete. State persists in `localStorage`, so refreshes resume. Clear it from the kitchen sink, or with `localStorage.clear()`.
 
-Questions come from a copy of `tools/src/questions/questions.test.json`. Group profiles, meeting spots and the icebreaker are mock data in `src/api/mock/fixtures/groups.ts`.
+Questions come from a copy of `api/src/Catalog/Infrastructure/Content/questions.json`. Group profiles, meeting spots and the icebreaker are mock data in `src/api/mock/fixtures/groups.ts`.

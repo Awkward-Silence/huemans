@@ -12,7 +12,7 @@ The plan for the 24h hackathon, based on the updated `initial-raw-specs.md` and 
 - **Anonymous join** with a name only. The client keeps the attendee id so a reload resumes where it left off.
 - **AI is required** by the hackathon. Agents enrich (personalized color explanation, icebreaker rationale) but never decide or block, and every agent call has a fallback.
 - **Stack:** React (`web/`), NestJS + Mastra in-process (`api/`), type-only `contracts/`. Each app has its own `node_modules`.
-- **Content already exists** in `tools/`: 50 questions (4 trait-tagged answers each, 20 themes, 33 traits) and 51 icebreakers. Its JSON files are the catalog contract.
+- **Content already exists** in `api/src/Catalog/Infrastructure/Content/` (it lived in `tools/` until `catalog-aggregates`): 50 questions (4 trait-tagged answers each, 20 themes, 33 traits) and 51 icebreakers. Its JSON files are the catalog contract.
 - **Nice to have, not core:** % match + per-person icebreaker, meeting at a spot in 2 minutes (with a sketched venue map), leveraging people who already know each other.
 
 ## Open decisions
@@ -47,7 +47,7 @@ backend-skeleton-and-catalog --> event-join-and-answers --> color-distribution
 
 | Change | Delivers | Owner | Rough hours |
 | --- | --- | --- | --- |
-| `backend-skeleton-and-catalog` | NestJS + Postgres + test suites, deployed. Seeds questions/icebreakers from `tools/`, defines the 4 colors with trait weights | Adrián (skeleton), Diego (catalog) | H0-H5 |
+| `backend-skeleton-and-catalog` | NestJS + Postgres + test suites, deployed. Seeds questions/icebreakers from the catalog content JSON, defines the 4 colors with trait weights | Adrián (skeleton), Diego (catalog) | H0-H5 |
 | `event-join-and-answers` | Create event (4-5 questions), fetch quiz, join with name, submit answers (soft timer), attendee state for reloads | Diego | H4-H8 |
 | `color-distribution` | Trait-to-color scoring, balanced final assignment, reveal endpoint, live counts + realtime push | Adrián | H3-H10 |
 | `night-icebreaker` | Host closes the event, room-profile-based icebreaker pick, broadcast | Adrián | H10-H13 |
@@ -81,7 +81,7 @@ Frontend and host changes (`attendee-flow`, `event-and-host`) are still to be pr
 4. Propose and apply `color-distribution`, then `night-icebreaker`.
 
 ### Diego (backend)
-1. Apply the catalog part of `backend-skeleton-and-catalog`: seed from `tools/` and the colors with trait weights.
+1. Apply the catalog part of `backend-skeleton-and-catalog`: seed from the catalog content JSON and the colors with trait weights.
 2. Propose and apply `event-join-and-answers`. Publish `QuestionnaireCompleted` before distribution exists, against a stub.
 3. From H12, `ai-enrichment` with Adrián.
 

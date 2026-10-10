@@ -22,7 +22,7 @@
 ## 4. Content files move into Catalog infrastructure
 
 - [x] 4.1 Move the four JSON files from `tools/src/` to `api/src/Catalog/Infrastructure/Content/` (`questions.json`, `icebreakers.json`, `profiles.json`, `trait-types.json`), resolve the default paths from the module directory, add them as `nest-cli.json` assets, and verify `pnpm build` puts them in `dist/Catalog/Infrastructure/Content/`
-- [ ] 4.2 Reduce the zod schemas to shape only (drop enums, lengths, uniqueness, counts and `checkProfileChips`), and verify the schema unit tests now only cover structure
+- [x] 4.2 Reduce the zod schemas to shape only (drop enums, lengths, uniqueness, counts and `checkProfileChips`), and verify the schema unit tests now only cover structure
 - [x] 4.3 Add `JsonCatalogContentSource` mapping each entry through the value objects and `author`/`define`, rethrowing failures as `InvalidCatalogContent` naming the file and entry, and verify integration tests: the real files give 50 questions, 51 icebreakers and the personality types; an edited copy with `grumpy` in `q0003` names `q0003 answers.1.trait`; a planner chip `curious` names `planner`; an 81-character question text names the question
 
 ## 5. Application service and commands
@@ -39,6 +39,6 @@
 
 ## 7. Remove `tools/` and update references
 
-- [ ] 7.1 Delete the `tools/` package (`package.json`, lockfile, `tsconfig.json`, validate scripts) and verify no file outside `openspec/changes/archive/` still references `tools/` (`git grep`)
+- [x] 7.1 Delete the `tools/` package (`package.json`, lockfile, `tsconfig.json`, validate scripts) and verify no file outside `openspec/changes/archive/` still references `tools/` (`git grep`)
 - [ ] 7.2 Update `CLAUDE.md` (API commands, the catalog bullet, the architecture tree without `tools/`, and the OpenSpec change list with `catalog-aggregates`), `web/README.md`, `docs/prompts/attendee-flow-web.md`, `docs/next-steps.md`, `docs/api/attendee-api.md`, the links in `initial-raw-specs.md` and the `Trait.ts` comment, and verify every new path exists
 - [ ] 7.3 Run `pnpm lint`, `pnpm build` and `pnpm test` in `api/` and verify all pass

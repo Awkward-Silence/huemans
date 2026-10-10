@@ -14,7 +14,7 @@
 Catalog holds the fixed game content: the questions with their trait-tagged answers, the icebreakers, and the personality types (the trait-type mapping with the 4 personality type profiles shown at the reveal). The content is written once, by the seed, which authors each question and icebreaker and defines the personality types through the aggregates, so every content rule is kept by the domain. The seed runs once per database; after it, the content is frozen and only read (MVP: changing it means recreating the database).
 
 Catalog is NOT responsible for:
-- reading the `tools/` JSON files or remembering that a database was seeded (infrastructure of the seed);
+- reading the content JSON files (in Catalog's infrastructure) or remembering that a database was seeded (infrastructure of the seed);
 - choosing which questions an event asks, or keeping an event's question set fixed once it runs (Participation / Event);
 - choosing the night's icebreaker (Night icebreaker);
 - deriving an attendee's personality type or group (Color Distribution, which owns the rule that uses the trait-type mapping);
@@ -111,7 +111,7 @@ The application service keeps the reads other contexts already use: `allQuestion
 | An icebreaker suits 1 to 3 distinct traits | domain | Icebreaker (IcebreakerTraitCollection) |
 | Every trait mapped once; one profile per type; each profile's chips mapped to its own type | domain | PersonalityTypes (TraitTypeMapping, PersonalityTypeProfileCollection, and the aggregate for the cross rule) |
 | Texts are not empty and within their length; a nickname is trimmed | domain | QuestionText, AnswerText, IcebreakerText, Nickname, Blurb |
-| The `tools/` JSON has the expected shape before it is mapped | boundary | The seed's content schemas; they only check shape, the content rules are the aggregates' |
+| The content JSON has the expected shape before it is mapped | boundary | The seed's content schemas; they only check shape, the content rules are the aggregates' |
 | The seed runs once per database, and a database records when it was seeded | infrastructure | A seed record (seeded-at) checked before seeding; a second run does nothing |
 | The seed writes only what the aggregates accepted | infrastructure | MVP shortcut: the seed may write rows straight to the database, after building every aggregate |
 | An event's question set does not change once the event runs | domain (consumer) | Participation / Event keep the event's own copy of its questions |
@@ -199,7 +199,7 @@ TraitTypeMapping itself is not shared. Catalog owns its content, and Color Distr
 | Term | Definition |
 |---|---|
 | Catalog | The fixed game content: questions, icebreakers and the personality types. Written once by the seed, read during an event, never changed by it |
-| Seed | Loading the catalog content from the `tools/` JSON files into Postgres through the aggregates; runs once per database, which records when it ran |
+| Seed | Loading the catalog content from its JSON files into Postgres through the aggregates; runs once per database, which records when it ran |
 | Author | Creating a question or icebreaker at the seed; content is never revised afterwards (MVP) |
 | PersonalityTypes | The trait-type mapping and the 4 personality type profiles, defined together as one aggregate |
 | Theme | The topic a question or icebreaker belongs to; one of 20 |
@@ -210,4 +210,4 @@ TraitTypeMapping itself is not shared. Catalog owns its content, and Color Distr
 
 ## Open Questions
 
-- Do the content JSON files physically move from `tools/` into `api/` (Catalog infrastructure), or does only reading them count as infrastructure? Deferred to implementation; it does not change the model.
+None.
