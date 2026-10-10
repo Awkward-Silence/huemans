@@ -44,6 +44,7 @@ describe('Seeding the catalog from the content files', () => {
     const content = readCatalogFiles(DEFAULT_CATALOG_FILES);
     expect(content.questions).toHaveLength(50);
     expect(content.icebreakers).toHaveLength(51);
+    expect(content.profiles).toHaveLength(4);
 
     for (let run = 0; run < 2; run++) {
       await seed();

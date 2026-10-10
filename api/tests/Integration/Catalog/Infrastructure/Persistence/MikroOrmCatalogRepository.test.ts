@@ -9,7 +9,13 @@ import { CatalogTraitTypeSchema } from '@Huemans/Catalog/Infrastructure/Persiste
 import { MikroOrmCatalogRepository } from '@Huemans/Catalog/Infrastructure/Persistence/MikroOrm/MikroOrmCatalogRepository';
 import { MikroOrmCatalogSeeder } from '@Huemans/Catalog/Infrastructure/Seed/MikroOrmCatalogSeeder';
 import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
-import { aQuestion, anIcebreaker, realContent, seedCatalogFiles } from '../../../../Support/catalog';
+import {
+  aQuestion,
+  anIcebreaker,
+  realContent,
+  removeCatalogFixtures,
+  seedCatalogFiles,
+} from '../../../../Support/catalog';
 import { bootIntegration } from '../../../../Support/integration';
 
 describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
@@ -34,6 +40,7 @@ describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
   });
 
   afterAll(async () => {
+    await removeCatalogFixtures(module.get(EntityManager).fork());
     await module.close();
   });
 
@@ -74,6 +81,15 @@ describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
       .map((found) => found.toDTO())
       .find((candidate) => candidate.id === question.id);
     expect(found).toEqual(renamed);
+  });
+
+  it('testAFailedWriteRollsBackTheWholeSeed', async () => {
+    const question = aQuestion();
+    const unstorable = { ...anIcebreaker(), text: null as unknown as string };
+
+    await expect(seeder.seed({ questions: [question], icebreakers: [unstorable] })).rejects.toThrow();
+
+    expect((await repository.allQuestions()).some((found) => found.id.value === question.id)).toBe(false);
   });
 
   it('testListsIcebreakersOrderedById', async () => {
