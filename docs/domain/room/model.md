@@ -1,7 +1,7 @@
 # Domain Model — Room
 
 **Version**: 1.0.0
-**Status**: Draft
+**Status**: Accepted
 **Date**: 2026-10-10
 **Kind**: Read-only
 **Source**: discovery.md session 2026-10-10
