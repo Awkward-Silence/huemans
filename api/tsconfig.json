@@ -18,8 +18,14 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@Huemans/*": ["src/*"]
+      "@Huemans/*": [
+        "src/*"
+      ]
     }
   },
-  "include": ["apps/**/*", "src/**/*", "tests/**/*", "migrations/**/*"]
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "migrations/**/*"
+  ]
 }

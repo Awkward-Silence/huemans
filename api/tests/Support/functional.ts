@@ -2,8 +2,8 @@ import { INestApplication, Type } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { App } from 'supertest/types';
-import { AppModule } from '../../apps/api/src/app.module';
-import { configureApp } from '../../apps/api/src/configureApp';
+import { AppModule } from '@Huemans/app.module';
+import { configureApp } from '@Huemans/configureApp';
 
 export async function bootFunctional(
   options: { controllers?: Type[]; overrides?: { provide: Type; useValue: unknown }[] } = {},

@@ -25,7 +25,7 @@ pnpm jest -t "testRejectsVersion4"                            # one test by name
 pnpm migration:create                # new migration in api/migrations
 ```
 
-- Layout: NestJS bootstrap in `apps/api/src`; each bounded context in `src/<BC>/{Domain,Application,Infrastructure}` (ports in `Domain/Port`, one `Application/ApplicationService.ts`, `Infrastructure/{Http,Persistence/MikroOrm,<BC>Module.ts}`); alias `@Huemans/*` -> `src/*`.
+- Layout: a single NestJS app — entry `src/main.ts`, `AppModule` in `src/app.module.ts`; each bounded context in `src/<BC>/{Domain,Application,Infrastructure}` (ports in `Domain/Port`, one `Application/ApplicationService.ts`, `Infrastructure/{Http,Persistence/MikroOrm,<BC>Module.ts}`); alias `@Huemans/*` -> `src/*`.
 - Persistence is MikroORM `EntitySchema` + value-object column types (`VO.uuid/string/number/enum` in `src/Shared/Infrastructure/Persistence/MikroOrm/Types`); schema files must be named `*Schema.ts` to be discovered. Never put ORM or Nest decorators in `Domain/` — `pnpm lint` fails on it.
 - Integration tests use `tests/Support/integration.ts` (`bootIntegration`, `clearDatabase`); functional tests use `tests/Support/functional.ts` (`bootFunctional`, `getJson`, `postJson`). The MikroORM CLI does not read `.env` by itself — always go through the `migration:*` scripts.
 

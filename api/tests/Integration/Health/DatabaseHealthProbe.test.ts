@@ -1,5 +1,5 @@
 import { TestingModule } from '@nestjs/testing';
-import { DatabaseHealthProbe } from '../../../apps/api/src/Health/DatabaseHealthProbe';
+import { DatabaseHealthProbe } from '@Huemans/Health/DatabaseHealthProbe';
 import { bootIntegration } from '../../Support/integration';
 
 describe('DatabaseHealthProbe', () => {
