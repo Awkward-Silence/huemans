@@ -4,6 +4,7 @@ import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { EventCreated } from '@Huemans/Shared/Domain/Event/EventCreated';
 import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
+import { TRAIT_TYPES } from '@Huemans/Types/TraitTypeMapping';
 import { publish } from '../../Support/events';
 import { bootFunctional, getJson } from '../../Support/functional';
 
@@ -44,6 +45,17 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
       mates: 0,
       reason: { lean: [], text: expect.stringContaining('amber') as string },
     } satisfies AttendeeAssignment);
+  });
+
+  it('testPersonalityTypeComesFromTheCatalogMapping', async () => {
+    const planner = Object.entries(TRAIT_TYPES)
+      .filter(([, type]) => type === 'planner')
+      .map(([trait]) => trait);
+    await publish(app, new QuestionnaireCompleted(attendeeId, eventId, planner.slice(0, 4)));
+
+    const response = await getJson(app, `/events/${eventId}/attendees/${attendeeId}/assignment`);
+
+    expect(response.body).toMatchObject({ status: 'assigned', personalityType: 'planner' });
   });
 
   it('testAttendeeNotAssignedYet', async () => {

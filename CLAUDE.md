@@ -15,6 +15,7 @@ pnpm install
 cp .env.example .env && sed 's#/huemans$#/huemans_test#' .env.example > .env.test   # first time only
 docker compose up -d                 # Postgres 17: databases huemans + huemans_test
 pnpm migration:up && pnpm migration:up:test
+pnpm catalog:seed && pnpm catalog:seed:test   # questions + icebreakers from tools/ (idempotent; any deploy runs it after migration:up)
 pnpm start:dev                       # http://localhost:3000/health
 pnpm lint && pnpm build
 
@@ -27,6 +28,7 @@ pnpm migration:create                # new migration in api/migrations
 
 - Layout: a single NestJS app — entry `src/main.ts`, `AppModule` in `src/app.module.ts`; each bounded context in `src/<BC>/{Domain,Application,Infrastructure}` (ports in `Domain/Port`, one `Application/ApplicationService.ts`, `Infrastructure/{Http,Persistence/MikroOrm,<BC>Module.ts}`); alias `@Huemans/*` -> `src/*`.
 - Persistence is MikroORM `EntitySchema` + value-object column types (`VO.uuid/string/number/enum` in `src/Shared/Infrastructure/Persistence/MikroOrm/Types`); schema files must be named `*Schema.ts` to be discovered. Never put ORM or Nest decorators in `Domain/` — `pnpm lint` fails on it.
+- Catalog content is read in-process through the Catalog `ApplicationService` (`questionsByIds`, `traitsOf`, `icebreakers`, `traitTypeMapping`); the trait-to-type table is `api/src/Types/TraitTypeMapping.ts`. Test suites share the test database in parallel without truncating, so catalog fixtures use random ids (`tests/Support/catalog.ts`).
 - Integration tests use `tests/Support/integration.ts` (`bootIntegration`, `clearDatabase`); functional tests use `tests/Support/functional.ts` (`bootFunctional`, `getJson`, `postJson`). The MikroORM CLI does not read `.env` by itself — always go through the `migration:*` scripts.
 
 ## Product flow (what the demo must do)

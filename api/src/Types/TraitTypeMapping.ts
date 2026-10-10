@@ -1,0 +1,40 @@
+import type { PersonalityTypeValue } from './PersonalityType';
+import type { TraitValue } from './Trait';
+
+// The catalog's trait-to-type mapping: each trait belongs to exactly one personality type.
+// A Record over TraitValue, so the compiler rejects a missing trait; edit it by code review.
+export const TRAIT_TYPES: Record<TraitValue, PersonalityTypeValue> = {
+  adventurous: 'explorer',
+  ambitious: 'explorer',
+  chaotic: 'explorer',
+  competitive: 'explorer',
+  curious: 'explorer',
+  independent: 'explorer',
+  rebellious: 'explorer',
+  spontaneous: 'explorer',
+  diplomatic: 'connector',
+  easygoing: 'connector',
+  empathetic: 'connector',
+  generous: 'connector',
+  humorous: 'connector',
+  loyal: 'connector',
+  optimistic: 'connector',
+  sociable: 'connector',
+  analytical: 'planner',
+  cautious: 'planner',
+  organized: 'planner',
+  patient: 'planner',
+  perfectionist: 'planner',
+  practical: 'planner',
+  skeptical: 'planner',
+  thrifty: 'planner',
+  traditional: 'planner',
+  'comfort-loving': 'dreamer',
+  creative: 'dreamer',
+  dramatic: 'dreamer',
+  honest: 'dreamer',
+  introverted: 'dreamer',
+  nostalgic: 'dreamer',
+  romantic: 'dreamer',
+  stubborn: 'dreamer',
+};
