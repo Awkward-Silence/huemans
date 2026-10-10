@@ -1,0 +1,56 @@
+classDiagram
+  class Event {
+    <<AggregateRoot>>
+    +SK~EventId~ id
+    +EventName name
+    +EventStatus status
+    +create(SK~EventId~ id, EventName name) EventCreated
+    +reveal() EventRevealed
+  }
+
+  class EventName {
+    <<ValueObject>>
+    +string value
+  }
+
+  class EventStatus {
+    <<ValueObject>>
+    +string value
+  }
+
+  class EventId {
+    <<SharedKernel>>
+    +string value
+  }
+
+  class EventView {
+    <<ReadModel>>
+    +SK~EventId~ id
+    +EventName name
+    +EventStatus status
+  }
+
+  class EventRepository {
+    <<Repository>>
+    +search(SK~EventId~ id) Event
+  }
+
+  class EventCreated {
+    <<DomainEvent>>
+    +SK~EventId~ eventId
+  }
+
+  class EventRevealed {
+    <<DomainEvent>>
+    +SK~EventId~ eventId
+  }
+
+  Event *-- EventId : id
+  Event *-- EventName : name
+  Event *-- EventStatus : status
+  EventView *-- EventId : id
+  EventView *-- EventName : name
+  EventView *-- EventStatus : status
+  EventRepository ..> Event : returns
+  Event ..> EventCreated : emits
+  Event ..> EventRevealed : emits

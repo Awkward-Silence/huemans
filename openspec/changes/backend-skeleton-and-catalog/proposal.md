@@ -28,5 +28,5 @@ The game is built on content that already exists only as JSON under `tools/` (50
 - New `Catalog` module in `api/`, following the `api-skeleton` layout.
 - Reads the `tools/` JSON files as the content contract. `tools/` gains the profiles and mapping JSON, and validates all of its JSON against Catalog's schemas.
 - Replaces the shared-types folder `api/src/Types/` introduced on `api-types-and-contract-gaps`.
-- Depends on `api-skeleton`. Consumed by `event-join-and-answers`, `color-distribution` and `night-icebreaker`.
+- Depends on `api-skeleton`. Consumed by `quiz-and-answers`, `color-distribution` and `night-icebreaker`.
 - Owner: Diego.

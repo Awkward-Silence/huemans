@@ -1,6 +1,5 @@
-import { DomainEvent } from '../DomainEvent';
+import { DomainEvent } from '@Huemans/Shared/Domain/DomainEvent';
 
-// Published by the Event context; defined here because Color Distribution consumes it before that context exists.
 export class EventCreated extends DomainEvent {
   static readonly EVENT_NAME = 'event.created';
 

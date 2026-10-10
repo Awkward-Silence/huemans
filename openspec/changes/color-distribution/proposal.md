@@ -26,7 +26,7 @@ Splitting attendees into color groups is the core of huemans: it is what turns a
 
 - New `color-distribution` module in `api/`, built with DDD (pure `domain/` layer, unit-tested) plus persistence and HTTP endpoints.
 - Introduces the shared-kernel types `Trait`, `EventId` and `AttendeeId` in `api/` if no earlier change has.
-- Consumes `EventCreated` (Event context) and `QuestionnaireCompleted` with the attendee's trait profile (Participation). The `event-join-and-answers` proposal currently publishes raw answers; it must publish the trait profile instead.
+- Consumes `EventCreated` (Event context, `create-event`) and `QuestionnaireCompleted` with the attendee's trait profile (Participation, `quiz-and-answers`).
 - Needs the trait-type mapping from the catalog. The `backend-skeleton-and-catalog` proposal still describes "colors with trait weights"; it must provide 4 personality types and a trait-to-type mapping instead.
 - Adds `AttendeeGrouped`, the distribution view and the attendee assignment response to `contracts/`.
 - Depends on `backend-skeleton-and-catalog` (NestJS, Postgres, test suites). Owner: Adrián.

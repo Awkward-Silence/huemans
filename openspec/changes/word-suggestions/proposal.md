@@ -25,5 +25,5 @@ The hackathon requires AI features, and the quiz is the moment every attendee is
 - `api/`: a new `Agents` bounded context (the one `ai-enrichment` also plans) with a `WordSuggester` port, an OpenAI adapter through Mastra, a static fallback, an in-memory cache and a per-attendee rate limit. New dependencies: Mastra and the OpenAI provider. New environment variables: the OpenAI API key, model and prompt file path.
 - Attendee API: the new endpoint, plus an optional `sentence` field on the `GET /events/:eventId/quiz` response. Clients that ignore it keep working. Update `docs/api/attendee-api.md`.
 - `web/`: schemas in `web/src/api/schemas.ts`, a new `ApiClient` operation with an HTTP and a mock implementation, and the sentence-builder step in the quiz.
-- Depends on `event-join-and-answers` for event lookup and the quiz response. It can be built first, against the web mock and a stub event lookup.
+- Depends on `create-event` for event lookup and `quiz-and-answers` for the quiz response. It can be built first, against the web mock and a stub event lookup.
 - Owners: TBD (backend: Diego or Adrián, web: Daniel).

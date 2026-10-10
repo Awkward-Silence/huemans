@@ -23,7 +23,7 @@
 - [ ] 4.1 Implement `StaticWordSuggester` with about 20 words per step (step 1 adverbs and verbs, step 2 verbs, step 3 determiners and adjectives, step 4 nouns), and verify a unit test that every list passes word validation and at least 3 words are always available
 - [ ] 4.2 Write `api/prompts/word-suggester.md` (funny, family-friendly, single words that continue the sentence, 6 candidates, few-shot examples), and implement prompt loading with an mtime check and a content hash; verify a unit test that editing the file changes the hash without a restart
 - [ ] 4.3 Implement `MastraWordSuggester` (Mastra agent on OpenAI, `OPENAI_MODEL`, structured `{ words: string[] }` output, max tokens about 40, 5 s hard abort), and verify an integration test (skipped when `OPENAI_API_KEY` is unset) returns at least 3 valid words for `["I"]`
-- [ ] 4.4 Implement a provisional `EventDirectory` that accepts any valid UUIDv7, and verify a unit test that a malformed id is reported as missing
+- [ ] 4.4 Implement `EventDirectory` backed by the Event context's `ApplicationService.eventOf`, and verify a functional test that an unknown event returns `404`
 - [ ] 4.5 Add `WordSuggestionsController` for `POST /events/:eventId/questions/:questionId/word-suggestions` with zod body validation (`attendeeId`, `sentence`) and `400`/`404` mapping, wire everything in `AgentsModule`, and verify functional tests cover `200` for steps 1 and 3, `404` for an unknown event or wrong question id, and `400` for a missing `attendeeId`, a wrong starter or a complete sentence, with the AI port faked
 - [ ] 4.6 Subscribe to `EventCreated` to warm `["I"]` and its step-2 prefixes in the background, logging and ignoring failures, and verify a functional test that the first request after event creation is served from cache with the AI port faked
 - [ ] 4.7 Measure p50 and p95 latency of a few candidate models with a throwaway script against the real key, set the fastest non-reasoning one as the `OPENAI_MODEL` default in `.env.example`, and record the numbers in the PR description
@@ -31,7 +31,7 @@
 ## 5. Attendee API contract
 
 - [ ] 5.1 Document the new endpoint and the optional `sentence` field on `GET /events/:eventId/quiz` in `docs/api/attendee-api.md`, and verify the examples match the functional test payloads
-- [ ] 5.2 Add the optional `sentence` field to the `event-join-and-answers` proposal's quiz response (or to the quiz endpoint, if it already exists, with a functional test asserting the field)
+- [ ] 5.2 Add the optional `sentence` field to the `quiz-and-answers` quiz response (or to the quiz endpoint, if it already exists, with a functional test asserting the field)
 
 ## 6. Web: API layer
 
