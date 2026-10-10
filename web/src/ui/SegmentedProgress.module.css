@@ -1,0 +1,38 @@
+.segments {
+  display: flex;
+  width: 100%;
+}
+
+.md {
+  gap: 6px;
+}
+.md .segment {
+  height: 4px;
+}
+
+.sm {
+  gap: 7px;
+}
+.sm .segment {
+  height: 3px;
+}
+
+.segment {
+  flex: 1;
+  border-radius: 2px;
+  background: var(--color-track);
+  transition: background-color var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.mono-done,
+.mono-current {
+  background: var(--color-text);
+}
+
+.groups-done {
+  background: var(--segment-fill);
+}
+
+.groups-current {
+  background: var(--color-accent);
+}

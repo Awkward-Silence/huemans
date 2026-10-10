@@ -1,0 +1,22 @@
+/* The time bar runs edge to edge across the top, outside the screen padding. */
+.quiz {
+  padding-top: var(--space-xs);
+}
+
+.timeBar {
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  left: 0;
+  right: 0;
+  max-width: var(--layout-max-width);
+  margin-inline: auto;
+  z-index: 1;
+}
+
+.question {
+  margin-top: var(--space-xl);
+}
+
+.footer {
+  padding-top: var(--space-xl);
+}

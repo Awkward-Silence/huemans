@@ -65,6 +65,21 @@ tools/       content and validation scripts (not production code)
 - **Key seam:** Participation publishes `QuestionnaireCompleted` with the attendee's trait profile; Color Distribution emits `AttendeeGrouped { eventId, attendeeId, color, personalityType }`, pushed in realtime to the phone and host screen.
 - **Agents enrich, they never decide or block.** Mastra runs inside NestJS behind ports (`ColorExplainer`, `IcebreakerExplainer`), each with a static fallback. No LLM call in the join, answer, distribution or close paths.
 
+## Commands
+
+`web/` (run inside `web/`; structure and recipes in `web/README.md`):
+
+```
+npm run dev                                   # Vite dev server; open /join/demo (mock API) or /dev/kitchen-sink
+npm run build                                 # tsc -b + vite build
+npm run typecheck | npm run lint | npm run format
+npm test                                      # vitest run
+npx vitest run src/features/join/steps.test.ts   # one file
+npx vitest run -t "redirectFor"               # by test name
+```
+
+`VITE_API_MODE=mock|http` picks the in-browser mock or the real `api/` (`VITE_API_URL`). Theme tokens live in `web/src/theme/`, copy in `web/src/content/`, API schemas in `web/src/api/schemas.ts` (to move into `contracts/` once it exists).
+
 ## Workflow
 
 - **DDD:** `/ddd-bc` (discovery) then `/ddd-model` write to `docs/domain/<bc>/` (config in `ddd-config.yml`). Color Distribution is modeled; its `model.md` is the contract for `/opsx:propose color-distribution`.

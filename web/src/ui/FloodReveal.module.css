@@ -1,0 +1,15 @@
+.flood {
+  position: absolute;
+  inset: 0;
+  background: var(--group-bg);
+  animation: flood var(--motion-duration-base) var(--motion-ease-out-expo) both;
+}
+
+@keyframes flood {
+  from {
+    clip-path: circle(0% at 50% 42%);
+  }
+  to {
+    clip-path: circle(140% at 50% 42%);
+  }
+}

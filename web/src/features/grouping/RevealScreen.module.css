@@ -1,0 +1,4 @@
+/* Everything on the flood is drawn in the group's ink. */
+.content {
+  color: var(--group-ink);
+}
