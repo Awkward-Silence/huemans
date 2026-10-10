@@ -1,7 +1,7 @@
 import { EntityManager, EntitySchema, LockMode } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
-import { Assignment } from '@Huemans/ColorDistribution/Domain/Assignment';
 import { AssignmentCollection } from '@Huemans/ColorDistribution/Domain/AssignmentCollection';
+import { AttendeeAssignmentView } from '@Huemans/ColorDistribution/Domain/AttendeeAssignmentView';
 import { EventDistribution } from '@Huemans/ColorDistribution/Domain/EventDistribution';
 import { EventDistributionView } from '@Huemans/ColorDistribution/Domain/EventDistributionView';
 import { COLORS, ColorValue } from '@Huemans/ColorDistribution/Domain/ValueObject/Color';
@@ -76,7 +76,25 @@ export class MikroOrmEventDistributionRepository
     };
   }
 
-  async assignmentOf(eventId: EventId, attendeeId: AttendeeId): Promise<Assignment | null> {
-    return this.em.findOne(AssignmentSchema, { eventId, attendeeId });
+  async assignmentOf(eventId: EventId, attendeeId: AttendeeId): Promise<AttendeeAssignmentView | null> {
+    const [row] = await this.em
+      .getConnection()
+      .execute<{ color: ColorValue; personality_type: PersonalityTypeValue; group_members: string }[]>(
+        `select a.color, a.personality_type,
+              (select count(*) from assignments g where g.event_id = a.event_id and g.color = a.color) as group_members
+         from assignments a
+        where a.event_id = ? and a.attendee_id = ?`,
+        [eventId.value, attendeeId.value],
+      );
+    if (row === undefined) {
+      return null;
+    }
+    return {
+      eventId: eventId.value,
+      attendeeId: attendeeId.value,
+      color: row.color,
+      personalityType: row.personality_type,
+      groupMembers: Number(row.group_members),
+    };
   }
 }

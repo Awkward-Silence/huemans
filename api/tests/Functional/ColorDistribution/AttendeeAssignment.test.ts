@@ -38,6 +38,11 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
       attendeeId,
       color: 'amber',
       personalityType: 'dreamer',
+      nickname: 'The Dreamers',
+      blurb: expect.any(String) as string,
+      traits: ['creative', 'romantic', 'nostalgic'],
+      mates: 0,
+      reason: { lean: [], text: expect.stringContaining('amber') as string },
     } satisfies AttendeeAssignment);
   });
 

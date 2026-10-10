@@ -24,13 +24,27 @@ export type EventDistributionView = {
   }[];
 };
 
-/** GET /events/:eventId/attendees/:attendeeId/assignment — 200 once the attendee is grouped. */
+/**
+ * GET /events/:eventId/attendees/:attendeeId/assignment — 200 once the attendee is grouped.
+ * Fits the web's AssignmentSchema (web/src/api/schemas.ts); `eventId`, `attendeeId` and `personalityType` are extra.
+ */
 export type AttendeeAssignment = {
   status: 'assigned';
   eventId: string;
   attendeeId: string;
   color: GroupColor;
   personalityType: PersonalityType;
+  /** Reveal copy of the attendee's personality type, not of the color: groups are mixed on purpose. */
+  nickname: string;
+  blurb: string;
+  traits: string[];
+  /** Other people in the same group (members - 1); grows as others join. */
+  mates: number;
+  reason: {
+    /** Always empty: answers decide the type, not the color, so there is no color lean to show. */
+    lean: { color: GroupColor; percent: number }[];
+    text: string;
+  };
 };
 
 /** 200 while the attendee has no group yet (not submitted, or grouping still running). Never a 404: the web stops polling on 404. */

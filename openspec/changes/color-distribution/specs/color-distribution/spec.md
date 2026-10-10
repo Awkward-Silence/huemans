@@ -97,7 +97,7 @@ The system SHALL return an attendee's color and personality type for a given eve
 
 #### Scenario: Assigned attendee reads their group
 - **WHEN** an attendee assigned to violet as dreamer requests their assignment
-- **THEN** the response contains color violet and personality type dreamer
+- **THEN** the response contains color violet, personality type dreamer, the dreamer's reveal copy (nickname, blurb, traits), and the number of other members of violet
 
 #### Scenario: Attendee not assigned yet
 - **WHEN** an attendee who has not completed the questionnaire requests their assignment
