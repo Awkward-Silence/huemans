@@ -1,8 +1,6 @@
-import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 import { Icebreaker } from '../Icebreaker';
-import { PersonalityTypeProfile } from '../PersonalityTypeProfile';
+import { PersonalityTypes } from '../PersonalityTypes';
 import { Question } from '../Question';
-import { TraitTypeMapping } from '../TraitTypeMapping';
 
 export const CATALOG_REPOSITORY = Symbol('CatalogRepository');
 
@@ -12,7 +10,6 @@ export interface CatalogRepository {
   allQuestions(): Promise<Question[]>;
   /** Ordered by id. */
   allIcebreakers(): Promise<Icebreaker[]>;
-  /** Throws PersonalityTypeProfileNotFound when the catalog has not been seeded. */
-  profileOf(type: PersonalityType): Promise<PersonalityTypeProfile>;
-  mapping(): Promise<TraitTypeMapping>;
+  /** Throws PersonalityTypesNotDefined when the catalog has not been seeded. */
+  personalityTypes(): Promise<PersonalityTypes>;
 }

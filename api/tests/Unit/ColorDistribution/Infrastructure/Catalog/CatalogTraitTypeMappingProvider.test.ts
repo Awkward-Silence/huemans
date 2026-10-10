@@ -1,5 +1,5 @@
 import { ApplicationService as CatalogService } from '@Huemans/Catalog/Application/ApplicationService';
-import { TraitTypeMappingDTO } from '@Huemans/Catalog/Domain/TraitTypeMapping';
+import { TraitTypeMappingDTO } from '@Huemans/Catalog/Domain/PersonalityTypes';
 import { CatalogTraitTypeMappingProvider } from '@Huemans/ColorDistribution/Infrastructure/Catalog/CatalogTraitTypeMappingProvider';
 import { Trait, TRAITS } from '@Huemans/Shared/Domain/ValueObject/Trait';
 

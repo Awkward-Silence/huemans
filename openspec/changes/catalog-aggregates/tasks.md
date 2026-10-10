@@ -8,9 +8,9 @@
 
 ## 2. Aggregates and events (unit tests first)
 
-- [ ] 2.1 Add `QuestionAuthored`, `IcebreakerAuthored` and `PersonalityTypesDefined` in `Catalog/Domain/Event` (payloads per the model; `PersonalityTypesDefined` uses the fixed id `personality-types`), and verify `toPrimitives()` in unit tests
-- [ ] 2.2 Make `Question` and `Icebreaker` aggregate roots with a private constructor, `author(...)` that records its event, a rebuild static that records nothing, and `toDTO()` returning today's `QuestionDTO`/`IcebreakerDTO`, and verify unit tests for authoring (event recorded once) and rebuilding (no event)
-- [ ] 2.3 Add the `PersonalityTypes` aggregate with `define(mapping, profiles)` (records `PersonalityTypesDefined`, rejects a profile chip mapped to another type), a rebuild static, `profileOf(type)` and `mapping()` returning today's `PersonalityTypeProfileDTO`/`TraitTypeMappingDTO`, and `PersonalityTypesNotDefined` (plain error); remove the old `PersonalityTypeProfile`/`TraitTypeMapping` read models and `PersonalityTypeProfileNotFound`; verify unit tests for the chip rule (planner with `curious`), the event, and `pnpm lint` (no framework imports in `Domain/`)
+- [x] 2.1 Add `QuestionAuthored`, `IcebreakerAuthored` and `PersonalityTypesDefined` in `Catalog/Domain/Event` (payloads per the model; `PersonalityTypesDefined` uses the fixed id `personality-types`), and verify `toPrimitives()` in unit tests
+- [x] 2.2 Make `Question` and `Icebreaker` aggregate roots with a private constructor, `author(...)` that records its event, a rebuild static that records nothing, and `toDTO()` returning today's `QuestionDTO`/`IcebreakerDTO`, and verify unit tests for authoring (event recorded once) and rebuilding (no event)
+- [x] 2.3 Add the `PersonalityTypes` aggregate with `define(mapping, profiles)` (records `PersonalityTypesDefined`, rejects a profile chip mapped to another type), a rebuild static, `profileOf(type)` returning today's `PersonalityTypeProfileDTO` and `toDTO()` whose `mapping` is today's `TraitTypeMappingDTO`, and `PersonalityTypesNotDefined` (plain error); remove the old `PersonalityTypeProfile`/`TraitTypeMapping` read models and `PersonalityTypeProfileNotFound`; verify unit tests for the chip rule (planner with `curious`), the event, and `pnpm lint` (no framework imports in `Domain/`)
 
 ## 3. Ports, persistence and the seed record
 

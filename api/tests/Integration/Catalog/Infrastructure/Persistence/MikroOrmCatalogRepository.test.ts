@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import { TestingModule } from '@nestjs/testing';
-import { PersonalityTypeProfileNotFound } from '@Huemans/Catalog/Domain/PersonalityTypeProfileNotFound';
+import { PersonalityTypesNotDefined } from '@Huemans/Catalog/Domain/PersonalityTypesNotDefined';
 import { CatalogAnswerSchema } from '@Huemans/Catalog/Infrastructure/Persistence/MikroOrm/CatalogAnswerSchema';
 import { CatalogIcebreakerSchema } from '@Huemans/Catalog/Infrastructure/Persistence/MikroOrm/CatalogIcebreakerSchema';
 import { CatalogPersonalityTypeProfileSchema } from '@Huemans/Catalog/Infrastructure/Persistence/MikroOrm/CatalogPersonalityTypeProfileSchema';
@@ -104,26 +104,21 @@ describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
     expect(found.toDTO()).toEqual(icebreaker);
   });
 
-  it('testReadsTheProfileOfAType', async () => {
-    const dreamer = realContent().profiles.find((profile) => profile.type === 'dreamer')!;
+  it('testReadsThePersonalityTypes', async () => {
+    const { profiles, mapping } = realContent();
 
-    const profile = await repository.profileOf(new PersonalityType('dreamer'));
+    const personalityTypes = await repository.personalityTypes();
 
-    expect(profile.toDTO()).toEqual(dreamer);
+    expect(personalityTypes.profileOf(new PersonalityType('dreamer'))).toEqual(
+      profiles.find((profile) => profile.type === 'dreamer'),
+    );
+    expect(personalityTypes.toDTO().mapping).toEqual(mapping);
   });
 
-  it('testReadsTheMappingOfAllTraits', async () => {
-    const mapping = await repository.mapping();
+  it('testMissingPersonalityTypesAreNotDefined', async () => {
+    // Profiles and mapping have fixed keys shared by parallel suites, so empty tables are simulated instead of emptied.
+    const unseeded = new MikroOrmCatalogRepository({ find: () => Promise.resolve([]) } as unknown as EntityManager);
 
-    expect(mapping.toDTO()).toEqual(realContent().mapping);
-  });
-
-  it('testMissingProfileIsNotFound', async () => {
-    // Profiles have fixed keys shared by parallel suites, so an unseeded table is simulated instead of emptied.
-    const unseeded = new MikroOrmCatalogRepository({
-      findOne: () => Promise.resolve(null),
-    } as unknown as EntityManager);
-
-    await expect(unseeded.profileOf(new PersonalityType('planner'))).rejects.toThrow(PersonalityTypeProfileNotFound);
+    await expect(unseeded.personalityTypes()).rejects.toThrow(PersonalityTypesNotDefined);
   });
 });

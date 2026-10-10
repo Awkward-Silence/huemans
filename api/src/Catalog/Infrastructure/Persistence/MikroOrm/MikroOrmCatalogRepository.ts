@@ -2,12 +2,17 @@ import { EntityManager } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { Icebreaker } from '@Huemans/Catalog/Domain/Icebreaker';
 import { PersonalityTypeProfile } from '@Huemans/Catalog/Domain/PersonalityTypeProfile';
-import { PersonalityTypeProfileNotFound } from '@Huemans/Catalog/Domain/PersonalityTypeProfileNotFound';
+import { PersonalityTypes } from '@Huemans/Catalog/Domain/PersonalityTypes';
+import { PersonalityTypesNotDefined } from '@Huemans/Catalog/Domain/PersonalityTypesNotDefined';
 import { CatalogRepository } from '@Huemans/Catalog/Domain/Port/CatalogRepository';
 import { Question } from '@Huemans/Catalog/Domain/Question';
-import { TraitTypeMapping } from '@Huemans/Catalog/Domain/TraitTypeMapping';
+import { PersonalityTypeProfileCollection } from '@Huemans/Catalog/Domain/ValueObject/PersonalityTypeProfileCollection';
+import { TraitType } from '@Huemans/Catalog/Domain/ValueObject/TraitType';
+import { TraitTypeMapping } from '@Huemans/Catalog/Domain/ValueObject/TraitTypeMapping';
 import { Answer } from '@Huemans/Catalog/Domain/Answer';
 import { AnswerText } from '@Huemans/Catalog/Domain/ValueObject/AnswerText';
+import { IcebreakerText } from '@Huemans/Catalog/Domain/ValueObject/IcebreakerText';
+import { QuestionText } from '@Huemans/Catalog/Domain/ValueObject/QuestionText';
 import { Blurb } from '@Huemans/Catalog/Domain/ValueObject/Blurb';
 import { Nickname } from '@Huemans/Catalog/Domain/ValueObject/Nickname';
 import { AnswerCollection } from '@Huemans/Catalog/Domain/ValueObject/AnswerCollection';
@@ -42,61 +47,55 @@ export class MikroOrmCatalogRepository implements CatalogRepository {
       { orderBy: { position: 'asc' }, disableIdentityMap: true },
     );
 
-    return questions.map(
-      (question) =>
-        new Question(
-          new QuestionId(question.id),
-          new Theme(question.theme),
-          question.text,
-          new AnswerCollection(
-            answers
-              .filter((answer) => answer.questionId === question.id)
-              .map(
-                (answer) => new Answer(new AnswerId(answer.id), new AnswerText(answer.text), new Trait(answer.trait)),
-              ),
-          ),
+    return questions.map((question) =>
+      Question.rebuild(
+        new QuestionId(question.id),
+        new Theme(question.theme),
+        new QuestionText(question.text),
+        new AnswerCollection(
+          answers
+            .filter((answer) => answer.questionId === question.id)
+            .map((answer) => new Answer(new AnswerId(answer.id), new AnswerText(answer.text), new Trait(answer.trait))),
         ),
+      ),
     );
   }
 
   async allIcebreakers(): Promise<Icebreaker[]> {
     const rows = await this.em.find(CatalogIcebreakerSchema, {}, { orderBy: { id: 'asc' }, disableIdentityMap: true });
-    return rows.map(
-      (row) =>
-        new Icebreaker(
-          new IcebreakerId(row.id),
-          new Theme(row.theme),
-          row.text,
-          new IcebreakerTraitCollection(row.traits.map((trait) => new Trait(trait))),
-        ),
+    return rows.map((row) =>
+      Icebreaker.rebuild(
+        new IcebreakerId(row.id),
+        new Theme(row.theme),
+        new IcebreakerText(row.text),
+        new IcebreakerTraitCollection(row.traits.map((trait) => new Trait(trait))),
+      ),
     );
   }
 
-  async profileOf(type: PersonalityType): Promise<PersonalityTypeProfile> {
-    const row = await this.em.findOne(
-      CatalogPersonalityTypeProfileSchema,
-      { type: type.value },
-      { disableIdentityMap: true },
-    );
-    if (row === null) {
-      throw new PersonalityTypeProfileNotFound(type);
+  async personalityTypes(): Promise<PersonalityTypes> {
+    const [profiles, traitTypes] = await Promise.all([
+      this.em.find(CatalogPersonalityTypeProfileSchema, {}, { disableIdentityMap: true }),
+      this.em.find(CatalogTraitTypeSchema, {}, { orderBy: { trait: 'asc' }, disableIdentityMap: true }),
+    ]);
+    if (profiles.length === 0 || traitTypes.length === 0) {
+      throw new PersonalityTypesNotDefined();
     }
-    return new PersonalityTypeProfile(
-      type,
-      new Nickname(row.nickname),
-      new Blurb(row.blurb),
-      new ProfileTraitCollection(row.traits.map((trait) => new Trait(trait))),
-    );
-  }
-
-  async mapping(): Promise<TraitTypeMapping> {
-    const rows = await this.em.find(
-      CatalogTraitTypeSchema,
-      {},
-      { orderBy: { trait: 'asc' }, disableIdentityMap: true },
-    );
-    return new TraitTypeMapping(
-      rows.map((row) => [new Trait(row.trait), new PersonalityType(row.personalityType)] as const),
+    return PersonalityTypes.rebuild(
+      new TraitTypeMapping(
+        traitTypes.map((row) => new TraitType(new Trait(row.trait), new PersonalityType(row.personalityType))),
+      ),
+      new PersonalityTypeProfileCollection(
+        profiles.map(
+          (row) =>
+            new PersonalityTypeProfile(
+              new PersonalityType(row.type),
+              new Nickname(row.nickname),
+              new Blurb(row.blurb),
+              new ProfileTraitCollection(row.traits.map((trait) => new Trait(trait))),
+            ),
+        ),
+      ),
     );
   }
 }
