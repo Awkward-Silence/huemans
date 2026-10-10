@@ -9,7 +9,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "typecheck": "tsc -p .",
     "validate": "tsx src/questions/validate.ts",
-    "validate:icebreakers": "tsx src/icebreakers/validate.ts"
+    "validate:icebreakers": "tsx src/icebreakers/validate.ts",
+    "validate:sentences": "tsx src/sentences/validate.ts src/sentences/sentences.test.json",
+    "generate:sentences": "tsx src/sentences/generate.ts src/sentences/sentences.test.json"
   },
   "dependencies": {
     "zod": "^4.6.5"

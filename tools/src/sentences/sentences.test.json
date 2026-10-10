@@ -1,0 +1,2305 @@
+{
+  "id": "sentence-i",
+  "starter": "I",
+  "picks": 5,
+  "options": [
+    {
+      "id": "1",
+      "text": "loudly",
+      "trait": "dramatic",
+      "next": [
+        {
+          "id": "1.1",
+          "text": "apologise to",
+          "trait": "diplomatic",
+          "next": [
+            {
+              "id": "1.1.1",
+              "text": "every",
+              "trait": "organized",
+              "next": [
+                {
+                  "id": "1.1.1.1",
+                  "text": "sleepy",
+                  "trait": "easygoing",
+                  "next": [
+                    {
+                      "id": "1.1.1.1.1",
+                      "text": "goat",
+                      "trait": "adventurous",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.1.1.2",
+                      "text": "pigeon",
+                      "trait": "sociable",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.1.1.3",
+                      "text": "lighthouse",
+                      "trait": "independent",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.1.1.2",
+                  "text": "grumpy",
+                  "trait": "stubborn",
+                  "next": [
+                    {
+                      "id": "1.1.1.2.1",
+                      "text": "kettle",
+                      "trait": "comfort-loving",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.1.2.2",
+                      "text": "vending machine",
+                      "trait": "practical",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.1.2.3",
+                      "text": "accountant",
+                      "trait": "analytical",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.1.1.3",
+                  "text": "sparkly",
+                  "trait": "creative",
+                  "next": [
+                    {
+                      "id": "1.1.1.3.1",
+                      "text": "pirate",
+                      "trait": "rebellious",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.1.3.2",
+                      "text": "traffic cone",
+                      "trait": "cautious",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.1.3.3",
+                      "text": "llama",
+                      "trait": "easygoing",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "1.1.2",
+              "text": "three",
+              "trait": "practical",
+              "next": [
+                {
+                  "id": "1.1.2.1",
+                  "text": "retired",
+                  "trait": "traditional",
+                  "next": [
+                    {
+                      "id": "1.1.2.1.1",
+                      "text": "wizards",
+                      "trait": "creative",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.2.1.2",
+                      "text": "houseplants",
+                      "trait": "patient",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.2.1.3",
+                      "text": "tax inspectors",
+                      "trait": "skeptical",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.1.2.2",
+                  "text": "slightly damp",
+                  "trait": "practical",
+                  "next": [
+                    {
+                      "id": "1.1.2.2.1",
+                      "text": "rubber ducks",
+                      "trait": "humorous",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.2.2.2",
+                      "text": "grandmothers",
+                      "trait": "traditional",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.2.2.3",
+                      "text": "penguins",
+                      "trait": "loyal",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.1.2.3",
+                  "text": "overconfident",
+                  "trait": "competitive",
+                  "next": [
+                    {
+                      "id": "1.1.2.3.1",
+                      "text": "lawnmowers",
+                      "trait": "competitive",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.2.3.2",
+                      "text": "poets",
+                      "trait": "romantic",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.2.3.3",
+                      "text": "spoons",
+                      "trait": "thrifty",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "1.1.3",
+              "text": "seventeen",
+              "trait": "chaotic",
+              "next": [
+                {
+                  "id": "1.1.3.1",
+                  "text": "philosophical",
+                  "trait": "analytical",
+                  "next": [
+                    {
+                      "id": "1.1.3.1.1",
+                      "text": "toasters",
+                      "trait": "organized",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.3.1.2",
+                      "text": "dentists",
+                      "trait": "perfectionist",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.3.1.3",
+                      "text": "seagulls",
+                      "trait": "chaotic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.1.3.2",
+                  "text": "haunted",
+                  "trait": "adventurous",
+                  "next": [
+                    {
+                      "id": "1.1.3.2.1",
+                      "text": "ghosts",
+                      "trait": "introverted",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.3.2.2",
+                      "text": "golden retrievers",
+                      "trait": "optimistic",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.3.2.3",
+                      "text": "judges",
+                      "trait": "honest",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.1.3.3",
+                  "text": "fancy",
+                  "trait": "romantic",
+                  "next": [
+                    {
+                      "id": "1.1.3.3.1",
+                      "text": "diplomats",
+                      "trait": "diplomatic",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.3.3.2",
+                      "text": "time travellers",
+                      "trait": "curious",
+                      "next": []
+                    },
+                    {
+                      "id": "1.1.3.3.3",
+                      "text": "magicians",
+                      "trait": "dramatic",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1.2",
+          "text": "sing to",
+          "trait": "romantic",
+          "next": [
+            {
+              "id": "1.2.1",
+              "text": "my neighbour's",
+              "trait": "curious",
+              "next": [
+                {
+                  "id": "1.2.1.1",
+                  "text": "nervous",
+                  "trait": "cautious",
+                  "next": [
+                    {
+                      "id": "1.2.1.1.1",
+                      "text": "old photo album",
+                      "trait": "nostalgic",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.1.1.2",
+                      "text": "billionaire",
+                      "trait": "ambitious",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.1.1.3",
+                      "text": "therapist",
+                      "trait": "empathetic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.2.1.2",
+                  "text": "theatrical",
+                  "trait": "dramatic",
+                  "next": [
+                    {
+                      "id": "1.2.1.2.1",
+                      "text": "donkey",
+                      "trait": "stubborn",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.1.2.2",
+                      "text": "street performer",
+                      "trait": "spontaneous",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.1.2.3",
+                      "text": "charity shop",
+                      "trait": "generous",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.2.1.3",
+                  "text": "suspicious",
+                  "trait": "skeptical",
+                  "next": [
+                    {
+                      "id": "1.2.1.3.1",
+                      "text": "goat",
+                      "trait": "adventurous",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.1.3.2",
+                      "text": "pigeon",
+                      "trait": "sociable",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.1.3.3",
+                      "text": "lighthouse",
+                      "trait": "independent",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "1.2.2",
+              "text": "a dozen",
+              "trait": "ambitious",
+              "next": [
+                {
+                  "id": "1.2.2.1",
+                  "text": "tiny",
+                  "trait": "introverted",
+                  "next": [
+                    {
+                      "id": "1.2.2.1.1",
+                      "text": "kettles",
+                      "trait": "comfort-loving",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.2.1.2",
+                      "text": "vending machines",
+                      "trait": "practical",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.2.1.3",
+                      "text": "accountants",
+                      "trait": "analytical",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.2.2.2",
+                  "text": "enthusiastic",
+                  "trait": "optimistic",
+                  "next": [
+                    {
+                      "id": "1.2.2.2.1",
+                      "text": "pirates",
+                      "trait": "rebellious",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.2.2.2",
+                      "text": "traffic cones",
+                      "trait": "cautious",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.2.2.3",
+                      "text": "llamas",
+                      "trait": "easygoing",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.2.2.3",
+                  "text": "unruly",
+                  "trait": "rebellious",
+                  "next": [
+                    {
+                      "id": "1.2.2.3.1",
+                      "text": "wizards",
+                      "trait": "creative",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.2.3.2",
+                      "text": "houseplants",
+                      "trait": "patient",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.2.3.3",
+                      "text": "tax inspectors",
+                      "trait": "skeptical",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "1.2.3",
+              "text": "all of my",
+              "trait": "loyal",
+              "next": [
+                {
+                  "id": "1.2.3.1",
+                  "text": "brutally honest",
+                  "trait": "honest",
+                  "next": [
+                    {
+                      "id": "1.2.3.1.1",
+                      "text": "rubber ducks",
+                      "trait": "humorous",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.3.1.2",
+                      "text": "grandmothers",
+                      "trait": "traditional",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.3.1.3",
+                      "text": "penguins",
+                      "trait": "loyal",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.2.3.2",
+                  "text": "well-organised",
+                  "trait": "organized",
+                  "next": [
+                    {
+                      "id": "1.2.3.2.1",
+                      "text": "lawnmowers",
+                      "trait": "competitive",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.3.2.2",
+                      "text": "poets",
+                      "trait": "romantic",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.3.2.3",
+                      "text": "spoons",
+                      "trait": "thrifty",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.2.3.3",
+                  "text": "bargain-bin",
+                  "trait": "thrifty",
+                  "next": [
+                    {
+                      "id": "1.2.3.3.1",
+                      "text": "toasters",
+                      "trait": "organized",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.3.3.2",
+                      "text": "dentists",
+                      "trait": "perfectionist",
+                      "next": []
+                    },
+                    {
+                      "id": "1.2.3.3.3",
+                      "text": "seagulls",
+                      "trait": "chaotic",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1.3",
+          "text": "argue with",
+          "trait": "stubborn",
+          "next": [
+            {
+              "id": "1.3.1",
+              "text": "the mayor's",
+              "trait": "traditional",
+              "next": [
+                {
+                  "id": "1.3.1.1",
+                  "text": "lonely",
+                  "trait": "empathetic",
+                  "next": [
+                    {
+                      "id": "1.3.1.1.1",
+                      "text": "ghost",
+                      "trait": "introverted",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.1.1.2",
+                      "text": "golden retriever",
+                      "trait": "optimistic",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.1.1.3",
+                      "text": "judge",
+                      "trait": "honest",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.3.1.2",
+                  "text": "legendary",
+                  "trait": "ambitious",
+                  "next": [
+                    {
+                      "id": "1.3.1.2.1",
+                      "text": "diplomat",
+                      "trait": "diplomatic",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.1.2.2",
+                      "text": "time traveller",
+                      "trait": "curious",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.1.2.3",
+                      "text": "magician",
+                      "trait": "dramatic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.3.1.3",
+                  "text": "mysterious",
+                  "trait": "curious",
+                  "next": [
+                    {
+                      "id": "1.3.1.3.1",
+                      "text": "old photo album",
+                      "trait": "nostalgic",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.1.3.2",
+                      "text": "billionaire",
+                      "trait": "ambitious",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.1.3.3",
+                      "text": "therapist",
+                      "trait": "empathetic",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "1.3.2",
+              "text": "twelve",
+              "trait": "perfectionist",
+              "next": [
+                {
+                  "id": "1.3.2.1",
+                  "text": "devoted",
+                  "trait": "loyal",
+                  "next": [
+                    {
+                      "id": "1.3.2.1.1",
+                      "text": "donkeys",
+                      "trait": "stubborn",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.2.1.2",
+                      "text": "street performers",
+                      "trait": "spontaneous",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.2.1.3",
+                      "text": "charity shops",
+                      "trait": "generous",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.3.2.2",
+                  "text": "impulsive",
+                  "trait": "spontaneous",
+                  "next": [
+                    {
+                      "id": "1.3.2.2.1",
+                      "text": "goats",
+                      "trait": "adventurous",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.2.2.2",
+                      "text": "pigeons",
+                      "trait": "sociable",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.2.2.3",
+                      "text": "lighthouses",
+                      "trait": "independent",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.3.2.3",
+                  "text": "unhurried",
+                  "trait": "patient",
+                  "next": [
+                    {
+                      "id": "1.3.2.3.1",
+                      "text": "kettles",
+                      "trait": "comfort-loving",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.2.3.2",
+                      "text": "vending machines",
+                      "trait": "practical",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.2.3.3",
+                      "text": "accountants",
+                      "trait": "analytical",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "1.3.3",
+              "text": "my favourite",
+              "trait": "nostalgic",
+              "next": [
+                {
+                  "id": "1.3.3.1",
+                  "text": "perfectly symmetrical",
+                  "trait": "perfectionist",
+                  "next": [
+                    {
+                      "id": "1.3.3.1.1",
+                      "text": "pirate",
+                      "trait": "rebellious",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.3.1.2",
+                      "text": "traffic cone",
+                      "trait": "cautious",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.3.1.3",
+                      "text": "llama",
+                      "trait": "easygoing",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.3.3.2",
+                  "text": "cosy",
+                  "trait": "comfort-loving",
+                  "next": [
+                    {
+                      "id": "1.3.3.2.1",
+                      "text": "wizard",
+                      "trait": "creative",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.3.2.2",
+                      "text": "houseplant",
+                      "trait": "patient",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.3.2.3",
+                      "text": "tax inspector",
+                      "trait": "skeptical",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "1.3.3.3",
+                  "text": "old-fashioned",
+                  "trait": "nostalgic",
+                  "next": [
+                    {
+                      "id": "1.3.3.3.1",
+                      "text": "rubber duck",
+                      "trait": "humorous",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.3.3.2",
+                      "text": "grandmother",
+                      "trait": "traditional",
+                      "next": []
+                    },
+                    {
+                      "id": "1.3.3.3.3",
+                      "text": "penguin",
+                      "trait": "loyal",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "text": "suspiciously",
+      "trait": "skeptical",
+      "next": [
+        {
+          "id": "2.1",
+          "text": "spy on",
+          "trait": "curious",
+          "next": [
+            {
+              "id": "2.1.1",
+              "text": "two hundred",
+              "trait": "adventurous",
+              "next": [
+                {
+                  "id": "2.1.1.1",
+                  "text": "big-hearted",
+                  "trait": "generous",
+                  "next": [
+                    {
+                      "id": "2.1.1.1.1",
+                      "text": "lawnmowers",
+                      "trait": "competitive",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.1.1.2",
+                      "text": "poets",
+                      "trait": "romantic",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.1.1.3",
+                      "text": "spoons",
+                      "trait": "thrifty",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.1.1.2",
+                  "text": "chatty",
+                  "trait": "sociable",
+                  "next": [
+                    {
+                      "id": "2.1.1.2.1",
+                      "text": "toasters",
+                      "trait": "organized",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.1.2.2",
+                      "text": "dentists",
+                      "trait": "perfectionist",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.1.2.3",
+                      "text": "seagulls",
+                      "trait": "chaotic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.1.1.3",
+                  "text": "polite",
+                  "trait": "diplomatic",
+                  "next": [
+                    {
+                      "id": "2.1.1.3.1",
+                      "text": "ghosts",
+                      "trait": "introverted",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.1.3.2",
+                      "text": "golden retrievers",
+                      "trait": "optimistic",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.1.3.3",
+                      "text": "judges",
+                      "trait": "honest",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "2.1.2",
+              "text": "the last",
+              "trait": "cautious",
+              "next": [
+                {
+                  "id": "2.1.2.1",
+                  "text": "free-range",
+                  "trait": "independent",
+                  "next": [
+                    {
+                      "id": "2.1.2.1.1",
+                      "text": "diplomat",
+                      "trait": "diplomatic",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.2.1.2",
+                      "text": "time traveller",
+                      "trait": "curious",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.2.1.3",
+                      "text": "magician",
+                      "trait": "dramatic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.1.2.2",
+                  "text": "wobbly",
+                  "trait": "chaotic",
+                  "next": [
+                    {
+                      "id": "2.1.2.2.1",
+                      "text": "old photo album",
+                      "trait": "nostalgic",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.2.2.2",
+                      "text": "billionaire",
+                      "trait": "ambitious",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.2.2.3",
+                      "text": "therapist",
+                      "trait": "empathetic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.1.2.3",
+                  "text": "hilarious",
+                  "trait": "humorous",
+                  "next": [
+                    {
+                      "id": "2.1.2.3.1",
+                      "text": "donkey",
+                      "trait": "stubborn",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.2.3.2",
+                      "text": "street performer",
+                      "trait": "spontaneous",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.2.3.3",
+                      "text": "charity shop",
+                      "trait": "generous",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "2.1.3",
+              "text": "both of my",
+              "trait": "comfort-loving",
+              "next": [
+                {
+                  "id": "2.1.3.1",
+                  "text": "sleepy",
+                  "trait": "easygoing",
+                  "next": [
+                    {
+                      "id": "2.1.3.1.1",
+                      "text": "goats",
+                      "trait": "adventurous",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.3.1.2",
+                      "text": "pigeons",
+                      "trait": "sociable",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.3.1.3",
+                      "text": "lighthouses",
+                      "trait": "independent",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.1.3.2",
+                  "text": "grumpy",
+                  "trait": "stubborn",
+                  "next": [
+                    {
+                      "id": "2.1.3.2.1",
+                      "text": "kettles",
+                      "trait": "comfort-loving",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.3.2.2",
+                      "text": "vending machines",
+                      "trait": "practical",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.3.2.3",
+                      "text": "accountants",
+                      "trait": "analytical",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.1.3.3",
+                  "text": "sparkly",
+                  "trait": "creative",
+                  "next": [
+                    {
+                      "id": "2.1.3.3.1",
+                      "text": "pirates",
+                      "trait": "rebellious",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.3.3.2",
+                      "text": "traffic cones",
+                      "trait": "cautious",
+                      "next": []
+                    },
+                    {
+                      "id": "2.1.3.3.3",
+                      "text": "llamas",
+                      "trait": "easygoing",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2.2",
+          "text": "bargain with",
+          "trait": "thrifty",
+          "next": [
+            {
+              "id": "2.2.1",
+              "text": "every",
+              "trait": "organized",
+              "next": [
+                {
+                  "id": "2.2.1.1",
+                  "text": "retired",
+                  "trait": "traditional",
+                  "next": [
+                    {
+                      "id": "2.2.1.1.1",
+                      "text": "wizard",
+                      "trait": "creative",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.1.1.2",
+                      "text": "houseplant",
+                      "trait": "patient",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.1.1.3",
+                      "text": "tax inspector",
+                      "trait": "skeptical",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.2.1.2",
+                  "text": "slightly damp",
+                  "trait": "practical",
+                  "next": [
+                    {
+                      "id": "2.2.1.2.1",
+                      "text": "rubber duck",
+                      "trait": "humorous",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.1.2.2",
+                      "text": "grandmother",
+                      "trait": "traditional",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.1.2.3",
+                      "text": "penguin",
+                      "trait": "loyal",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.2.1.3",
+                  "text": "overconfident",
+                  "trait": "competitive",
+                  "next": [
+                    {
+                      "id": "2.2.1.3.1",
+                      "text": "lawnmower",
+                      "trait": "competitive",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.1.3.2",
+                      "text": "poet",
+                      "trait": "romantic",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.1.3.3",
+                      "text": "spoon",
+                      "trait": "thrifty",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "2.2.2",
+              "text": "three",
+              "trait": "practical",
+              "next": [
+                {
+                  "id": "2.2.2.1",
+                  "text": "philosophical",
+                  "trait": "analytical",
+                  "next": [
+                    {
+                      "id": "2.2.2.1.1",
+                      "text": "toasters",
+                      "trait": "organized",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.2.1.2",
+                      "text": "dentists",
+                      "trait": "perfectionist",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.2.1.3",
+                      "text": "seagulls",
+                      "trait": "chaotic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.2.2.2",
+                  "text": "haunted",
+                  "trait": "adventurous",
+                  "next": [
+                    {
+                      "id": "2.2.2.2.1",
+                      "text": "ghosts",
+                      "trait": "introverted",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.2.2.2",
+                      "text": "golden retrievers",
+                      "trait": "optimistic",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.2.2.3",
+                      "text": "judges",
+                      "trait": "honest",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.2.2.3",
+                  "text": "fancy",
+                  "trait": "romantic",
+                  "next": [
+                    {
+                      "id": "2.2.2.3.1",
+                      "text": "diplomats",
+                      "trait": "diplomatic",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.2.3.2",
+                      "text": "time travellers",
+                      "trait": "curious",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.2.3.3",
+                      "text": "magicians",
+                      "trait": "dramatic",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "2.2.3",
+              "text": "seventeen",
+              "trait": "chaotic",
+              "next": [
+                {
+                  "id": "2.2.3.1",
+                  "text": "nervous",
+                  "trait": "cautious",
+                  "next": [
+                    {
+                      "id": "2.2.3.1.1",
+                      "text": "old photo albums",
+                      "trait": "nostalgic",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.3.1.2",
+                      "text": "billionaires",
+                      "trait": "ambitious",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.3.1.3",
+                      "text": "therapists",
+                      "trait": "empathetic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.2.3.2",
+                  "text": "theatrical",
+                  "trait": "dramatic",
+                  "next": [
+                    {
+                      "id": "2.2.3.2.1",
+                      "text": "donkeys",
+                      "trait": "stubborn",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.3.2.2",
+                      "text": "street performers",
+                      "trait": "spontaneous",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.3.2.3",
+                      "text": "charity shops",
+                      "trait": "generous",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.2.3.3",
+                  "text": "suspicious",
+                  "trait": "skeptical",
+                  "next": [
+                    {
+                      "id": "2.2.3.3.1",
+                      "text": "goats",
+                      "trait": "adventurous",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.3.3.2",
+                      "text": "pigeons",
+                      "trait": "sociable",
+                      "next": []
+                    },
+                    {
+                      "id": "2.2.3.3.3",
+                      "text": "lighthouses",
+                      "trait": "independent",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2.3",
+          "text": "follow",
+          "trait": "cautious",
+          "next": [
+            {
+              "id": "2.3.1",
+              "text": "my neighbour's",
+              "trait": "curious",
+              "next": [
+                {
+                  "id": "2.3.1.1",
+                  "text": "tiny",
+                  "trait": "introverted",
+                  "next": [
+                    {
+                      "id": "2.3.1.1.1",
+                      "text": "kettle",
+                      "trait": "comfort-loving",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.1.1.2",
+                      "text": "vending machine",
+                      "trait": "practical",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.1.1.3",
+                      "text": "accountant",
+                      "trait": "analytical",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.3.1.2",
+                  "text": "enthusiastic",
+                  "trait": "optimistic",
+                  "next": [
+                    {
+                      "id": "2.3.1.2.1",
+                      "text": "pirate",
+                      "trait": "rebellious",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.1.2.2",
+                      "text": "traffic cone",
+                      "trait": "cautious",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.1.2.3",
+                      "text": "llama",
+                      "trait": "easygoing",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.3.1.3",
+                  "text": "unruly",
+                  "trait": "rebellious",
+                  "next": [
+                    {
+                      "id": "2.3.1.3.1",
+                      "text": "wizard",
+                      "trait": "creative",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.1.3.2",
+                      "text": "houseplant",
+                      "trait": "patient",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.1.3.3",
+                      "text": "tax inspector",
+                      "trait": "skeptical",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "2.3.2",
+              "text": "a dozen",
+              "trait": "ambitious",
+              "next": [
+                {
+                  "id": "2.3.2.1",
+                  "text": "brutally honest",
+                  "trait": "honest",
+                  "next": [
+                    {
+                      "id": "2.3.2.1.1",
+                      "text": "rubber ducks",
+                      "trait": "humorous",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.2.1.2",
+                      "text": "grandmothers",
+                      "trait": "traditional",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.2.1.3",
+                      "text": "penguins",
+                      "trait": "loyal",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.3.2.2",
+                  "text": "well-organised",
+                  "trait": "organized",
+                  "next": [
+                    {
+                      "id": "2.3.2.2.1",
+                      "text": "lawnmowers",
+                      "trait": "competitive",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.2.2.2",
+                      "text": "poets",
+                      "trait": "romantic",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.2.2.3",
+                      "text": "spoons",
+                      "trait": "thrifty",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.3.2.3",
+                  "text": "bargain-bin",
+                  "trait": "thrifty",
+                  "next": [
+                    {
+                      "id": "2.3.2.3.1",
+                      "text": "toasters",
+                      "trait": "organized",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.2.3.2",
+                      "text": "dentists",
+                      "trait": "perfectionist",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.2.3.3",
+                      "text": "seagulls",
+                      "trait": "chaotic",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "2.3.3",
+              "text": "all of my",
+              "trait": "loyal",
+              "next": [
+                {
+                  "id": "2.3.3.1",
+                  "text": "lonely",
+                  "trait": "empathetic",
+                  "next": [
+                    {
+                      "id": "2.3.3.1.1",
+                      "text": "ghosts",
+                      "trait": "introverted",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.3.1.2",
+                      "text": "golden retrievers",
+                      "trait": "optimistic",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.3.1.3",
+                      "text": "judges",
+                      "trait": "honest",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.3.3.2",
+                  "text": "legendary",
+                  "trait": "ambitious",
+                  "next": [
+                    {
+                      "id": "2.3.3.2.1",
+                      "text": "diplomats",
+                      "trait": "diplomatic",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.3.2.2",
+                      "text": "time travellers",
+                      "trait": "curious",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.3.2.3",
+                      "text": "magicians",
+                      "trait": "dramatic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "2.3.3.3",
+                  "text": "mysterious",
+                  "trait": "curious",
+                  "next": [
+                    {
+                      "id": "2.3.3.3.1",
+                      "text": "old photo albums",
+                      "trait": "nostalgic",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.3.3.2",
+                      "text": "billionaires",
+                      "trait": "ambitious",
+                      "next": []
+                    },
+                    {
+                      "id": "2.3.3.3.3",
+                      "text": "therapists",
+                      "trait": "empathetic",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "text": "happily",
+      "trait": "optimistic",
+      "next": [
+        {
+          "id": "3.1",
+          "text": "high-five",
+          "trait": "sociable",
+          "next": [
+            {
+              "id": "3.1.1",
+              "text": "the mayor's",
+              "trait": "traditional",
+              "next": [
+                {
+                  "id": "3.1.1.1",
+                  "text": "devoted",
+                  "trait": "loyal",
+                  "next": [
+                    {
+                      "id": "3.1.1.1.1",
+                      "text": "donkey",
+                      "trait": "stubborn",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.1.1.2",
+                      "text": "street performer",
+                      "trait": "spontaneous",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.1.1.3",
+                      "text": "charity shop",
+                      "trait": "generous",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.1.1.2",
+                  "text": "impulsive",
+                  "trait": "spontaneous",
+                  "next": [
+                    {
+                      "id": "3.1.1.2.1",
+                      "text": "goat",
+                      "trait": "adventurous",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.1.2.2",
+                      "text": "pigeon",
+                      "trait": "sociable",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.1.2.3",
+                      "text": "lighthouse",
+                      "trait": "independent",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.1.1.3",
+                  "text": "unhurried",
+                  "trait": "patient",
+                  "next": [
+                    {
+                      "id": "3.1.1.3.1",
+                      "text": "kettle",
+                      "trait": "comfort-loving",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.1.3.2",
+                      "text": "vending machine",
+                      "trait": "practical",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.1.3.3",
+                      "text": "accountant",
+                      "trait": "analytical",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "3.1.2",
+              "text": "twelve",
+              "trait": "perfectionist",
+              "next": [
+                {
+                  "id": "3.1.2.1",
+                  "text": "perfectly symmetrical",
+                  "trait": "perfectionist",
+                  "next": [
+                    {
+                      "id": "3.1.2.1.1",
+                      "text": "pirates",
+                      "trait": "rebellious",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.2.1.2",
+                      "text": "traffic cones",
+                      "trait": "cautious",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.2.1.3",
+                      "text": "llamas",
+                      "trait": "easygoing",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.1.2.2",
+                  "text": "cosy",
+                  "trait": "comfort-loving",
+                  "next": [
+                    {
+                      "id": "3.1.2.2.1",
+                      "text": "wizards",
+                      "trait": "creative",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.2.2.2",
+                      "text": "houseplants",
+                      "trait": "patient",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.2.2.3",
+                      "text": "tax inspectors",
+                      "trait": "skeptical",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.1.2.3",
+                  "text": "old-fashioned",
+                  "trait": "nostalgic",
+                  "next": [
+                    {
+                      "id": "3.1.2.3.1",
+                      "text": "rubber ducks",
+                      "trait": "humorous",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.2.3.2",
+                      "text": "grandmothers",
+                      "trait": "traditional",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.2.3.3",
+                      "text": "penguins",
+                      "trait": "loyal",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "3.1.3",
+              "text": "my favourite",
+              "trait": "nostalgic",
+              "next": [
+                {
+                  "id": "3.1.3.1",
+                  "text": "big-hearted",
+                  "trait": "generous",
+                  "next": [
+                    {
+                      "id": "3.1.3.1.1",
+                      "text": "lawnmower",
+                      "trait": "competitive",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.3.1.2",
+                      "text": "poet",
+                      "trait": "romantic",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.3.1.3",
+                      "text": "spoon",
+                      "trait": "thrifty",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.1.3.2",
+                  "text": "chatty",
+                  "trait": "sociable",
+                  "next": [
+                    {
+                      "id": "3.1.3.2.1",
+                      "text": "toaster",
+                      "trait": "organized",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.3.2.2",
+                      "text": "dentist",
+                      "trait": "perfectionist",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.3.2.3",
+                      "text": "seagull",
+                      "trait": "chaotic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.1.3.3",
+                  "text": "polite",
+                  "trait": "diplomatic",
+                  "next": [
+                    {
+                      "id": "3.1.3.3.1",
+                      "text": "ghost",
+                      "trait": "introverted",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.3.3.2",
+                      "text": "golden retriever",
+                      "trait": "optimistic",
+                      "next": []
+                    },
+                    {
+                      "id": "3.1.3.3.3",
+                      "text": "judge",
+                      "trait": "honest",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "3.2",
+          "text": "adopt",
+          "trait": "generous",
+          "next": [
+            {
+              "id": "3.2.1",
+              "text": "two hundred",
+              "trait": "adventurous",
+              "next": [
+                {
+                  "id": "3.2.1.1",
+                  "text": "free-range",
+                  "trait": "independent",
+                  "next": [
+                    {
+                      "id": "3.2.1.1.1",
+                      "text": "diplomats",
+                      "trait": "diplomatic",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.1.1.2",
+                      "text": "time travellers",
+                      "trait": "curious",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.1.1.3",
+                      "text": "magicians",
+                      "trait": "dramatic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.2.1.2",
+                  "text": "wobbly",
+                  "trait": "chaotic",
+                  "next": [
+                    {
+                      "id": "3.2.1.2.1",
+                      "text": "old photo albums",
+                      "trait": "nostalgic",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.1.2.2",
+                      "text": "billionaires",
+                      "trait": "ambitious",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.1.2.3",
+                      "text": "therapists",
+                      "trait": "empathetic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.2.1.3",
+                  "text": "hilarious",
+                  "trait": "humorous",
+                  "next": [
+                    {
+                      "id": "3.2.1.3.1",
+                      "text": "donkeys",
+                      "trait": "stubborn",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.1.3.2",
+                      "text": "street performers",
+                      "trait": "spontaneous",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.1.3.3",
+                      "text": "charity shops",
+                      "trait": "generous",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "3.2.2",
+              "text": "the last",
+              "trait": "cautious",
+              "next": [
+                {
+                  "id": "3.2.2.1",
+                  "text": "sleepy",
+                  "trait": "easygoing",
+                  "next": [
+                    {
+                      "id": "3.2.2.1.1",
+                      "text": "goat",
+                      "trait": "adventurous",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.2.1.2",
+                      "text": "pigeon",
+                      "trait": "sociable",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.2.1.3",
+                      "text": "lighthouse",
+                      "trait": "independent",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.2.2.2",
+                  "text": "grumpy",
+                  "trait": "stubborn",
+                  "next": [
+                    {
+                      "id": "3.2.2.2.1",
+                      "text": "kettle",
+                      "trait": "comfort-loving",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.2.2.2",
+                      "text": "vending machine",
+                      "trait": "practical",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.2.2.3",
+                      "text": "accountant",
+                      "trait": "analytical",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.2.2.3",
+                  "text": "sparkly",
+                  "trait": "creative",
+                  "next": [
+                    {
+                      "id": "3.2.2.3.1",
+                      "text": "pirate",
+                      "trait": "rebellious",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.2.3.2",
+                      "text": "traffic cone",
+                      "trait": "cautious",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.2.3.3",
+                      "text": "llama",
+                      "trait": "easygoing",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "3.2.3",
+              "text": "both of my",
+              "trait": "comfort-loving",
+              "next": [
+                {
+                  "id": "3.2.3.1",
+                  "text": "retired",
+                  "trait": "traditional",
+                  "next": [
+                    {
+                      "id": "3.2.3.1.1",
+                      "text": "wizards",
+                      "trait": "creative",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.3.1.2",
+                      "text": "houseplants",
+                      "trait": "patient",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.3.1.3",
+                      "text": "tax inspectors",
+                      "trait": "skeptical",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.2.3.2",
+                  "text": "slightly damp",
+                  "trait": "practical",
+                  "next": [
+                    {
+                      "id": "3.2.3.2.1",
+                      "text": "rubber ducks",
+                      "trait": "humorous",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.3.2.2",
+                      "text": "grandmothers",
+                      "trait": "traditional",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.3.2.3",
+                      "text": "penguins",
+                      "trait": "loyal",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.2.3.3",
+                  "text": "overconfident",
+                  "trait": "competitive",
+                  "next": [
+                    {
+                      "id": "3.2.3.3.1",
+                      "text": "lawnmowers",
+                      "trait": "competitive",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.3.3.2",
+                      "text": "poets",
+                      "trait": "romantic",
+                      "next": []
+                    },
+                    {
+                      "id": "3.2.3.3.3",
+                      "text": "spoons",
+                      "trait": "thrifty",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "3.3",
+          "text": "race",
+          "trait": "competitive",
+          "next": [
+            {
+              "id": "3.3.1",
+              "text": "every",
+              "trait": "organized",
+              "next": [
+                {
+                  "id": "3.3.1.1",
+                  "text": "philosophical",
+                  "trait": "analytical",
+                  "next": [
+                    {
+                      "id": "3.3.1.1.1",
+                      "text": "toaster",
+                      "trait": "organized",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.1.1.2",
+                      "text": "dentist",
+                      "trait": "perfectionist",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.1.1.3",
+                      "text": "seagull",
+                      "trait": "chaotic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.3.1.2",
+                  "text": "haunted",
+                  "trait": "adventurous",
+                  "next": [
+                    {
+                      "id": "3.3.1.2.1",
+                      "text": "ghost",
+                      "trait": "introverted",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.1.2.2",
+                      "text": "golden retriever",
+                      "trait": "optimistic",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.1.2.3",
+                      "text": "judge",
+                      "trait": "honest",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.3.1.3",
+                  "text": "fancy",
+                  "trait": "romantic",
+                  "next": [
+                    {
+                      "id": "3.3.1.3.1",
+                      "text": "diplomat",
+                      "trait": "diplomatic",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.1.3.2",
+                      "text": "time traveller",
+                      "trait": "curious",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.1.3.3",
+                      "text": "magician",
+                      "trait": "dramatic",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "3.3.2",
+              "text": "three",
+              "trait": "practical",
+              "next": [
+                {
+                  "id": "3.3.2.1",
+                  "text": "nervous",
+                  "trait": "cautious",
+                  "next": [
+                    {
+                      "id": "3.3.2.1.1",
+                      "text": "old photo albums",
+                      "trait": "nostalgic",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.2.1.2",
+                      "text": "billionaires",
+                      "trait": "ambitious",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.2.1.3",
+                      "text": "therapists",
+                      "trait": "empathetic",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.3.2.2",
+                  "text": "theatrical",
+                  "trait": "dramatic",
+                  "next": [
+                    {
+                      "id": "3.3.2.2.1",
+                      "text": "donkeys",
+                      "trait": "stubborn",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.2.2.2",
+                      "text": "street performers",
+                      "trait": "spontaneous",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.2.2.3",
+                      "text": "charity shops",
+                      "trait": "generous",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.3.2.3",
+                  "text": "suspicious",
+                  "trait": "skeptical",
+                  "next": [
+                    {
+                      "id": "3.3.2.3.1",
+                      "text": "goats",
+                      "trait": "adventurous",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.2.3.2",
+                      "text": "pigeons",
+                      "trait": "sociable",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.2.3.3",
+                      "text": "lighthouses",
+                      "trait": "independent",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "3.3.3",
+              "text": "seventeen",
+              "trait": "chaotic",
+              "next": [
+                {
+                  "id": "3.3.3.1",
+                  "text": "tiny",
+                  "trait": "introverted",
+                  "next": [
+                    {
+                      "id": "3.3.3.1.1",
+                      "text": "kettles",
+                      "trait": "comfort-loving",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.3.1.2",
+                      "text": "vending machines",
+                      "trait": "practical",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.3.1.3",
+                      "text": "accountants",
+                      "trait": "analytical",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.3.3.2",
+                  "text": "enthusiastic",
+                  "trait": "optimistic",
+                  "next": [
+                    {
+                      "id": "3.3.3.2.1",
+                      "text": "pirates",
+                      "trait": "rebellious",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.3.2.2",
+                      "text": "traffic cones",
+                      "trait": "cautious",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.3.2.3",
+                      "text": "llamas",
+                      "trait": "easygoing",
+                      "next": []
+                    }
+                  ]
+                },
+                {
+                  "id": "3.3.3.3",
+                  "text": "unruly",
+                  "trait": "rebellious",
+                  "next": [
+                    {
+                      "id": "3.3.3.3.1",
+                      "text": "wizards",
+                      "trait": "creative",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.3.3.2",
+                      "text": "houseplants",
+                      "trait": "patient",
+                      "next": []
+                    },
+                    {
+                      "id": "3.3.3.3.3",
+                      "text": "tax inspectors",
+                      "trait": "skeptical",
+                      "next": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
