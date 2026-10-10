@@ -127,6 +127,8 @@ const en = {
     exitLabel: "Leave badge mode",
     callout: ["Ask me", "anything"] as const,
     rotateHint: "Turn sideways to scroll it",
+    logOut: "Log out",
+    logOutLabel: "Log out and start again from the beginning",
   },
 };
 

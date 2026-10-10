@@ -15,7 +15,7 @@ import {
   Text,
 } from "../../ui/index.ts";
 import { AssignedGroupGate } from "../grouping/AssignedGroupGate.tsx";
-import { useJoinedSession } from "../join/session.ts";
+import { logOut, useJoinedSession } from "../join/session.ts";
 import { useGoToStep } from "../join/steps.ts";
 import styles from "./BadgeScreen.module.css";
 
@@ -89,6 +89,14 @@ function Badge({
               {copy.badge.rotateHint}
             </Eyebrow>
           </Stack>
+          <Button
+            variant="ghost"
+            size="md"
+            onClick={() => logOut(eventId)}
+            aria-label={copy.badge.logOutLabel}
+          >
+            {copy.badge.logOut}
+          </Button>
         </Stack>
       </div>
 

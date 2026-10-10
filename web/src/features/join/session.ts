@@ -1,6 +1,6 @@
 import { useCallback, useSyncExternalStore } from "react";
 import { z } from "zod";
-import { readJson, removeKey, writeJson } from "../../lib/storage.ts";
+import { readJson, removeAppKeys, removeKey, writeJson } from "../../lib/storage.ts";
 
 /**
  * What this phone remembers about the attendee, per event. Kept in
@@ -53,6 +53,15 @@ function resetSession(eventId: string) {
   listeners.forEach((listener) => listener());
 }
 
+/**
+ * Log out: forget everything this phone stored (every event's session and the
+ * mock backend), then reload on the intro so in-memory caches start empty too.
+ */
+function logOut(eventId: string) {
+  removeAppKeys();
+  window.location.replace(`/join/${encodeURIComponent(eventId)}`);
+}
+
 function subscribe(listener: () => void) {
   listeners.add(listener);
   return () => listeners.delete(listener);
@@ -76,5 +85,13 @@ function useJoinedSession(eventId: string): Session & { attendeeId: string; name
   return session as Session & { attendeeId: string; name: string };
 }
 
-export { getSession, resetSession, updateSession, useJoinedSession, useSession, SessionSchema };
+export {
+  getSession,
+  logOut,
+  resetSession,
+  updateSession,
+  useJoinedSession,
+  useSession,
+  SessionSchema,
+};
 export type { Session };
