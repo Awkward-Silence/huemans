@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { Session } from "./session.ts";
 import { redirectFor, stageOf } from "./steps.ts";
 
-const fresh: Session = { answers: {}, submitted: false };
+const fresh: Session = { answers: {}, sentence: [], sentenceSkipped: false, submitted: false };
 const joined: Session = { ...fresh, attendeeId: "a1", name: "Ana" };
 const submitted: Session = { ...joined, answers: { q1: "a" }, submitted: true };
 

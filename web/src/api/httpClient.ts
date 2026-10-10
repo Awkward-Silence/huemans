@@ -8,6 +8,7 @@ import {
   JoinResponseSchema,
   QuizSchema,
   RoomSchema,
+  WordSuggestionsSchema,
 } from "./schemas.ts";
 
 /** Talks to the NestJS api/ app over REST. */
@@ -55,6 +56,12 @@ function createHttpClient(baseUrl: string): ApiClient {
     getRoom: (eventId) => request(`${event(eventId)}/room`, RoomSchema),
     getIcebreaker: (eventId, attendeeId) =>
       request(`${attendee(eventId, attendeeId)}/icebreaker`, IcebreakerSchema),
+    suggestWords: (eventId, questionId, body) =>
+      request(
+        `${event(eventId)}/questions/${encodeURIComponent(questionId)}/word-suggestions`,
+        WordSuggestionsSchema,
+        { method: "POST", body },
+      ),
   };
 }
 

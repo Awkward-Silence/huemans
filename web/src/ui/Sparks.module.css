@@ -1,0 +1,43 @@
+/* A zero-size point; place it where the burst should centre. */
+.origin {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.spark {
+  position: absolute;
+  border-radius: 2px;
+  background: var(--color-accent);
+  opacity: 0;
+  animation: spark 1.4s ease-out infinite;
+}
+
+.round {
+  border-radius: 50%;
+}
+
+.light {
+  background: var(--color-text);
+}
+
+@keyframes spark {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.3);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .origin {
+    display: none;
+  }
+}

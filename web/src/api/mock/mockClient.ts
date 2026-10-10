@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { GROUP_COLORS, GroupColorSchema } from "../../domain/groupColor.ts";
+import { pickWords } from "../../domain/sentence.ts";
 import { readJson, writeJson } from "../../lib/storage.ts";
 import type { ApiClient } from "../client.ts";
 import { ApiError, parseResponse } from "../errors.ts";
@@ -10,9 +11,11 @@ import {
   JoinResponseSchema,
   QuizSchema,
   RoomSchema,
+  WordSuggestionsSchema,
 } from "../schemas.ts";
 import { CROWD_WEIGHTS, GROUP_PROFILES, ICEBREAKER } from "./fixtures/groups.ts";
 import questionBank from "./fixtures/questions.json";
+import { MOCK_WORD_POOLS, SENTENCE_QUESTION } from "./fixtures/words.ts";
 import { distribute, leanFromTraits, pickGroup, type Counts } from "./grouping.ts";
 
 /**
@@ -24,6 +27,8 @@ import { distribute, leanFromTraits, pickGroup, type Counts } from "./grouping.t
 
 type MockOptions = {
   latencyMs: number;
+  /** Word suggestions stand in for an AI call, so they take a bit longer. */
+  suggestLatencyMs: number;
   quizDurationSeconds: number;
   questionCount: number;
   /** Simulated people besides you. */
@@ -41,8 +46,9 @@ type MockOptions = {
 
 const DEFAULT_OPTIONS: MockOptions = {
   latencyMs: 250,
+  suggestLatencyMs: 600,
   quizDurationSeconds: 20,
-  questionCount: 5,
+  questionCount: 4,
   crowdSize: 47,
   crowdHeadStart: 0.8,
   crowdFinishMs: 15_000,
@@ -98,8 +104,8 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
     if (options.persist) writeJson(storageKey(eventId), state);
   };
 
-  const respond = async <T>(produce: () => T): Promise<T> => {
-    await new Promise((resolve) => setTimeout(resolve, options.latencyMs));
+  const respond = async <T>(produce: () => T, latencyMs = options.latencyMs): Promise<T> => {
+    await new Promise((resolve) => setTimeout(resolve, latencyMs));
     return produce();
   };
 
@@ -163,6 +169,7 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
           {
             questions: pickQuestions(eventId, options.questionCount),
             durationSeconds: options.quizDurationSeconds,
+            sentence: SENTENCE_QUESTION,
           },
           "quiz",
         ),
@@ -258,6 +265,26 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
           "icebreaker",
         );
       }),
+
+    suggestWords: (_eventId, questionId, body) =>
+      respond(() => {
+        if (questionId !== SENTENCE_QUESTION.id) {
+          throw new ApiError("not-found", "Unknown sentence question", { status: 404 });
+        }
+        const { sentence } = body;
+        if (
+          sentence[0] !== SENTENCE_QUESTION.starter ||
+          sentence.length > SENTENCE_QUESTION.picks
+        ) {
+          throw new ApiError("http", "Invalid sentence", { status: 400 });
+        }
+        const pool = MOCK_WORD_POOLS[sentence.length - 1] ?? [];
+        return parseResponse(
+          WordSuggestionsSchema,
+          { words: pickWords(pool, sentence), source: "ai" },
+          "word suggestions",
+        );
+      }, options.suggestLatencyMs),
   };
 }
 

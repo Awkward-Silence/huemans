@@ -2,3 +2,14 @@
 .content {
   color: var(--group-ink);
 }
+
+.sentence {
+  margin-top: var(--space-xs);
+  padding: 14px var(--space-md);
+  border: 1px solid var(--group-ink-soft);
+  border-radius: var(--radius-md);
+}
+
+.footer {
+  padding-top: var(--space-lg);
+}

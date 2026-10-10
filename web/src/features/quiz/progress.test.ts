@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 import type { Question } from "../../api/schemas.ts";
-import { answerKey, currentQuestionIndex, themeLabel, toAnswerList } from "./progress.ts";
+import {
+  answerKey,
+  currentQuestionIndex,
+  isQuizComplete,
+  sentenceStatus,
+  themeLabel,
+  toAnswerList,
+} from "./progress.ts";
 
 const question = (id: string): Question => ({
   id,
@@ -34,5 +41,30 @@ describe("labels", () => {
   it("formats keys and themes", () => {
     expect([0, 1, 2, 3].map(answerKey)).toEqual(["A", "B", "C", "D"]);
     expect(themeLabel("music-and-movies")).toBe("music and movies");
+  });
+});
+
+describe("sentenceStatus", () => {
+  const sentence = { id: "sentence-i", starter: "I", picks: 4 };
+
+  it("is none when the quiz has no sentence question", () => {
+    expect(sentenceStatus(undefined, [], false)).toBe("none");
+  });
+
+  it("follows the picks and the skip", () => {
+    expect(sentenceStatus(sentence, [], false)).toBe("building");
+    expect(sentenceStatus(sentence, ["secretly", "lick"], false)).toBe("building");
+    expect(sentenceStatus(sentence, ["secretly", "lick"], true)).toBe("skipped");
+    expect(sentenceStatus(sentence, ["secretly", "lick", "haunted", "spoons"], false)).toBe("done");
+  });
+});
+
+describe("isQuizComplete", () => {
+  it("waits for the multiple choice and for the sentence to be done or skipped", () => {
+    expect(isQuizComplete(false, "done")).toBe(false);
+    expect(isQuizComplete(true, "building")).toBe(false);
+    expect(isQuizComplete(true, "done")).toBe(true);
+    expect(isQuizComplete(true, "skipped")).toBe(true);
+    expect(isQuizComplete(true, "none")).toBe(true);
   });
 });

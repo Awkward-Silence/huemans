@@ -1,6 +1,6 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useEffectEvent, useRef } from "react";
-import { quizQuery, useSubmitAnswers } from "../../api/queries.ts";
+import { quizQuery, useSubmitAnswers, wordSuggestionsQuery } from "../../api/queries.ts";
 import { copy } from "../../content/index.ts";
 import { useCountdown } from "../../lib/useCountdown.ts";
 import {
@@ -9,6 +9,7 @@ import {
   Chip,
   Countdown,
   Heading,
+  Icon,
   ProgressBar,
   Rise,
   Screen,
@@ -19,25 +20,41 @@ import {
 } from "../../ui/index.ts";
 import { updateSession, useJoinedSession } from "../join/session.ts";
 import { useGoToStep } from "../join/steps.ts";
-import { answerKey, currentQuestionIndex, themeLabel, toAnswerList } from "./progress.ts";
+import {
+  answerKey,
+  currentQuestionIndex,
+  isQuizComplete,
+  sentenceStatus,
+  themeLabel,
+  toAnswerList,
+} from "./progress.ts";
 import styles from "./QuizScreen.module.css";
+import { SENTENCE_DONE_HOLD_MS, SentenceDone } from "./SentenceDone.tsx";
+import { SentenceStep } from "./SentenceStep.tsx";
 
 /**
  * Step 3: one question per screen against a soft deadline. When time runs
- * out nothing closes; the timer is a nudge, not a gate. The last answer
- * submits by itself (also after a refresh), then the attendee is "sorted".
+ * out nothing closes; the timer is a nudge, not a gate. After the multiple
+ * choice comes the "I ..." sentence (when the quiz has one), for fun only.
+ * Finishing or skipping it submits by itself (also after a refresh), then
+ * the attendee is "sorted". The sentence is never sent.
  */
 function QuizScreen({ eventId }: { eventId: string }) {
   const { data: quiz } = useSuspenseQuery(quizQuery(eventId));
   const session = useJoinedSession(eventId);
   const submit = useSubmitAnswers(eventId, session.attendeeId);
   const goTo = useGoToStep(eventId);
+  const queryClient = useQueryClient();
 
-  const { questions, durationSeconds } = quiz;
+  const { questions, durationSeconds, sentence: sentenceQuestion } = quiz;
   const index = currentQuestionIndex(questions, session.answers);
   const question = questions[index];
   const allAnswered = question === undefined;
-  const position = Math.min(index + 1, questions.length);
+  const sentence = sentenceStatus(sentenceQuestion, session.sentence, session.sentenceSkipped);
+  const complete = isQuizComplete(allAnswered, sentence);
+  const onSentence = allAnswered && sentence === "building";
+  const total = questions.length + (sentenceQuestion ? 1 : 0);
+  const position = onSentence ? total : Math.min(index + 1, questions.length);
 
   const durationMs = durationSeconds * 1000;
   const endsAt = session.quizStartedAt && session.quizStartedAt + durationMs;
@@ -47,6 +64,19 @@ function QuizScreen({ eventId }: { eventId: string }) {
   useEffect(() => {
     if (!session.quizStartedAt) updateSession(eventId, { quizStartedAt: Date.now() });
   }, [eventId, session.quizStartedAt]);
+
+  // Warm the sentence's first words while the multiple choice is on screen.
+  useEffect(() => {
+    if (!sentenceQuestion) return;
+    void queryClient.prefetchQuery(
+      wordSuggestionsQuery(eventId, sentenceQuestion, session.attendeeId, [
+        sentenceQuestion.starter,
+      ]),
+    );
+  }, [eventId, sentenceQuestion, session.attendeeId, queryClient]);
+
+  // The finished sentence stays up for a moment, however fast the submit is.
+  const holdUntil = useRef(0);
 
   // Guards against double submits (StrictMode re-runs effects; fast double taps).
   const inFlight = useRef(false);
@@ -62,7 +92,10 @@ function QuizScreen({ eventId }: { eventId: string }) {
       {
         onSuccess: () => {
           updateSession(eventId, { submitted: true });
-          void goTo("sorted", { replace: true });
+          window.setTimeout(
+            () => void goTo("sorted", { replace: true }),
+            Math.max(0, holdUntil.current - Date.now()),
+          );
         },
         onError: () => {
           inFlight.current = false;
@@ -72,18 +105,41 @@ function QuizScreen({ eventId }: { eventId: string }) {
   };
 
   const sendWhenDone = useEffectEvent(() => {
-    if (allAnswered && submit.isIdle) send();
+    if (complete && submit.isIdle) send();
   });
-  useEffect(() => sendWhenDone(), [allAnswered]);
+  useEffect(() => sendWhenDone(), [complete]);
 
   const answer = (questionId: string, answerId: string) => {
-    const isLast = index === questions.length - 1;
+    const isLast = index === questions.length - 1 && !sentenceQuestion;
     updateSession(eventId, (current) => ({
       ...current,
       answers: { ...current.answers, [questionId]: answerId },
       quizFinishedAt: isLast ? Date.now() : current.quizFinishedAt,
     }));
   };
+
+  const pickWord = (word: string) => {
+    const isLast = session.sentence.length + 1 >= (sentenceQuestion?.picks ?? 0);
+    if (isLast) holdUntil.current = Date.now() + SENTENCE_DONE_HOLD_MS;
+    updateSession(eventId, (current) => ({
+      ...current,
+      sentence: [...current.sentence, word],
+      quizFinishedAt: isLast ? Date.now() : current.quizFinishedAt,
+    }));
+  };
+
+  const skipSentence = () =>
+    updateSession(eventId, { sentenceSkipped: true, quizFinishedAt: Date.now() });
+
+  if (sentenceQuestion && sentence === "done") {
+    return (
+      <SentenceDone
+        sentence={[sentenceQuestion.starter, ...session.sentence]}
+        submitFailed={submit.isError}
+        onRetry={send}
+      />
+    );
+  }
 
   return (
     <Screen padding="compact" className={styles.quiz}>
@@ -94,17 +150,25 @@ function QuizScreen({ eventId }: { eventId: string }) {
           <Text as="span" scale="cta" tabular aria-hidden="true">
             {position}
             <Text as="span" scale="cta" tone="muted">
-              /{questions.length}
+              /{total}
             </Text>
           </Text>
-          <VisuallyHidden>{copy.quiz.positionLabel(position, questions.length)}</VisuallyHidden>
+          <VisuallyHidden>{copy.quiz.positionLabel(position, total)}</VisuallyHidden>
           {question && <Chip tone="accent">{themeLabel(question.theme)}</Chip>}
+          {onSentence && <Chip tone="accent">{copy.sentence.lastOne}</Chip>}
         </Stack>
-        <Countdown
-          seconds={timer.secondsLeft}
-          unit={copy.quiz.secondsUnit}
-          srLabel={copy.quiz.secondsLeftLabel}
-        />
+        {onSentence && timer.isOver ? (
+          <Text as="span" scale="caption" tone="muted" uppercase className={styles.timeUp}>
+            <Icon name="clock" size={13} />
+            {copy.sentence.timeUpPill}
+          </Text>
+        ) : (
+          <Countdown
+            seconds={timer.secondsLeft}
+            unit={copy.quiz.secondsUnit}
+            srLabel={copy.quiz.secondsLeftLabel}
+          />
+        )}
       </Stack>
 
       {question ? (
@@ -124,6 +188,16 @@ function QuizScreen({ eventId }: { eventId: string }) {
             </Stack>
           </Stack>
         </Rise>
+      ) : onSentence && sentenceQuestion ? (
+        <SentenceStep
+          eventId={eventId}
+          attendeeId={session.attendeeId}
+          question={sentenceQuestion}
+          picks={session.sentence}
+          timeUp={timer.isOver}
+          onPick={pickWord}
+          onSkip={skipSentence}
+        />
       ) : (
         <Stack gap="lg" grow justify="center" className={styles.question} aria-live="polite">
           <Heading scale="question">
@@ -133,12 +207,14 @@ function QuizScreen({ eventId }: { eventId: string }) {
         </Stack>
       )}
 
-      <Stack gap="md" pushEnd className={styles.footer}>
-        <SegmentedProgress total={questions.length} current={index} palette="groups" size="sm" />
-        <Text scale="caption" tone="muted">
-          {timer.isOver ? copy.quiz.timeUp : copy.quiz.nudge(durationSeconds)}
-        </Text>
-      </Stack>
+      {!onSentence && (
+        <Stack gap="md" pushEnd className={styles.footer}>
+          <SegmentedProgress total={total} current={index} palette="groups" size="sm" />
+          <Text scale="caption" tone="muted">
+            {timer.isOver ? copy.quiz.timeUp : copy.quiz.nudge(durationSeconds)}
+          </Text>
+        </Stack>
+      )}
     </Screen>
   );
 }
