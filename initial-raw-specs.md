@@ -19,7 +19,8 @@ High level functional specs
     - the questions should be easy, funny - examples: (do you like Julio Iglesios)
     - the questions and the answers will be pre-filled answers (50+ funny questions database)
         - each question has a theme (there will be 15-20 themes, e.g. akwards, food, friendship) and the answers have a trait
-        - the questions are already generated in the repository (#tools/src/questions/questions.test.json)
+        - the questions are already generated in the repository: [questions.test.json](tools/src/questions/questions.test.json)
+        - schemas: [QuestionList.ts](tools/src/questions/QuestionList.ts), [Themes.ts](tools/src/questions/Themes.ts), [Traits.ts](tools/src/questions/Traits.ts)
     - there will be a 20-30 seconds timer and a progress bar on top
     - if the seconds are passing, the user is still allowed to finish the questionnaire
     - after finishing, he will be prompted to a screen which calls for a CTA to reveal his colour, to create some suspense
@@ -27,6 +28,7 @@ High level functional specs
     - the algorithm will always have a bias towards equally distrubuting people
         - e.g. if someone is 50% red, 50% blue, but there are already too many reds, it will assign it to blue
    - based on ppl anwsers,there will be ONE ice-breaker for the night
+        - example ice-breakers (each with a theme and 1-3 traits): [icebreakers.test.json](tools/src/icebreakers/icebreakers.test.json), schema: [IcebreakerList.ts](tools/src/icebreakers/IcebreakerList.ts)
    - TBD:
         - how and WHEN the algoritm will select the ice breaker
         - for the demo, we can ask ppl to anwers before the demo    
