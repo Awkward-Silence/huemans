@@ -14,8 +14,23 @@ export class ApplicationService {
     @Inject(EVENT_DISPATCHER) private readonly dispatcher: EventDispatcher,
   ) {}
 
-  async create(name: string): Promise<EventView> {
-    const event = Event.create(EventId.random(), new EventName(name));
+  create(name: string): Promise<EventView> {
+    return this.createWith(EventId.random(), new EventName(name));
+  }
+
+  /** Creates the event with a known id, or returns it unchanged when it already exists. */
+  async ensure(eventId: string, name: string): Promise<EventView> {
+    const id = new EventId(eventId);
+    const existing = await this.events.search(id);
+    if (existing !== null) {
+      return existing.toDTO();
+    }
+
+    return this.createWith(id, new EventName(name));
+  }
+
+  private async createWith(id: EventId, name: EventName): Promise<EventView> {
+    const event = Event.create(id, name);
     await this.events.save(event);
     await this.dispatcher.dispatchAll(event.pullDomainEvents());
 

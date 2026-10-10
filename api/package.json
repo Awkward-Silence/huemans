@@ -16,7 +16,8 @@
     "test:functional": "jest --selectProjects Functional",
     "migration:create": "dotenv -e .env -- mikro-orm migration:create",
     "migration:up": "dotenv -e .env -- mikro-orm migration:up",
-    "migration:up:test": "dotenv -e .env.test -- mikro-orm migration:up"
+    "migration:up:test": "dotenv -e .env.test -- mikro-orm migration:up",
+    "seed:demo": "dotenv -e .env -- ts-node -r tsconfig-paths/register src/Event/Infrastructure/Cli/seedDemoEvent.ts"
   },
   "mikro-orm": {
     "useTsNode": true,

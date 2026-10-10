@@ -18,8 +18,8 @@
 
 ## 4. Demo event seed
 
-- [ ] 4.1 Write the functional tests for seeding the demo event (event open with name `Demo night`, room empty; a second run publishes no `EventCreated`) in red
-- [ ] 4.2 Implement Event `ApplicationService.ensure`, `DemoEventSeeder` with the fixed UUIDv7, the `seedDemoEvent.ts` CLI and the `seed:demo` script, and verify the 4.1 tests pass and `pnpm seed:demo` runs twice against the dev database without errors
+- [x] 4.1 Write the functional tests for seeding the demo event (event open with name `Demo night`, room empty; a second run publishes no `EventCreated`) in red
+- [x] 4.2 Implement Event `ApplicationService.ensure`, `DemoEventSeeder` with the fixed UUIDv7, the `seedDemoEvent.ts` CLI and the `seed:demo` script, and verify the 4.1 tests pass and `pnpm seed:demo` runs twice against the dev database without errors
 
 ## 5. Web and docs
 
