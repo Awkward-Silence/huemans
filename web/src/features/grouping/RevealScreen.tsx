@@ -86,7 +86,7 @@ function RevealScreen({ eventId }: { eventId: string }) {
                       {copy.reveal.mates(colorName)}
                     </Text>
                   </Stack>
-                  <ButtonLink to={STEP_ROUTES.room} params={{ eventId }} variant="groupInk">
+                  <ButtonLink to={STEP_ROUTES.icebreaker} params={{ eventId }} variant="groupInk">
                     {copy.reveal.cta}
                   </ButtonLink>
                 </Stack>

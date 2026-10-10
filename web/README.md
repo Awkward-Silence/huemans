@@ -15,29 +15,29 @@ Useful dev URLs:
 
 ## Scripts
 
-| Command | What it does |
-| --- | --- |
-| `npm run dev` | Dev server with hot reload |
-| `npm run build` | Typecheck, then production build to `dist/` |
-| `npm run preview` | Serve the production build |
-| `npm run typecheck` | `tsc -b` |
-| `npm run lint` | ESLint |
-| `npm run format` | Prettier |
-| `npm test` | Vitest, once |
-| `npx vitest run src/features/join/steps.test.ts` | One test file |
-| `npx vitest run -t "redirectFor"` | Tests whose name matches |
+| Command                                          | What it does                                |
+| ------------------------------------------------ | ------------------------------------------- |
+| `npm run dev`                                    | Dev server with hot reload                  |
+| `npm run build`                                  | Typecheck, then production build to `dist/` |
+| `npm run preview`                                | Serve the production build                  |
+| `npm run typecheck`                              | `tsc -b`                                    |
+| `npm run lint`                                   | ESLint                                      |
+| `npm run format`                                 | Prettier                                    |
+| `npm test`                                       | Vitest, once                                |
+| `npx vitest run src/features/join/steps.test.ts` | One test file                               |
+| `npx vitest run -t "redirectFor"`                | Tests whose name matches                    |
 
 ## Configuration
 
 Copy `.env.example` to `.env.local`. Everything is validated in `src/config.ts`.
 
-| Variable | Default | Meaning |
-| --- | --- | --- |
-| `VITE_API_MODE` | `mock` | `mock` runs everything in the browser; `http` calls `api/` |
-| `VITE_API_URL` | `http://localhost:3000` | Base URL of `api/` in `http` mode |
-| `VITE_DEFAULT_THEME` | `default` | Theme when the URL has no `?theme=` |
-| `VITE_INTRO_AUTO_ADVANCE_MS` | `4500` | How long the intro plays before moving on |
-| `VITE_LIVE_POLL_MS` | `2000` | Polling interval for live data until realtime lands |
+| Variable                     | Default                 | Meaning                                                    |
+| ---------------------------- | ----------------------- | ---------------------------------------------------------- |
+| `VITE_API_MODE`              | `mock`                  | `mock` runs everything in the browser; `http` calls `api/` |
+| `VITE_API_URL`               | `http://localhost:3000` | Base URL of `api/` in `http` mode                          |
+| `VITE_DEFAULT_THEME`         | `default`               | Theme when the URL has no `?theme=`                        |
+| `VITE_INTRO_AUTO_ADVANCE_MS` | `4500`                  | How long the intro plays before moving on                  |
+| `VITE_LIVE_POLL_MS`          | `2000`                  | Polling interval for live data until realtime lands        |
 
 The quiz length comes from the API (`quizDurationSeconds`), not from config. The mock uses 20 seconds (see `src/api/mock/mockClient.ts`).
 
@@ -50,7 +50,7 @@ src/
   features/   one folder per part of the flow; screens live here
     join/       intro, name, the attendee session, the step order and guards
     quiz/       the quiz screen and its pure helpers
-    grouping/   sorted (suspense), reveal, room
+    grouping/   sorted (suspense), reveal
     gathering/  icebreaker, LED badge
   ui/         presentational components. No routes, no API, no copy.
   theme/      tokens, themes, and the bridge to CSS variables

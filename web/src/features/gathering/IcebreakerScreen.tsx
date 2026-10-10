@@ -47,7 +47,7 @@ function Icebreaker({
 
   if (icebreaker.isError) return <ErrorScreen reset={() => void icebreaker.refetch()} />;
   if (!icebreaker.data) return <PendingScreen />;
-  if (!ready) return <Locked eventId={eventId} />;
+  if (!ready) return <Locked />;
 
   const colorName = capitalize(copy.groups[group.color]);
   return (
@@ -105,17 +105,10 @@ function Icebreaker({
   );
 }
 
-function Locked({ eventId }: { eventId: string }) {
+/** Waits here: the icebreaker query keeps polling and swaps this out once it unlocks. */
+function Locked() {
   return (
-    <MessageScreen
-      title={copy.icebreaker.lockedTitle}
-      body={copy.icebreaker.lockedBody}
-      action={
-        <ButtonLink to={STEP_ROUTES.room} params={{ eventId }}>
-          {copy.icebreaker.backToRoom}
-        </ButtonLink>
-      }
-    />
+    <MessageScreen title={copy.icebreaker.lockedTitle} body={copy.icebreaker.lockedBody} busy />
   );
 }
 

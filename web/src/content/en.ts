@@ -107,22 +107,7 @@ const en = {
     mates: (color: string) => `others in this room are ${color} too`,
     sentenceLabel: "You, in one sentence",
     sentence: (sentence: string) => `“${sentence}”`,
-    cta: "See the room",
-  },
-  room: {
-    title: "The room, right now",
-    answered: (answered: number, total: number) => `${answered} of ${total} answered`,
-    typing: (count: number) => `· ${count} still typing`,
-    allIn: "· everyone's in",
-    you: "you",
-    whyTitle: (mine: string, runnerUp?: string) =>
-      runnerUp ? `Why ${mine} and not ${runnerUp}` : `Why ${mine}`,
-    lean: "Your answers leaned",
-    and: "and",
-    fairness: "Groups stay within three people of each other — nobody ends up in a group of two.",
     cta: "Tonight's icebreaker",
-    locked: "Unlocks when the last person finishes.",
-    ready: "It's ready. Everyone gets the same one.",
   },
   icebreaker: {
     eyebrow: "One question · everyone · tonight",
@@ -134,8 +119,7 @@ const en = {
     cta: "Turn my phone into a badge",
     hint: "Screen stays on. Hold it chest height.",
     lockedTitle: "Not yet",
-    lockedBody: "The icebreaker unlocks when the last person finishes.",
-    backToRoom: "Back to the room",
+    lockedBody: "The icebreaker unlocks when the last person finishes. It shows up here by itself.",
   },
   badge: {
     group: (color: string, nickname: string) => `${color} · ${nickname}`,

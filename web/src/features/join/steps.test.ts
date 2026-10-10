@@ -49,7 +49,7 @@ describe("redirectFor", () => {
   it("never lets a sorted attendee retake the quiz", () => {
     expect(redirectFor("quiz", submitted)).toBe("sorted");
     expect(redirectFor("intro", submitted)).toBe("sorted");
-    for (const step of ["sorted", "reveal", "room", "icebreaker", "badge"] as const) {
+    for (const step of ["sorted", "reveal", "icebreaker", "badge"] as const) {
       expect(redirectFor(step, submitted)).toBeNull();
     }
   });

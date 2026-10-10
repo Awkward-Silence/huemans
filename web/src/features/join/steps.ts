@@ -13,7 +13,6 @@ const STEP_ROUTES = {
   quiz: "/join/$eventId/quiz",
   sorted: "/join/$eventId/sorted",
   reveal: "/join/$eventId/reveal",
-  room: "/join/$eventId/room",
   icebreaker: "/join/$eventId/icebreaker",
   badge: "/join/$eventId/badge",
 } as const;
@@ -31,7 +30,7 @@ const STEPS_BY_STAGE: Record<Stage, readonly Step[]> = {
   joining: ["intro", "name"],
   returning: ["welcome"],
   quizzing: ["quiz"],
-  sorted: ["sorted", "reveal", "room", "icebreaker", "badge"],
+  sorted: ["sorted", "reveal", "icebreaker", "badge"],
 };
 
 /** Where to send someone who opens a step they can't be on yet (or anymore). */
