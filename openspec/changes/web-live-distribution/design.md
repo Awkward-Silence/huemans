@@ -74,6 +74,12 @@ Current state:
 - `.env.example` documents setting it to the seeded id when `VITE_API_MODE=http`. Mock mode keeps `demo`, because the mock accepts any id.
 - No schema change.
 
+**CORS.**
+- The web (`:5173`, or its own host) calls the API cross-origin, and the API sent no CORS headers, so a browser in HTTP mode blocked every request. This was found while verifying task 5.2.
+- `configureApp` calls `enableCors` with the origin from `CORS_ORIGIN` (`config.corsOrigin`, default `*`).
+- `*` is safe: the API is anonymous and uses no cookies or credentials. A deployment can pin the web's origin through the env var.
+- Alternative considered: a Vite dev proxy. Rejected, because it only fixes local dev and every hosting setup would need the same trick again.
+
 **Tests (outside-in).**
 - Functional: every scenario in `specs/room/spec.md`, using `publish(EventCreated / QuestionnaireCompleted)` like the Color Distribution tests. Also seeding the demo event, then idempotency with `recordPublished('event.created')` empty on the second run.
 - Unit: `AttendeeCount` bounds, `GroupCountCollection` (missing, repeated or misordered color rejected; `answered` sums) and `RoomView.of`. `Color` keeps its test under `Shared`.
