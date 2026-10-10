@@ -11,11 +11,9 @@ function HomeScreen() {
           {copy.home.body}
         </Text>
       </Stack>
-      {import.meta.env.DEV && (
-        <ButtonLink to="/join/$eventId" params={{ eventId: "demo" }}>
-          {copy.home.demoLink}
-        </ButtonLink>
-      )}
+      <ButtonLink to="/join/$eventId" params={{ eventId: "demo" }}>
+        {copy.home.demoLink}
+      </ButtonLink>
     </Screen>
   );
 }
