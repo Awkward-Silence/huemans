@@ -20,6 +20,7 @@ import { Route as JoinEventIdQuizRouteImport } from './routes/join/$eventId/quiz
 import { Route as JoinEventIdRevealRouteImport } from './routes/join/$eventId/reveal'
 import { Route as JoinEventIdRoomRouteImport } from './routes/join/$eventId/room'
 import { Route as JoinEventIdSortedRouteImport } from './routes/join/$eventId/sorted'
+import { Route as JoinEventIdWelcomeRouteImport } from './routes/join/$eventId/welcome'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,6 +77,11 @@ const JoinEventIdSortedRoute = JoinEventIdSortedRouteImport.update({
   path: '/sorted',
   getParentRoute: () => JoinEventIdRouteRoute,
 } as any)
+const JoinEventIdWelcomeRoute = JoinEventIdWelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => JoinEventIdRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/join/$eventId/reveal': typeof JoinEventIdRevealRoute
   '/join/$eventId/room': typeof JoinEventIdRoomRoute
   '/join/$eventId/sorted': typeof JoinEventIdSortedRoute
+  '/join/$eventId/welcome': typeof JoinEventIdWelcomeRoute
   '/join/$eventId/': typeof JoinEventIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/join/$eventId/reveal': typeof JoinEventIdRevealRoute
   '/join/$eventId/room': typeof JoinEventIdRoomRoute
   '/join/$eventId/sorted': typeof JoinEventIdSortedRoute
+  '/join/$eventId/welcome': typeof JoinEventIdWelcomeRoute
   '/join/$eventId': typeof JoinEventIdIndexRoute
 }
 export interface FileRoutesById {
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/join/$eventId/reveal': typeof JoinEventIdRevealRoute
   '/join/$eventId/room': typeof JoinEventIdRoomRoute
   '/join/$eventId/sorted': typeof JoinEventIdSortedRoute
+  '/join/$eventId/welcome': typeof JoinEventIdWelcomeRoute
   '/join/$eventId/': typeof JoinEventIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/join/$eventId/reveal'
     | '/join/$eventId/room'
     | '/join/$eventId/sorted'
+    | '/join/$eventId/welcome'
     | '/join/$eventId/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/join/$eventId/reveal'
     | '/join/$eventId/room'
     | '/join/$eventId/sorted'
+    | '/join/$eventId/welcome'
     | '/join/$eventId'
   id:
     | '__root__'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/join/$eventId/reveal'
     | '/join/$eventId/room'
     | '/join/$eventId/sorted'
+    | '/join/$eventId/welcome'
     | '/join/$eventId/'
   fileRoutesById: FileRoutesById
 }
@@ -242,6 +254,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JoinEventIdSortedRouteImport
       parentRoute: typeof JoinEventIdRouteRoute
     }
+    '/join/$eventId/welcome': {
+      id: '/join/$eventId/welcome'
+      path: '/welcome'
+      fullPath: '/join/$eventId/welcome'
+      preLoaderRoute: typeof JoinEventIdWelcomeRouteImport
+      parentRoute: typeof JoinEventIdRouteRoute
+    }
   }
 }
 
@@ -253,6 +272,7 @@ interface JoinEventIdRouteRouteChildren {
   JoinEventIdRevealRoute: typeof JoinEventIdRevealRoute
   JoinEventIdRoomRoute: typeof JoinEventIdRoomRoute
   JoinEventIdSortedRoute: typeof JoinEventIdSortedRoute
+  JoinEventIdWelcomeRoute: typeof JoinEventIdWelcomeRoute
   JoinEventIdIndexRoute: typeof JoinEventIdIndexRoute
 }
 
@@ -264,6 +284,7 @@ const JoinEventIdRouteRouteChildren: JoinEventIdRouteRouteChildren = {
   JoinEventIdRevealRoute: JoinEventIdRevealRoute,
   JoinEventIdRoomRoute: JoinEventIdRoomRoute,
   JoinEventIdSortedRoute: JoinEventIdSortedRoute,
+  JoinEventIdWelcomeRoute: JoinEventIdWelcomeRoute,
   JoinEventIdIndexRoute: JoinEventIdIndexRoute,
 }
 

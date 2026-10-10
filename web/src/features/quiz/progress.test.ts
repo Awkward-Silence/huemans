@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Question } from "../../api/schemas.ts";
 import {
+  answeredCount,
   answerKey,
   currentQuestionIndex,
   isQuizComplete,
@@ -34,6 +35,21 @@ describe("toAnswerList", () => {
       { questionId: "q1", answerId: "q1-d" },
       { questionId: "q3", answerId: "q3-b" },
     ]);
+  });
+});
+
+describe("answeredCount", () => {
+  it("counts answered questions, ignoring stale ids", () => {
+    expect(answeredCount(questions, {}, "building")).toBe(0);
+    expect(answeredCount(questions, { q1: "x", gone: "x" }, "building")).toBe(1);
+  });
+
+  it("counts the sentence once it is settled", () => {
+    const all = { q1: "x", q2: "x", q3: "x" };
+    expect(answeredCount(questions, all, "building")).toBe(3);
+    expect(answeredCount(questions, all, "done")).toBe(4);
+    expect(answeredCount(questions, all, "skipped")).toBe(4);
+    expect(answeredCount(questions, all, "none")).toBe(3);
   });
 });
 

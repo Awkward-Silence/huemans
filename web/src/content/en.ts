@@ -50,6 +50,16 @@ const en = {
     privacy: "No sign-up, no email. Your answers are deleted when the event ends.",
     joinFailed: "We couldn't add you to the room. Try again.",
   },
+  welcome: {
+    event: (app: string, event: string) => `${app} · ${event}`,
+    live: "still running",
+    title: (name: string) => ["Welcome back,", `${name}.`] as const,
+    body: "Your phone kept your place. Nothing was lost while you were away.",
+    progressLabel: (answered: number, total: number) => `${answered} of ${total} answered`,
+    cta: "Pick up where you left off",
+    footnote:
+      "Same link, same phone. There is no account to sign back into, and answers you already gave stay as they are.",
+  },
   quiz: {
     positionLabel: (current: number, total: number) => `Question ${current} of ${total}`,
     secondsUnit: "s",

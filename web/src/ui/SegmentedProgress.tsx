@@ -10,9 +10,10 @@ type SegmentedProgressProps = {
   /**
    * "mono": done and current segments use the text colour (step indicator).
    * "groups": done segments cycle through the group colours, current is the accent (quiz).
+   * "ink": done segments in the text colour, the rest faint; for use on a filled block.
    */
-  palette?: "mono" | "groups";
-  size?: "sm" | "md";
+  palette?: "mono" | "groups" | "ink";
+  size?: "sm" | "md" | "lg";
   /** Accessible description, e.g. "Step 1 of 3". */
   label?: string;
   className?: string;

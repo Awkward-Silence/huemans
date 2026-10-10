@@ -3,8 +3,15 @@
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--group-bg);
   animation: pulse 1.4s var(--motion-ease-in-out) infinite;
+}
+
+.group {
+  background: var(--group-bg);
+}
+
+.accent {
+  background: var(--color-accent);
 }
 
 @keyframes pulse {

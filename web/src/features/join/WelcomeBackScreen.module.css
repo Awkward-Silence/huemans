@@ -1,0 +1,39 @@
+/* One line: the event name gives way, "still running" never wraps. */
+.event {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.live {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.title {
+  margin-top: var(--space-lg);
+}
+
+/* The amber block takes whatever height the heading and footnote leave. */
+.blockWrap {
+  flex: 1;
+  display: flex;
+  margin-top: var(--space-lg);
+}
+
+.block {
+  flex: 1;
+  padding: var(--space-2xl) var(--space-md) var(--space-xl);
+  border-radius: calc(var(--radius-lg) + var(--space-xs));
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.body {
+  font-weight: 500;
+}
+
+.footnote {
+  margin-top: var(--space-md);
+}

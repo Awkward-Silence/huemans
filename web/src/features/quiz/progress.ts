@@ -36,6 +36,16 @@ function sentenceStatus(
 const isQuizComplete = (allAnswered: boolean, sentence: SentenceStatus) =>
   allAnswered && sentence !== "building";
 
+/** How many quiz steps are settled, the sentence counting once it is done or skipped. */
+function answeredCount(
+  questions: Question[],
+  answers: AnswerMap,
+  sentence: SentenceStatus,
+): number {
+  const answered = questions.filter((question) => question.id in answers).length;
+  return answered + (sentence === "done" || sentence === "skipped" ? 1 : 0);
+}
+
 /** "A", "B", "C"… for answer badges. */
 const answerKey = (index: number) => String.fromCharCode(65 + index);
 
@@ -43,6 +53,7 @@ const answerKey = (index: number) => String.fromCharCode(65 + index);
 const themeLabel = (theme: string) => theme.replaceAll("-", " ");
 
 export {
+  answeredCount,
   answerKey,
   currentQuestionIndex,
   isQuizComplete,
