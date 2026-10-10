@@ -7,6 +7,7 @@ import {
   Button,
   Chip,
   ColorBlades,
+  ColorLoader,
   ColorOrbs,
   Countdown,
   Eyebrow,
@@ -136,6 +137,7 @@ function KitchenSink() {
             <Chip>analytical</Chip>
             <PulseDot />
           </Stack>
+          <ColorLoader />
           <InfoCard title="Why teal and not violet">
             <Text>Your answers leaned 52% teal and 48% violet.</Text>
           </InfoCard>

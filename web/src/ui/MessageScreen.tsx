@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ColorLoader } from "./ColorLoader.tsx";
 import { Screen } from "./Screen.tsx";
 import { Stack } from "./Stack.tsx";
 import { Heading, Text } from "./Text.tsx";
@@ -8,7 +9,7 @@ type MessageScreenProps = {
   body?: string;
   /** Usually a Button or ButtonLink. */
   action?: ReactNode;
-  /** Marks the screen busy, for loading states. */
+  /** Marks the screen busy and shows the loader, for loading states. */
   busy?: boolean;
 };
 
@@ -17,6 +18,7 @@ function MessageScreen({ title, body, action, busy }: MessageScreenProps) {
   return (
     <Screen>
       <Stack gap="md" grow justify="center" aria-busy={busy || undefined} aria-live="polite">
+        {busy && <ColorLoader />}
         <Heading scale="title">{title}</Heading>
         {body && (
           <Text scale="bodyL" tone="muted" measure={30}>

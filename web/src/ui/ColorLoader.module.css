@@ -1,0 +1,26 @@
+.loader {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  height: 36px;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--dot-color);
+  animation: bounce 1.2s var(--motion-ease-in-out) infinite;
+  animation-delay: calc(var(--order) * 0.14s);
+}
+
+@keyframes bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  30% {
+    transform: translateY(-20px) scale(1.12);
+  }
+}
