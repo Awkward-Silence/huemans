@@ -48,7 +48,7 @@ const DEFAULT_OPTIONS: MockOptions = {
   latencyMs: 250,
   suggestLatencyMs: 600,
   quizDurationSeconds: 20,
-  questionCount: 4,
+  questionCount: questionBank.length,
   crowdSize: 47,
   crowdHeadStart: 0.8,
   crowdFinishMs: 15_000,
@@ -76,18 +76,6 @@ type EventState = z.infer<typeof EventStateSchema>;
 type AttendeeState = z.infer<typeof AttendeeStateSchema>;
 
 const storageKey = (eventId: string) => `huemans:mock:${eventId}`;
-
-/** Stable pseudo-random pick of questions per event, so every phone gets the same quiz. */
-function pickQuestions(eventId: string, count: number) {
-  let seed = [...eventId].reduce((hash, char) => (hash * 31 + char.charCodeAt(0)) >>> 0, 7);
-  const pool = [...questionBank];
-  const picked = [];
-  while (picked.length < count && pool.length > 0) {
-    seed = (seed * 1_103_515_245 + 12_345) >>> 0;
-    picked.push(pool.splice(seed % pool.length, 1)[0]!);
-  }
-  return picked;
-}
 
 function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
   const options = { ...DEFAULT_OPTIONS, ...overrides };
@@ -162,12 +150,12 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
         return parseResponse(JoinResponseSchema, { attendeeId }, "join");
       }),
 
-    getQuiz: (eventId) =>
+    getQuiz: () =>
       respond(() =>
         parseResponse(
           QuizSchema,
           {
-            questions: pickQuestions(eventId, options.questionCount),
+            questions: questionBank.slice(0, options.questionCount),
             durationSeconds: options.quizDurationSeconds,
             sentence: SENTENCE_QUESTION,
           },
