@@ -49,20 +49,20 @@ describe('Seeding the catalog from the content files', () => {
       await seed();
 
       const questionIds = new Set(content.questions.map((question) => question.id));
-      const questions = (await catalog.allQuestions()).filter((question) => questionIds.has(question.id.value));
+      const questions = (await catalog.allQuestions()).filter((question) => questionIds.has(question.id));
       expect(questions).toHaveLength(50);
-      expect(questions.every((question) => question.answers.count() === 4)).toBe(true);
-      expect(questions.find((question) => question.id.value === 'q0001')?.text).toBe(content.questions[0].text);
+      expect(questions.every((question) => question.answers.length === 4)).toBe(true);
+      expect(questions.find((question) => question.id === 'q0001')?.text).toBe(content.questions[0].text);
 
       const icebreakerIds = new Set(content.icebreakers.map((icebreaker) => icebreaker.id));
-      expect(
-        (await catalog.allIcebreakers()).filter((icebreaker) => icebreakerIds.has(icebreaker.id.value)),
-      ).toHaveLength(51);
+      expect((await catalog.allIcebreakers()).filter((icebreaker) => icebreakerIds.has(icebreaker.id))).toHaveLength(
+        51,
+      );
 
       for (const profile of content.profiles) {
-        expect((await catalog.profileOf(profile.type)).nickname).toBe(profile.nickname);
+        expect(await catalog.profileOf(profile.type)).toEqual(profile);
       }
-      expect((await catalog.mapping()).pairs).toHaveLength(33);
+      expect(await catalog.mapping()).toEqual(content.mapping);
     }
   });
 
@@ -75,7 +75,7 @@ describe('Seeding the catalog from the content files', () => {
 
     await expect(seed(paths)).rejects.toThrow(InvalidCatalogContent);
     await expect(seed(paths)).rejects.toThrow(/q0003 answers\.1\.trait/);
-    expect((await catalog.allQuestions()).some((question) => question.id.value === newId)).toBe(false);
+    expect((await catalog.allQuestions()).some((question) => question.id === newId)).toBe(false);
   });
 
   it('testChipMappedToAnotherTypeNamesTheProfileAndWritesNothing', async () => {
@@ -90,7 +90,7 @@ describe('Seeding the catalog from the content files', () => {
     };
 
     await expect(seed(paths)).rejects.toThrow(/planner chip curious is mapped to explorer/);
-    expect((await catalog.allQuestions()).some((question) => question.id.value === newId)).toBe(false);
-    expect((await catalog.profileOf('planner')).traits.all().map((trait) => trait.value)).not.toContain('curious');
+    expect((await catalog.allQuestions()).some((question) => question.id === newId)).toBe(false);
+    expect((await catalog.profileOf('planner')).traits).not.toContain('curious');
   });
 });

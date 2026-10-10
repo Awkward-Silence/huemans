@@ -1,7 +1,6 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import { TestingModule } from '@nestjs/testing';
 import { PersonalityTypeProfileNotFound } from '@Huemans/Catalog/Domain/PersonalityTypeProfileNotFound';
-import { Question } from '@Huemans/Catalog/Domain/Question';
 import { CatalogAnswerSchema } from '@Huemans/Catalog/Infrastructure/Persistence/MikroOrm/CatalogAnswerSchema';
 import { CatalogIcebreakerSchema } from '@Huemans/Catalog/Infrastructure/Persistence/MikroOrm/CatalogIcebreakerSchema';
 import { CatalogPersonalityTypeProfileSchema } from '@Huemans/Catalog/Infrastructure/Persistence/MikroOrm/CatalogPersonalityTypeProfileSchema';
@@ -12,15 +11,6 @@ import { MikroOrmCatalogSeeder } from '@Huemans/Catalog/Infrastructure/Seed/Mikr
 import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 import { aQuestion, anIcebreaker, realContent, seedCatalogFiles } from '../../../../Support/catalog';
 import { bootIntegration } from '../../../../Support/integration';
-
-const asPlain = (question: Question) => ({
-  id: question.id.value,
-  theme: question.theme.value,
-  text: question.text,
-  answers: question.answers
-    .all()
-    .map((answer) => ({ id: answer.id.value, text: answer.text, trait: answer.trait.value })),
-});
 
 describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
   let module: TestingModule;
@@ -55,7 +45,7 @@ describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
     const ids = all.map((found) => found.id.value);
 
     expect(ids).toEqual([...ids].sort());
-    expect(all.map(asPlain).find((found) => found.id === question.id)).toEqual(question);
+    expect(all.map((found) => found.toDTO()).find((found) => found.id === question.id)).toEqual(question);
   });
 
   it('testUpdatesAnEditedQuestionAndKeepsAMissingOne', async () => {
@@ -66,7 +56,7 @@ describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
     const newText = { ...edited, text: 'Edited text' };
     await seeder.seed({ questions: [newText] });
 
-    const all = (await repository.allQuestions()).map(asPlain);
+    const all = (await repository.allQuestions()).map((found) => found.toDTO());
     expect(all).toEqual(expect.arrayContaining([newText, kept]));
   });
 
@@ -80,7 +70,9 @@ describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
     };
     await seeder.seed({ questions: [renamed] });
 
-    const found = (await repository.allQuestions()).map(asPlain).find((candidate) => candidate.id === question.id);
+    const found = (await repository.allQuestions())
+      .map((found) => found.toDTO())
+      .find((candidate) => candidate.id === question.id);
     expect(found).toEqual(renamed);
   });
 
@@ -93,7 +85,7 @@ describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
     const found = all.find((candidate) => candidate.id.value === icebreaker.id)!;
 
     expect(ids).toEqual([...ids].sort());
-    expect(found.traits.all().map((trait) => trait.value)).toEqual(['humorous', 'curious']);
+    expect(found.toDTO()).toEqual(icebreaker);
   });
 
   it('testReadsTheProfileOfAType', async () => {
@@ -101,16 +93,13 @@ describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
 
     const profile = await repository.profileOf(new PersonalityType('dreamer'));
 
-    expect(profile.nickname).toBe(dreamer.nickname);
-    expect(profile.traits.all().map((trait) => trait.value)).toEqual(dreamer.traits);
+    expect(profile.toDTO()).toEqual(dreamer);
   });
 
   it('testReadsTheMappingOfAllTraits', async () => {
     const mapping = await repository.mapping();
 
-    expect(Object.fromEntries(mapping.pairs.map(([trait, type]) => [trait.value, type.value]))).toEqual(
-      realContent().mapping,
-    );
+    expect(mapping.toDTO()).toEqual(realContent().mapping);
   });
 
   it('testMissingProfileIsNotFound', async () => {

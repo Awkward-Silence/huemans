@@ -95,7 +95,9 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment without catalog 
 
   beforeAll(async () => {
     const mapping = new TraitTypeMapping(
-      Object.entries(realContent().mapping).map(([trait, type]) => [new Trait(trait), new PersonalityType(type)] as const),
+      Object.entries(realContent().mapping).map(
+        ([trait, type]) => [new Trait(trait), new PersonalityType(type)] as const,
+      ),
     );
     app = await bootFunctional({
       overrides: [

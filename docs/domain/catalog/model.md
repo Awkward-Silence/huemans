@@ -25,15 +25,17 @@ None — read-only context. The content is produced by the seed command from the
 
 ## Read Models
 
-Immutable DTOs with no behaviour. Fields reference VOs, except rule-free
-primitives (free text, opaque payloads).
+Immutable read models with no behaviour. Fields reference VOs, except rule-free
+primitives (free text, opaque payloads). Each exposes `toDTO()`, a plain object of
+primitives; Catalog's `ApplicationService` returns only those DTOs, so no Catalog
+domain object reaches another context.
 
 | Name | Fields | Source | Read invariants |
 |---|---|---|---|
 | Question | id: QuestionId; theme: Theme; text: string (rule-free); answers: AnswerCollection | Seed from `tools/` questions JSON, stored in Postgres | — |
 | Icebreaker | id: IcebreakerId; theme: Theme; text: string (rule-free); traits: IcebreakerTraitCollection | Seed from `tools/` icebreakers JSON, stored in Postgres | — |
 | PersonalityTypeProfile | type: SK::PersonalityType; nickname: string (rule-free); blurb: string (rule-free); traits: ProfileTraitCollection | Seed from `tools/` personality types JSON (new), stored in Postgres | Exactly one profile per SK::PersonalityType (4 in total) |
-| TraitTypeMapping | pairs: SK::Trait → SK::PersonalityType | Seed from `tools/` trait-type mapping JSON (new), stored in Postgres | Every one of the 33 traits appears exactly once |
+| TraitTypeMapping | pairs: SK::Trait → SK::PersonalityType | Seed from `tools/` trait-type mapping JSON (new), stored in Postgres | Every one of the 33 traits appears exactly once (checked at the seed and by Color Distribution's `TraitTypeMapping`, not repeated here) |
 
 An answer's `text` is also rule-free free text. `text` fields are non-empty, and the seed checks that.
 

@@ -9,11 +9,11 @@ export class StaticColorExplainer implements ColorExplainer {
   constructor(private readonly catalog: CatalogService) {}
 
   async explain({ color, personalityType }: AttendeeAssignmentView): Promise<ColorExplanation> {
-    const profile = await this.catalog.profileOf(personalityType);
+    const { nickname, blurb, traits } = await this.catalog.profileOf(personalityType);
     return {
-      nickname: profile.nickname,
-      blurb: profile.blurb,
-      traits: profile.traits.all().map((trait) => trait.value),
+      nickname,
+      blurb,
+      traits,
       reason: `Most of your answers were ${personalityType} answers. Groups are mixed on purpose, and ${color} had room for another ${personalityType}.`,
     };
   }

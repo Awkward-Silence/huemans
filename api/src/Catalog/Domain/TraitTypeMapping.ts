@@ -1,17 +1,16 @@
-import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentError';
-import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
-import { Trait, TRAITS } from '@Huemans/Shared/Domain/ValueObject/Trait';
+import { PersonalityType, PersonalityTypeValue } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
+import { Trait, TraitValue } from '@Huemans/Shared/Domain/ValueObject/Trait';
 
-/** Read model: each of the 33 traits with its one personality type. Color distribution owns the rule that uses it. */
+export type TraitTypeMappingDTO = Record<TraitValue, PersonalityTypeValue>;
+
+/**
+ * Read model: each trait with its one personality type. "Every trait exactly once" is checked by the seed and by
+ * Color distribution's own TraitTypeMapping, which owns the rule that uses it, so it is not repeated here.
+ */
 export class TraitTypeMapping {
-  constructor(readonly pairs: readonly (readonly [Trait, PersonalityType])[]) {
-    const seen = pairs.map(([trait]) => trait.value);
-    const repeated = seen.filter((trait, index) => seen.indexOf(trait) !== index);
-    const missing = TRAITS.filter((trait) => !seen.includes(trait));
-    if (repeated.length > 0 || missing.length > 0) {
-      throw new InvalidArgumentError(
-        `<TraitTypeMapping> needs every trait exactly once (repeated: ${repeated.join(', ') || 'none'}; missing: ${missing.join(', ') || 'none'})`,
-      );
-    }
+  constructor(readonly pairs: readonly (readonly [Trait, PersonalityType])[]) {}
+
+  toDTO(): TraitTypeMappingDTO {
+    return Object.fromEntries(this.pairs.map(([trait, type]) => [trait.value, type.value])) as TraitTypeMappingDTO;
   }
 }

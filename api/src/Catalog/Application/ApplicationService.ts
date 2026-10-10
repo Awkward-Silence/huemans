@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Icebreaker } from '@Huemans/Catalog/Domain/Icebreaker';
-import { PersonalityTypeProfile } from '@Huemans/Catalog/Domain/PersonalityTypeProfile';
+import { IcebreakerDTO } from '@Huemans/Catalog/Domain/Icebreaker';
+import { PersonalityTypeProfileDTO } from '@Huemans/Catalog/Domain/PersonalityTypeProfile';
 import { CATALOG_REPOSITORY, CatalogRepository } from '@Huemans/Catalog/Domain/Port/CatalogRepository';
-import { Question } from '@Huemans/Catalog/Domain/Question';
-import { TraitTypeMapping } from '@Huemans/Catalog/Domain/TraitTypeMapping';
+import { QuestionDTO } from '@Huemans/Catalog/Domain/Question';
+import { TraitTypeMappingDTO } from '@Huemans/Catalog/Domain/TraitTypeMapping';
 import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 
 /** Catalog's in-process reads for the other contexts. */
@@ -11,19 +11,19 @@ import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityT
 export class ApplicationService {
   constructor(@Inject(CATALOG_REPOSITORY) private readonly catalog: CatalogRepository) {}
 
-  allQuestions(): Promise<Question[]> {
-    return this.catalog.allQuestions();
+  async allQuestions(): Promise<QuestionDTO[]> {
+    return (await this.catalog.allQuestions()).map((question) => question.toDTO());
   }
 
-  allIcebreakers(): Promise<Icebreaker[]> {
-    return this.catalog.allIcebreakers();
+  async allIcebreakers(): Promise<IcebreakerDTO[]> {
+    return (await this.catalog.allIcebreakers()).map((icebreaker) => icebreaker.toDTO());
   }
 
-  profileOf(type: string): Promise<PersonalityTypeProfile> {
-    return this.catalog.profileOf(new PersonalityType(type));
+  async profileOf(type: string): Promise<PersonalityTypeProfileDTO> {
+    return (await this.catalog.profileOf(new PersonalityType(type))).toDTO();
   }
 
-  mapping(): Promise<TraitTypeMapping> {
-    return this.catalog.mapping();
+  async mapping(): Promise<TraitTypeMappingDTO> {
+    return (await this.catalog.mapping()).toDTO();
   }
 }
