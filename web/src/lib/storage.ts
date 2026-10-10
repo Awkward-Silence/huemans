@@ -31,4 +31,17 @@ function removeKey(key: string): void {
   }
 }
 
-export { readJson, removeKey, writeJson };
+/** Every key this app writes starts with this, so it can all be wiped at once. */
+const APP_KEY_PREFIX = "huemans:";
+
+function removeAppKeys(): void {
+  try {
+    Object.keys(localStorage)
+      .filter((key) => key.startsWith(APP_KEY_PREFIX))
+      .forEach((key) => localStorage.removeItem(key));
+  } catch {
+    // Same as above.
+  }
+}
+
+export { readJson, removeAppKeys, removeKey, writeJson };
