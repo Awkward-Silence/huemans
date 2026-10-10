@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { z } from 'zod';
 import { IcebreakerListSchema } from '../Content/IcebreakerList';
 import { PersonalityTypeProfileListSchema } from '../Content/PersonalityTypeProfileList';
@@ -6,12 +7,15 @@ import { QuestionListSchema } from '../Content/QuestionList';
 import { checkProfileChips, TraitTypeMappingContentSchema } from '../Content/TraitTypeMappingContent';
 import { CatalogContent } from './CatalogContent';
 
-// Relative to api/, where the scripts run. Reading the files is not a runtime import of tools/.
+// Resolved from this module, not the working directory, so the seed finds them from src/ and from dist/
+// (nest-cli.json copies them as assets).
+const CONTENT = join(__dirname, '../Content');
+
 export const DEFAULT_CATALOG_FILES = {
-  questions: '../tools/src/questions/questions.test.json',
-  icebreakers: '../tools/src/icebreakers/icebreakers.test.json',
-  profiles: '../tools/src/personality-types/profiles.json',
-  mapping: '../tools/src/personality-types/trait-types.json',
+  questions: join(CONTENT, 'questions.json'),
+  icebreakers: join(CONTENT, 'icebreakers.json'),
+  profiles: join(CONTENT, 'profiles.json'),
+  mapping: join(CONTENT, 'trait-types.json'),
 };
 
 export type CatalogFilePaths = typeof DEFAULT_CATALOG_FILES;

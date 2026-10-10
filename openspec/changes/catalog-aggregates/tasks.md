@@ -21,9 +21,9 @@
 
 ## 4. Content files move into Catalog infrastructure
 
-- [ ] 4.1 Move the four JSON files from `tools/src/` to `api/src/Catalog/Infrastructure/Content/` (`questions.json`, `icebreakers.json`, `profiles.json`, `trait-types.json`), resolve the default paths from the module directory, add them as `nest-cli.json` assets, and verify `pnpm build` puts them in `dist/Catalog/Infrastructure/Content/`
+- [x] 4.1 Move the four JSON files from `tools/src/` to `api/src/Catalog/Infrastructure/Content/` (`questions.json`, `icebreakers.json`, `profiles.json`, `trait-types.json`), resolve the default paths from the module directory, add them as `nest-cli.json` assets, and verify `pnpm build` puts them in `dist/Catalog/Infrastructure/Content/`
 - [ ] 4.2 Reduce the zod schemas to shape only (drop enums, lengths, uniqueness, counts and `checkProfileChips`), and verify the schema unit tests now only cover structure
-- [ ] 4.3 Add `JsonCatalogContentSource` mapping each entry through the value objects and `author`/`define`, rethrowing failures as `InvalidCatalogContent` naming the file and entry, and verify integration tests: the real files give 50 questions, 51 icebreakers and the personality types; an edited copy with `grumpy` in `q0003` names `q0003 answers.1.trait`; a planner chip `curious` names `planner`; an 81-character question text names the question
+- [x] 4.3 Add `JsonCatalogContentSource` mapping each entry through the value objects and `author`/`define`, rethrowing failures as `InvalidCatalogContent` naming the file and entry, and verify integration tests: the real files give 50 questions, 51 icebreakers and the personality types; an edited copy with `grumpy` in `q0003` names `q0003 answers.1.trait`; a planner chip `curious` names `planner`; an 81-character question text names the question
 
 ## 5. Application service and commands
 
