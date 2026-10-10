@@ -27,15 +27,15 @@
 
 ## 5. Application service and commands
 
-- [ ] 5.1 Add `seed()` (read the source, then in one transaction `markSeeded` then save everything, then dispatch the pulled events; returns seeded or already-seeded) and `check()` to Catalog's `ApplicationService`, keep `allQuestions`, `allIcebreakers`, `profileOf`, `mapping` on top of the new repository, and verify the Color Distribution functional suites still pass unchanged
-- [ ] 5.2 Rewrite `seed.ts` on `ApplicationService.seed()` and delete `MikroOrmCatalogSeeder` (kept until here so the seed keeps working) (prints `Seeded ...` or `Catalog already seeded at ...; nothing written.`, exit 0 in both) and add `catalog:validate` (no Nest app, no database), and verify both by running them against the test database
-- [ ] 5.3 Point `seedCatalogFiles`, `realContent` and the fixture helpers in `tests/Support/catalog.ts` at the new API, and verify the full suite (`pnpm test`) passes with the shared test database
+- [x] 5.1 Add `seed()` (read the source, then in one transaction `markSeeded` then save everything, then dispatch the pulled events; returns seeded or already-seeded) to Catalog's `ApplicationService` (no `check()`: `catalog:validate` must not open a database, so it calls the content source directly), keep `allQuestions`, `allIcebreakers`, `profileOf`, `mapping` on top of the new repository, and verify the Color Distribution functional suites still pass unchanged
+- [x] 5.2 Rewrite `seed.ts` on `ApplicationService.seed()` and delete `MikroOrmCatalogSeeder` (kept until here so the seed keeps working) (prints `Seeded ...` or `Catalog already seeded at ...; nothing written.`, exit 0 in both) and add `catalog:validate` (no Nest app, no database), and verify both by running them against the test database
+- [x] 5.3 Point `seedCatalogFiles`, `realContent` and the fixture helpers in `tests/Support/catalog.ts` at the new API, and verify the full suite (`pnpm test`) passes with the shared test database
 
 ## 6. Once-only seed, end to end
 
-- [ ] 6.1 Add a `tests/Support` helper that creates a throwaway database on the test server, migrates it and drops it afterwards, and verify it leaves no database behind after the suite
-- [ ] 6.2 Verify functional tests on a throwaway database: the first seed loads 50/51/4/33 and records the seed time; a second seed with edited files reports already seeded and changes nothing; the first seed publishes 50 + 51 + 1 events and the second none; a failed write leaves no content and no seed record
-- [ ] 6.3 Verify functional tests for the commands as processes: `catalog:seed` exit codes and messages, and `catalog:validate` succeeding on the real files and naming `q0003` on an invalid copy without touching any database
+- [x] 6.1 Add a `tests/Support` helper that creates a throwaway database on the test server, migrates it and drops it afterwards, and verify it leaves no database behind after the suite
+- [x] 6.2 Verify functional tests on a throwaway database: the first seed loads 50/51/4/33 and records the seed time; a second seed with edited files reports already seeded and changes nothing; the first seed publishes 50 + 51 + 1 events and the second none; a failed write leaves no content and no seed record
+- [x] 6.3 Verify functional tests for the commands as processes: `catalog:seed` exit codes and messages, and `catalog:validate` succeeding on the real files and naming `q0003` on an invalid copy without touching any database
 
 ## 7. Remove `tools/` and update references
 

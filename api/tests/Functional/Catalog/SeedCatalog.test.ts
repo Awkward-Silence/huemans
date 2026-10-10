@@ -1,97 +1,152 @@
 import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { INestApplication } from '@nestjs/common';
-import { ApplicationService as CatalogService } from '@Huemans/Catalog/Application/ApplicationService';
+import { EntityManager } from '@mikro-orm/postgresql';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ApplicationService as CatalogService, SeedResult } from '@Huemans/Catalog/Application/ApplicationService';
+import { IcebreakerAuthored } from '@Huemans/Catalog/Domain/Event/IcebreakerAuthored';
+import { PersonalityTypesDefined } from '@Huemans/Catalog/Domain/Event/PersonalityTypesDefined';
+import { QuestionAuthored } from '@Huemans/Catalog/Domain/Event/QuestionAuthored';
+import { CATALOG_SEED_RECORD, CatalogSeedRecord } from '@Huemans/Catalog/Domain/Port/CatalogSeedRecord';
+import { InvalidCatalogContent } from '@Huemans/Catalog/Infrastructure/Content/InvalidCatalogContent';
 import {
+  CatalogFilePaths,
   DEFAULT_CATALOG_FILES,
-  InvalidCatalogContent,
-  readCatalogFiles,
-} from '@Huemans/Catalog/Infrastructure/Seed/CatalogFiles';
-import { MikroOrmCatalogSeeder } from '@Huemans/Catalog/Infrastructure/Seed/MikroOrmCatalogSeeder';
-import { bootFunctional } from '../../Support/functional';
+} from '@Huemans/Catalog/Infrastructure/Content/JsonCatalogContentSource';
+import { CatalogSeedModule } from '@Huemans/Catalog/Infrastructure/Seed/CatalogSeedModule';
+import { DomainEvent } from '@Huemans/Shared/Domain/DomainEvent';
+import { InMemoryEventDispatcher } from '@Huemans/Shared/Infrastructure/EventDispatcher/InMemoryEventDispatcher';
+import { realContent } from '../../Support/catalog';
+import { createScratchDatabase, ScratchDatabase, withDatabaseUrl } from '../../Support/scratchDatabase';
 
-// Seeds the real tools/ files. Other suites add questions and icebreakers with random ids, so checks look at the files' ids.
-describe('Seeding the catalog from the content files', () => {
-  let app: INestApplication;
-  let catalog: CatalogService;
+const CATALOG_EVENTS = [QuestionAuthored.EVENT_NAME, IcebreakerAuthored.EVENT_NAME, PersonalityTypesDefined.EVENT_NAME];
 
-  beforeAll(async () => {
-    app = await bootFunctional();
-    catalog = app.get(CatalogService);
-  });
+// The shared test database is seeded by whichever suite runs first, so every scenario here gets a database that was
+// never seeded.
+describe('Seeding the catalog once per database', () => {
+  jest.setTimeout(60_000);
 
-  afterAll(async () => {
-    await app.close();
-  });
+  let scratch: ScratchDatabase;
+  let catalog: (database: ScratchDatabase) => Promise<TestingModule>;
+  let seed: (database: ScratchDatabase, paths?: CatalogFilePaths) => Promise<{ result: SeedResult; events: string[] }>;
+  let withEdited: <T>(file: keyof CatalogFilePaths, edit: (json: T) => void) => CatalogFilePaths;
 
-  function withEdited<T>(
-    file: keyof typeof DEFAULT_CATALOG_FILES,
-    edit: (json: T) => void,
-  ): typeof DEFAULT_CATALOG_FILES {
-    const json = JSON.parse(readFileSync(DEFAULT_CATALOG_FILES[file], 'utf8')) as T;
-    edit(json);
-    const path = join(mkdtempSync(join(tmpdir(), 'catalog-')), `${file}.json`);
-    writeFileSync(path, JSON.stringify(json));
-    return { ...DEFAULT_CATALOG_FILES, [file]: path };
-  }
-
-  async function seed(paths = DEFAULT_CATALOG_FILES): Promise<void> {
-    await app.get(MikroOrmCatalogSeeder).seed(readCatalogFiles(paths));
-  }
-
-  it('testSeedsAllFourFilesTwiceWithTheSameResult', async () => {
-    const content = readCatalogFiles(DEFAULT_CATALOG_FILES);
-    expect(content.questions).toHaveLength(50);
-    expect(content.icebreakers).toHaveLength(51);
-    expect(content.profiles).toHaveLength(4);
-
-    for (let run = 0; run < 2; run++) {
-      await seed();
-
-      const questionIds = new Set(content.questions.map((question) => question.id));
-      const questions = (await catalog.allQuestions()).filter((question) => questionIds.has(question.id));
-      expect(questions).toHaveLength(50);
-      expect(questions.every((question) => question.answers.length === 4)).toBe(true);
-      expect(questions.find((question) => question.id === 'q0001')?.text).toBe(content.questions[0].text);
-
-      const icebreakerIds = new Set(content.icebreakers.map((icebreaker) => icebreaker.id));
-      expect((await catalog.allIcebreakers()).filter((icebreaker) => icebreakerIds.has(icebreaker.id))).toHaveLength(
-        51,
+  beforeEach(async () => {
+    scratch = await createScratchDatabase();
+    catalog = (database) =>
+      withDatabaseUrl(database.url, () =>
+        Test.createTestingModule({ imports: [CatalogSeedModule.forFiles(DEFAULT_CATALOG_FILES)] }).compile(),
       );
-
-      for (const profile of content.profiles) {
-        expect(await catalog.profileOf(profile.type)).toEqual(profile);
+    seed = async (database, paths = DEFAULT_CATALOG_FILES) => {
+      const module = await withDatabaseUrl(database.url, () =>
+        Test.createTestingModule({ imports: [CatalogSeedModule.forFiles(paths)] }).compile(),
+      );
+      const events: string[] = [];
+      for (const name of CATALOG_EVENTS) {
+        module.get(InMemoryEventDispatcher).subscribe(name, (event: DomainEvent) => {
+          events.push(event.eventName);
+          return Promise.resolve();
+        });
       }
-      expect(await catalog.mapping()).toEqual(content.mapping);
+      try {
+        return { result: await module.get(CatalogService).seed(), events };
+      } finally {
+        await module.close();
+      }
+    };
+    withEdited = <T>(file: keyof CatalogFilePaths, edit: (json: T) => void) => {
+      const json = JSON.parse(readFileSync(DEFAULT_CATALOG_FILES[file], 'utf8')) as T;
+      edit(json);
+      const path = join(mkdtempSync(join(tmpdir(), 'catalog-')), `${file}.json`);
+      writeFileSync(path, JSON.stringify(json));
+      return { ...DEFAULT_CATALOG_FILES, [file]: path };
+    };
+  });
+
+  afterEach(async () => {
+    await scratch.drop();
+  });
+
+  it('testTheFirstSeedLoadsAllContentAndRecordsWhen', async () => {
+    const { result, events } = await seed(scratch);
+
+    expect(result).toEqual({
+      seeded: true,
+      counts: { questions: 50, icebreakers: 51, profiles: 4, mappedTraits: 33 },
+    });
+    expect(events.filter((name) => name === QuestionAuthored.EVENT_NAME)).toHaveLength(50);
+    expect(events.filter((name) => name === IcebreakerAuthored.EVENT_NAME)).toHaveLength(51);
+    expect(events.filter((name) => name === PersonalityTypesDefined.EVENT_NAME)).toHaveLength(1);
+
+    const module = await catalog(scratch);
+    try {
+      const service = module.get(CatalogService);
+      expect(await service.allQuestions()).toEqual(realContent().questions);
+      expect(await service.allIcebreakers()).toEqual(realContent().icebreakers);
+      expect(await service.mapping()).toEqual(realContent().mapping);
+      expect(await module.get<CatalogSeedRecord>(CATALOG_SEED_RECORD).seededAt()).toBeInstanceOf(Date);
+    } finally {
+      await module.close();
     }
   });
 
-  it('testInvalidQuestionNamesTheEntryAndWritesNothing', async () => {
-    const newId = `q-invalid-${Date.now()}`;
-    const paths = withEdited('questions', (questions: { id: string; answers: { trait: string }[] }[]) => {
-      questions.push({ ...questions[0], id: newId });
+  it('testASecondSeedChangesNothingAndAnnouncesNothing', async () => {
+    await seed(scratch);
+    const module = await catalog(scratch);
+    const firstSeededAt = await module.get<CatalogSeedRecord>(CATALOG_SEED_RECORD).seededAt();
+    await module.close();
+    const edited = withEdited('questions', (questions: { text: string }[]) => {
+      questions[0].text = 'Edited after the seed';
+    });
+
+    const { result, events } = await seed(scratch, edited);
+
+    expect(result).toEqual({ seeded: false, seededAt: firstSeededAt });
+    expect(events).toEqual([]);
+    const after = await catalog(scratch);
+    try {
+      expect((await after.get(CatalogService).allQuestions())[0].text).toBe(realContent().questions[0].text);
+    } finally {
+      await after.close();
+    }
+  });
+
+  it('testInvalidContentWritesNothing', async () => {
+    const invalid = withEdited('questions', (questions: { answers: { trait: string }[] }[]) => {
       questions[2].answers[1].trait = 'grumpy';
     });
 
-    await expect(seed(paths)).rejects.toThrow(InvalidCatalogContent);
-    await expect(seed(paths)).rejects.toThrow(/q0003 answers\.1\.trait/);
-    expect((await catalog.allQuestions()).some((question) => question.id === newId)).toBe(false);
+    await expect(seed(scratch, invalid)).rejects.toThrow(InvalidCatalogContent);
+
+    const module = await catalog(scratch);
+    try {
+      expect(await module.get(CatalogService).allQuestions()).toEqual([]);
+      expect(await module.get<CatalogSeedRecord>(CATALOG_SEED_RECORD).seededAt()).toBeNull();
+    } finally {
+      await module.close();
+    }
   });
 
-  it('testChipMappedToAnotherTypeNamesTheProfileAndWritesNothing', async () => {
-    const newId = `q-chip-${Date.now()}`;
-    const paths = {
-      ...withEdited('profiles', (profiles: { type: string; traits: string[] }[]) => {
-        profiles.find((profile) => profile.type === 'planner')!.traits[0] = 'curious';
-      }),
-      questions: withEdited('questions', (questions: { id: string }[]) => {
-        questions.push({ ...questions[0], id: newId });
-      }).questions,
-    };
+  it('testAFailedWriteLeavesNoContentAndNoSeedRecord', async () => {
+    // A row already holding the first icebreaker's id makes the seed fail after it has written the questions.
+    const module = await catalog(scratch);
+    await module
+      .get(EntityManager)
+      .getConnection()
+      .execute(
+        `insert into catalog_icebreakers (id, theme, text, traits) values ('i0001', 'food', 'Taken', '{curious}')`,
+      );
+    await module.close();
 
-    await expect(seed(paths)).rejects.toThrow(/planner chip curious is mapped to explorer/);
-    expect((await catalog.allQuestions()).some((question) => question.id === newId)).toBe(false);
-    expect((await catalog.profileOf('planner')).traits).not.toContain('curious');
+    const failed = seed(scratch);
+
+    await expect(failed).rejects.toThrow();
+    const after = await catalog(scratch);
+    try {
+      expect(await after.get(CatalogService).allQuestions()).toEqual([]);
+      expect(await after.get<CatalogSeedRecord>(CATALOG_SEED_RECORD).seededAt()).toBeNull();
+    } finally {
+      await after.close();
+    }
   });
 });

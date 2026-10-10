@@ -1,33 +1,26 @@
-import { resolve } from 'node:path';
 import { NestFactory } from '@nestjs/core';
+import { ApplicationService, SeedResult } from '@Huemans/Catalog/Application/ApplicationService';
+import { contentFilesFrom } from './contentFilesFrom';
 import { CatalogSeedModule } from './CatalogSeedModule';
-import { DEFAULT_CATALOG_FILES, readCatalogFiles } from './CatalogFiles';
-import { MikroOrmCatalogSeeder } from './MikroOrmCatalogSeeder';
 
 // Usage: pnpm catalog:seed [questions.json] [icebreakers.json] [profiles.json] [trait-types.json]
 async function main(): Promise<void> {
-  const [
-    questions = DEFAULT_CATALOG_FILES.questions,
-    icebreakers = DEFAULT_CATALOG_FILES.icebreakers,
-    profiles = DEFAULT_CATALOG_FILES.profiles,
-    mapping = DEFAULT_CATALOG_FILES.mapping,
-  ] = process.argv.slice(2);
-  const content = readCatalogFiles({
-    questions: resolve(questions),
-    icebreakers: resolve(icebreakers),
-    profiles: resolve(profiles),
-    mapping: resolve(mapping),
+  const app = await NestFactory.createApplicationContext(CatalogSeedModule.forFiles(contentFilesFrom(process.argv)), {
+    logger: ['error', 'warn'],
   });
-
-  const app = await NestFactory.createApplicationContext(CatalogSeedModule, { logger: ['error', 'warn'] });
+  let result: SeedResult;
   try {
-    await app.get(MikroOrmCatalogSeeder).seed(content);
+    result = await app.get(ApplicationService).seed();
   } finally {
     await app.close();
   }
+  if (!result.seeded) {
+    console.log(`Catalog already seeded at ${result.seededAt?.toISOString()}; nothing written.`);
+    return;
+  }
+  const { questions, icebreakers, profiles, mappedTraits } = result.counts;
   console.log(
-    `Seeded ${content.questions.length} questions, ${content.icebreakers.length} icebreakers, ` +
-      `${content.profiles.length} profiles and ${Object.keys(content.mapping).length} mapped traits.`,
+    `Seeded ${questions} questions, ${icebreakers} icebreakers, ${profiles} profiles and ${mappedTraits} mapped traits.`,
   );
 }
 

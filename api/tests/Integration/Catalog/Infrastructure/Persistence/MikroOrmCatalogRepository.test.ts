@@ -7,7 +7,17 @@ import { CatalogPersonalityTypeProfileSchema } from '@Huemans/Catalog/Infrastruc
 import { CatalogQuestionSchema } from '@Huemans/Catalog/Infrastructure/Persistence/MikroOrm/CatalogQuestionSchema';
 import { CatalogTraitTypeSchema } from '@Huemans/Catalog/Infrastructure/Persistence/MikroOrm/CatalogTraitTypeSchema';
 import { MikroOrmCatalogRepository } from '@Huemans/Catalog/Infrastructure/Persistence/MikroOrm/MikroOrmCatalogRepository';
-import { MikroOrmCatalogSeeder } from '@Huemans/Catalog/Infrastructure/Seed/MikroOrmCatalogSeeder';
+import { ApplicationService as CatalogService } from '@Huemans/Catalog/Application/ApplicationService';
+import { CATALOG_CONTENT_SOURCE } from '@Huemans/Catalog/Domain/Port/CatalogContentSource';
+import { CATALOG_REPOSITORY } from '@Huemans/Catalog/Domain/Port/CatalogRepository';
+import { CATALOG_SEED_RECORD } from '@Huemans/Catalog/Domain/Port/CatalogSeedRecord';
+import { JsonCatalogContentSource } from '@Huemans/Catalog/Infrastructure/Content/JsonCatalogContentSource';
+import { CatalogSeedSchema } from '@Huemans/Catalog/Infrastructure/Persistence/MikroOrm/CatalogSeedSchema';
+import { MikroOrmCatalogSeedRecord } from '@Huemans/Catalog/Infrastructure/Persistence/MikroOrm/MikroOrmCatalogSeedRecord';
+import { EVENT_DISPATCHER } from '@Huemans/Shared/Domain/Port/EventDispatcher';
+import { TRANSACTION_MANAGER } from '@Huemans/Shared/Domain/Port/TransactionManager';
+import { InMemoryEventDispatcher } from '@Huemans/Shared/Infrastructure/EventDispatcher/InMemoryEventDispatcher';
+import { MikroOrmTransactionManager } from '@Huemans/Shared/Infrastructure/Persistence/MikroOrm/MikroOrmTransactionManager';
 import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 import {
   aQuestion,
@@ -30,8 +40,17 @@ describe('MikroOrmCatalogRepository', () => {
         CatalogIcebreakerSchema,
         CatalogPersonalityTypeProfileSchema,
         CatalogTraitTypeSchema,
+        CatalogSeedSchema,
       ],
-      providers: [MikroOrmCatalogRepository, MikroOrmCatalogSeeder],
+      providers: [
+        MikroOrmCatalogRepository,
+        CatalogService,
+        { provide: CATALOG_REPOSITORY, useExisting: MikroOrmCatalogRepository },
+        { provide: CATALOG_SEED_RECORD, useClass: MikroOrmCatalogSeedRecord },
+        { provide: CATALOG_CONTENT_SOURCE, useFactory: () => new JsonCatalogContentSource() },
+        { provide: TRANSACTION_MANAGER, useClass: MikroOrmTransactionManager },
+        { provide: EVENT_DISPATCHER, useClass: InMemoryEventDispatcher },
+      ],
     });
     repository = module.get(MikroOrmCatalogRepository);
     await seedCatalogFiles(module);
