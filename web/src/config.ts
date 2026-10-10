@@ -9,6 +9,8 @@ const ConfigSchema = z.object({
   introAutoAdvanceMs: z.coerce.number().int().nonnegative().default(4500),
   /** Polling interval for "live" data until realtime replaces it. */
   livePollMs: z.coerce.number().int().positive().default(2000),
+  /** Event the demo link opens. The mock accepts any id; the API needs the event seeded by `pnpm seed:demo`. */
+  demoEventId: z.string().min(1).default("demo"),
 });
 
 type Config = z.infer<typeof ConfigSchema>;
@@ -19,6 +21,7 @@ const config: Config = ConfigSchema.parse({
   defaultTheme: import.meta.env.VITE_DEFAULT_THEME || undefined,
   introAutoAdvanceMs: import.meta.env.VITE_INTRO_AUTO_ADVANCE_MS || undefined,
   livePollMs: import.meta.env.VITE_LIVE_POLL_MS || undefined,
+  demoEventId: import.meta.env.VITE_DEMO_EVENT_ID || undefined,
 });
 
 export { config };

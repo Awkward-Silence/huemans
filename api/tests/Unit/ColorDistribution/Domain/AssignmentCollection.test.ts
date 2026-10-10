@@ -1,6 +1,6 @@
 import { Assignment } from '@Huemans/ColorDistribution/Domain/Assignment';
 import { AssignmentCollection } from '@Huemans/ColorDistribution/Domain/AssignmentCollection';
-import { Color } from '@Huemans/ColorDistribution/Domain/ValueObject/Color';
+import { Color } from '@Huemans/Shared/Domain/ValueObject/Color';
 import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentError';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';

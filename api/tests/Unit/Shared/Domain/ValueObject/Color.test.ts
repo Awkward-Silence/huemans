@@ -1,4 +1,4 @@
-import { Color, COLORS } from '@Huemans/ColorDistribution/Domain/ValueObject/Color';
+import { Color, COLORS } from '@Huemans/Shared/Domain/ValueObject/Color';
 import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentError';
 
 describe('Color', () => {

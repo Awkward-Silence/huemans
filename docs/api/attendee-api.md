@@ -283,7 +283,13 @@ Live progress and color distribution for the "waiting for the room" screen. Poll
 }
 ```
 
-**Errors:** `404` unknown event.
+**Behaviour**
+
+- Served by the read-only Room context (`docs/domain/room/model.md`): `answered` and `groups` come from Color Distribution, `total` from Participation. The response also carries `eventId` (extra). Type: `RoomResponse` in `contracts/room.d.ts`.
+- `answered` is the sum of the group counts and never exceeds `total`.
+- Until Participation exists (`quiz-and-answers`), `total` equals `answered`.
+
+**Errors:** `404` unknown event; `400` if the id is not a UUIDv7.
 
 ---
 
@@ -330,11 +336,11 @@ The night's one icebreaker and the gathering countdown. Polled every 2 s until `
 
 The web contract was written before the domain model. These conflict with `docs/domain/color-distribution/model.md` and the open OpenSpec changes and need a decision before `api/` serves the web:
 
-1. ~~**Color names.**~~ Resolved: both sides use `amber | coral | teal | violet` (also the tie order), defined in `api/src/ColorDistribution/Domain/ValueObject/Color.ts`.
+1. ~~**Color names.**~~ Resolved: both sides use `amber | coral | teal | violet` (also the tie order), defined in `api/src/Shared/Domain/ValueObject/Color.ts` (shared kernel).
 2. ~~**Assignment "not yet".**~~ Resolved: `api/` answers `200 {status:"pending"}` until the attendee is grouped, `200 {status:"assigned", eventId, attendeeId, color, personalityType}` after, and 404 only for an unknown event. The assigned fields the web also needs (`nickname`, `blurb`, `traits`, `mates`, `reason`) are gap 3.
 3. ~~**Personality type is missing; `lean` contradicts the model.**~~ Resolved in `api/` only, without changing `web/`: the assigned response adds `personalityType`; `nickname`, `blurb` and `traits` describe the personality type (static copy in `api/src/Catalog/Infrastructure/Content/PersonalityTypeProfiles.ts`), not the color; `mates` is the live group size minus one; `reason.lean` is always `[]` (answers decide the type, not the color) and `reason.text` explains the mixed placement. The web schema accepts this shape as is. If the web wants a type lean later ("60% explorer, 40% planner"), it needs a schema change on its side and the trait profile from Participation.
-4. **Room vs distribution.** The web wants `GET /events/:eventId/room` (`answered`, `total`, per-color `count`). The backend plans `GET /events/:eventId/distribution` (per-color members and personality types, no `answered`/`total`). `total`/`answered` need Participation data, so `/room` is a read model that spans Participation and Color Distribution.
-5. **Id format.** The backend validates UUIDv7 and answers `400` for anything else. The web dev entry point is `/join/demo`, so the demo event needs a UUIDv7 id (or a slug lookup) when running against `api/`.
+4. ~~**Room vs distribution.**~~ Resolved: `api/` serves `GET /events/:eventId/room` in the web's shape (see endpoint 6), from the Room context. `GET /events/:eventId/distribution` stays for the host screen. `total` equals `answered` until Participation lands.
+5. ~~**Id format.**~~ Resolved: `pnpm seed:demo` (in `api/`) creates "Demo night" with the fixed UUIDv7 `0199c0de-0000-7000-8000-000000000001`, and is safe to run again. The web's demo link opens `VITE_DEMO_EVENT_ID` (default `demo` for the mock). The API allows cross-origin calls (`CORS_ORIGIN`, default `*`).
 6. ~~**Event status.**~~ Resolved: `GET /events/:eventId` returns `status` (`open` | `revealed`) as an extra field. The web still infers the reveal from the icebreaker endpoint.
 
 ## Missing from the web contract

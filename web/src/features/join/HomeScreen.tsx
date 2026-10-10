@@ -1,5 +1,6 @@
 import { copy } from "../../content/index.ts";
 import { ButtonLink, Heading, Screen, Stack, Text } from "../../ui/index.ts";
+import { config } from "../../config.ts";
 
 /** Landing page for anyone who opens the bare URL instead of scanning a QR code. */
 function HomeScreen() {
@@ -11,7 +12,7 @@ function HomeScreen() {
           {copy.home.body}
         </Text>
       </Stack>
-      <ButtonLink to="/join/$eventId" params={{ eventId: "demo" }}>
+      <ButtonLink to="/join/$eventId" params={{ eventId: config.demoEventId }}>
         {copy.home.demoLink}
       </ButtonLink>
     </Screen>
