@@ -1,6 +1,6 @@
 import { EnumValueObject } from './EnumValueObject';
 
-// Provisional codes until the catalog names the types.
+// The four personality types; the catalog's trait-type mapping places every trait in exactly one of them.
 export const PERSONALITY_TYPES = ['explorer', 'connector', 'planner', 'dreamer'] as const;
 
 export type PersonalityTypeValue = (typeof PERSONALITY_TYPES)[number];

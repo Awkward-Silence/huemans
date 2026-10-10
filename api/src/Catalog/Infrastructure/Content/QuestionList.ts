@@ -14,7 +14,13 @@ export const QuestionSchema = z.object({
   id: z.string().min(1),
   theme: z.enum(THEMES),
   text: z.string().min(1),
-  answers: z.array(AnswerSchema).length(4),
+  answers: z
+    .array(AnswerSchema)
+    .length(4)
+    .refine(
+      (answers) => new Set(answers.map((answer) => answer.id)).size === answers.length,
+      'Answer ids must be unique',
+    ),
 });
 
 export const QuestionListSchema = z.array(QuestionSchema);

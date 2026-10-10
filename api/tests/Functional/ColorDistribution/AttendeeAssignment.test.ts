@@ -5,6 +5,7 @@ import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { EventCreated } from '@Huemans/Shared/Domain/Event/EventCreated';
 import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
 import { publish } from '../../Support/events';
+import { realContent, seedCatalogFiles } from '../../Support/catalog';
 import { bootFunctional, getJson } from '../../Support/functional';
 
 describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
@@ -14,6 +15,7 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
 
   beforeAll(async () => {
     app = await bootFunctional();
+    await seedCatalogFiles(app);
   });
 
   afterAll(async () => {
@@ -27,6 +29,7 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
   });
 
   it('testAssignedAttendeeReadsTheirGroup', async () => {
+    const dreamer = realContent().profiles.find((profile) => profile.type === 'dreamer')!;
     await publish(app, new QuestionnaireCompleted(attendeeId, eventId, ['romantic', 'nostalgic', 'sociable']));
 
     const response = await getJson(app, `/events/${eventId}/attendees/${attendeeId}/assignment`);
@@ -38,12 +41,24 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
       attendeeId,
       color: 'amber',
       personalityType: 'dreamer',
-      nickname: 'The Dreamers',
-      blurb: expect.any(String) as string,
-      traits: ['creative', 'romantic', 'nostalgic'],
+      // The reveal copy is the catalog's dreamer profile.
+      nickname: dreamer.nickname,
+      blurb: dreamer.blurb,
+      traits: dreamer.traits,
       mates: 0,
       reason: { lean: [], text: expect.stringContaining('amber') as string },
     } satisfies AttendeeAssignment);
+  });
+
+  it('testPersonalityTypeComesFromTheCatalogMapping', async () => {
+    const planner = Object.entries(realContent().mapping)
+      .filter(([, type]) => type === 'planner')
+      .map(([trait]) => trait);
+    await publish(app, new QuestionnaireCompleted(attendeeId, eventId, planner.slice(0, 4)));
+
+    const response = await getJson(app, `/events/${eventId}/attendees/${attendeeId}/assignment`);
+
+    expect(response.body).toMatchObject({ status: 'assigned', personalityType: 'planner' });
   });
 
   it('testAttendeeNotAssignedYet', async () => {

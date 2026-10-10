@@ -7,6 +7,7 @@ import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { EventCreated } from '@Huemans/Shared/Domain/Event/EventCreated';
 import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
 import { publish, recordPublished } from '../../Support/events';
+import { seedCatalogFiles } from '../../Support/catalog';
 import { bootFunctional, getJson } from '../../Support/functional';
 
 describe('Color distribution flow', () => {
@@ -17,6 +18,7 @@ describe('Color distribution flow', () => {
 
   beforeAll(async () => {
     app = await bootFunctional();
+    await seedCatalogFiles(app);
     grouped = recordPublished(app, AttendeeGrouped.EVENT_NAME);
   });
 
