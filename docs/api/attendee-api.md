@@ -168,34 +168,42 @@ The questions for this event. Every phone in the event must get **the same quest
 
 `POST /events/:eventId/attendees/:attendeeId/answers`
 
-Sends all answers at once when the quiz ends (all answered or timer done).
+Sends all answers at once when the quiz ends (all answered or timer done), and returns the attendee's color.
 
-**Request**
+**Request** (`contracts/participation.d.ts`)
 
 ```ts
 {
   answers: Array<{ questionId: Id; answerId: Id }>; // may be shorter than the quiz (skipped questions)
-  elapsedMs: number;                                 // int >= 0; time from quiz start to submit
+  elapsedMs?: number;                                // int >= 0; time from quiz start to submit
+  sentence?: { question: string; answer: string } | null; // the "I ..." builder; omit or null when skipped
 }
 ```
 
 ```json
 {
-  "answers": [{ "questionId": "q0001", "answerId": "q0001-c" }],
-  "elapsedMs": 17342
+  "answers": [{ "questionId": "q0001", "answerId": "q0001-b" }],
+  "elapsedMs": 17342,
+  "sentence": { "question": "Finish the sentence: I ...", "answer": "I secretly nap at weddings" }
 }
 ```
 
-**Response:** any `2xx`; the body is ignored (`204 No Content` is fine).
+**Response `200`**
+
+```ts
+{ status: "assigned"; color: GroupColor; personalityType: "explorer" | "connector" | "planner" | "dreamer" }
+```
 
 **Behaviour**
 
 - The timer is soft: **late submissions are accepted**, whatever `elapsedMs` is.
-- The server maps each `answerId` to its trait, builds the trait profile and triggers grouping (`QuestionnaireCompleted` → `AttendeeGrouped`). Pairs with an unknown question or answer id are ignored, as in the mock.
-- After success the web refetches the attendee's assignment and icebreaker.
-- A second submit by the same attendee must not change the assignment (assignments are final). Accept it as a no-op or answer `409`; the web never sends it on purpose.
+- Each `answerId` maps to its trait, worth one answer. Pairs with an unknown question or answer id are ignored, as in the mock. Answer traits come from the seeded Catalog (`q0001`-`q0050`).
+- Jev weighs the sentence. It is worth one answer in total, spread over its traits ([ADR-012](../architecture/adr/ADR-012-ai-weighs-answers-on-submit.md)). If Jev has no key, takes longer than `JEV_TIMEOUT_MS` (1.5 s) or fails, the sentence adds nothing.
+- The attendee is grouped during the call (`QuestionnaireCompleted` → `AttendeeGrouped`), so the color comes back in the response. `GET .../assignment` returns the full reveal copy right after.
+- Every attendee always gets one of the 4 colors, even when no answer points to a trait.
+- A second submit by the same attendee returns the first color unchanged, and does not call Jev again.
 
-**Errors:** `404` unknown event or attendee.
+**Errors:** `404` unknown event. `400` for a malformed body, ids that are not UUIDv7, or a sentence question or answer that is empty or longer than 300 characters. The attendee id is not checked against a join yet, because join comes with `quiz-and-answers`.
 
 ---
 

@@ -51,7 +51,7 @@ There is no withdraw action (an attendee who leaves still counts in their group,
 The trait-type mapping is passed in by the caller: the catalog owns the table's contents, and the domain owns the rule that uses it.
 
 **assign rule:**
-1. Candidate types = the personality types with the most traits in the trait profile, according to the trait-type mapping (one type normally, two or more when tied).
+1. Candidate types = the personality types with the highest summed weight in the trait profile, according to the trait-type mapping (one type normally, two or more when tied). An empty profile ties all four types, so every attendee still gets a group.
 2. Candidate groups = the colors with the fewest members.
 3. For each (group, type) pair, score = members of that group who already have that type.
 4. Pick the pair with the lowest score. This places the attendee where they add the most diversity, and resolves ties between types in favor of the type the group lacks.
@@ -102,14 +102,14 @@ All four fields are presentation copy and carry no rule. The explainer enriches 
 |---|---|---|---|---|---|
 | Color | basic | string | One of amber, coral, teal, violet, in that fixed order | any other value | SK::Color |
 | PersonalityType | basic | string | One of exactly 4 personality types | any value outside the 4 types | SK::PersonalityType |
-| TraitProfile | collection | SK::Trait | At least 1 trait; no maximum; duplicates allowed, each occurrence counts as a vote | empty | Local |
+| TraitProfile | collection | SK::WeightedTrait | May be empty; no maximum; duplicates allowed, each occurrence adds its weight | — | Local |
 | TraitTypeMapping | collection | SK::Trait to SK::PersonalityType pairs | Every one of the 33 traits is mapped to exactly one personality type | a trait missing or mapped twice | Local |
 | AssignmentCollection | collection | Assignment | No two assignments for the same SK::AttendeeId | duplicate SK::AttendeeId | Local |
 | PersonalityTypeCollection | collection | SK::PersonalityType | Duplicates allowed (one entry per group member) | — | Local |
 
 ### TraitProfile — Detail
 
-**Construction rule:** built from the traits Participation hands over for one attendee. Must hold at least one SK::Trait. The same trait may appear several times, and each occurrence is one vote for that trait's personality type. Whether the questionnaire was complete is not checked here.
+**Construction rule:** built from the weighted traits Participation hands over for one attendee. It may be empty (nothing pointed to a trait). The same trait may appear several times, and each occurrence adds its weight to that trait's personality type. Participation weighs each multiple-choice answer 1 and the "I ..." sentence 1 in total, spread over its traits (ADR-012). Whether the questionnaire was complete is not checked here.
 **Immutable:** yes
 **Equality:** by value
 
@@ -145,7 +145,7 @@ All four fields are presentation copy and carry no rule. The explainer enriches 
 
 | Term | Definition |
 |---|---|
-| Trait profile | The traits an attendee's answers point to, built by Participation and handed to this context; at least one trait |
+| Trait profile | The weighted traits an attendee's answers point to, built by Participation and handed to this context; may be empty |
 | Color | One of the four groups an attendee can belong to (amber, coral, teal, violet). A group label, not a personality type |
 | Diversity | How different the personalities inside one group are; assignment maximizes it |
 | Personality type | One of 4 types derived from an attendee's trait profile; shown at the reveal and used to balance groups |

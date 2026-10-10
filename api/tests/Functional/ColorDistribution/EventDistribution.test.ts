@@ -4,6 +4,7 @@ import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
 import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
+import { wholeAnswers } from '../../Support/traits';
 import { publish } from '../../Support/events';
 import { seedCatalogFiles } from '../../Support/catalog';
 import { bootFunctional, getJson } from '../../Support/functional';
@@ -44,9 +45,17 @@ describe('GET /events/:eventId/distribution', () => {
   it('testDistributionReflectsAssignments', async () => {
     await publish(
       app,
-      new QuestionnaireCompleted(AttendeeId.random().value, eventId, ['curious', 'adventurous', 'organized']),
-      new QuestionnaireCompleted(AttendeeId.random().value, eventId, ['sociable']),
-      new QuestionnaireCompleted(AttendeeId.random().value, eventId, ['organized', 'organized', 'sociable']),
+      new QuestionnaireCompleted(
+        AttendeeId.random().value,
+        eventId,
+        wholeAnswers('curious', 'adventurous', 'organized'),
+      ),
+      new QuestionnaireCompleted(AttendeeId.random().value, eventId, wholeAnswers('sociable')),
+      new QuestionnaireCompleted(
+        AttendeeId.random().value,
+        eventId,
+        wholeAnswers('organized', 'organized', 'sociable'),
+      ),
     );
 
     const response = await getJson(app, `/events/${eventId}/distribution`);

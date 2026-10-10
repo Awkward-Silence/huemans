@@ -17,7 +17,7 @@ import { EVENT_DISPATCHER, EventDispatcher } from '@Huemans/Shared/Domain/Port/E
 import { TRANSACTION_MANAGER, TransactionManager } from '@Huemans/Shared/Domain/Port/TransactionManager';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
-import { Trait } from '@Huemans/Shared/Domain/ValueObject/Trait';
+import { WeightedTrait, WeightedTraitPrimitives } from '@Huemans/Shared/Domain/ValueObject/WeightedTrait';
 
 @Injectable()
 export class ApplicationService {
@@ -37,9 +37,9 @@ export class ApplicationService {
     await this.distributions.save(EventDistribution.open(id));
   }
 
-  async assign(eventId: string, attendeeId: string, traits: string[]): Promise<void> {
+  async assign(eventId: string, attendeeId: string, traits: WeightedTraitPrimitives[]): Promise<void> {
     const id = new EventId(eventId);
-    const profile = new TraitProfile(traits.map((trait) => new Trait(trait)));
+    const profile = new TraitProfile(traits.map((trait) => WeightedTrait.fromPrimitives(trait)));
     const mapping = await this.mappings.mapping();
 
     const events = await this.transaction.run(async () => {
