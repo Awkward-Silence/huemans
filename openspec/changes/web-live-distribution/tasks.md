@@ -3,7 +3,7 @@
 ## 1. Shared kernel and contracts
 
 - [x] 1.1 Move `Color` to `api/src/Shared/Domain/ValueObject/Color.ts` (and its unit test to `tests/Unit/Shared/`), update Color Distribution's imports and `docs/domain/color-distribution/model.md` to `SK::Color`, and verify `pnpm lint && pnpm test` pass
-- [ ] 1.2 Add `RoomResponse` as a type-only definition in `contracts/room.d.ts`, and verify `api/` type-checks when importing it with `import type`
+- [x] 1.2 Add `RoomResponse` as a type-only definition in `contracts/room.d.ts`, and verify `api/` type-checks when importing it with `import type`
 
 ## 2. Room domain (unit tests first, no NestJS or ORM imports)
 
@@ -13,8 +13,8 @@
 
 ## 3. Room application and HTTP
 
-- [ ] 3.1 Write the functional tests for `GET /events/:eventId/room` (new event empty, grouped attendees counted, other events not counted, `total = answered` with the stub, unknown 404, malformed 400) in red
-- [ ] 3.2 Implement the adapters (`EventLookup` over Event, `GroupCounter` over Color Distribution with `ColorDistributionModule` exporting its service, the `AnsweredAsJoinedAttendeeCounter` stub), `Room/Application/ApplicationService.roomOf`, `RoomController` and `RoomModule` registered in `AppModule`, and verify the 3.1 tests pass
+- [x] 3.1 Write the functional tests for `GET /events/:eventId/room` (new event empty, grouped attendees counted, other events not counted, `total = answered` with the stub, unknown 404, malformed 400) in red
+- [x] 3.2 Implement the adapters (`EventLookup` over Event, `GroupCounter` over Color Distribution with `ColorDistributionModule` exporting its service, the `AnsweredAsJoinedAttendeeCounter` stub), `Room/Application/ApplicationService.roomOf`, `RoomController` and `RoomModule` registered in `AppModule`, and verify the 3.1 tests pass
 
 ## 4. Demo event seed
 

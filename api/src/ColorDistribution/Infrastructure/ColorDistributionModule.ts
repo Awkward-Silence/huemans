@@ -20,5 +20,6 @@ import { MikroOrmEventDistributionRepository } from './Persistence/MikroOrm/Mikr
     OpenDistributionOnEventCreated,
     AssignOnQuestionnaireCompleted,
   ],
+  exports: [ApplicationService],
 })
 export class ColorDistributionModule {}
