@@ -26,11 +26,11 @@
 ## 4. Application and triggers
 
 - [x] 4.1 Add the `TraitTypeMappingProvider` port and a provisional implementation mapping all 33 traits, and verify the provisional mapping constructs a valid `TraitTypeMapping`
-- [ ] 4.2 Implement `Application/ApplicationService` (`open`, `assign`, `distributionOf`, `assignmentOf`) dispatching pulled events through `EventDispatcher` only after a successful save, and wire it in `Infrastructure/ColorDistributionModule`; verify through the functional tests in section 5
-- [ ] 4.3 Subscribe to `EventCreated` (calls `open`, no-op if it already exists) and to `QuestionnaireCompleted` (calls `assign`, ignores already-assigned), handled synchronously, and verify through the functional flow test in 5.3
+- [x] 4.2 Implement `Application/ApplicationService` (`open`, `assign`, `distributionOf`, `assignmentOf`) dispatching pulled events through `EventDispatcher` only after a successful save, and wire it in `Infrastructure/ColorDistributionModule`; verify through the functional tests in section 5
+- [x] 4.3 Subscribe to `EventCreated` (calls `open`, no-op if it already exists) and to `QuestionnaireCompleted` (calls `assign`, ignores already-assigned), handled synchronously, and verify through the functional flow test in 5.3
 
 ## 5. HTTP and functional coverage
 
-- [ ] 5.1 Add `GET /events/:eventId/distribution` with UUIDv7 validation at the boundary, and verify functional tests for an empty distribution, a populated one, an unknown event (404) and an invalid id (400)
-- [ ] 5.2 Add `GET /events/:eventId/attendees/:attendeeId/assignment`, and verify functional tests for an assigned attendee and a not-assigned attendee (404 with a "not assigned" body)
-- [ ] 5.3 Verify the end-to-end flow with a functional test: create an event, complete questionnaires for 5 attendees (including a duplicate completion and one after the icebreaker reveal), then check every assignment, the distribution counts and that `AttendeeGrouped` was published once per attendee
+- [x] 5.1 Add `GET /events/:eventId/distribution` with UUIDv7 validation at the boundary, and verify functional tests for an empty distribution, a populated one, an unknown event (404) and an invalid id (400)
+- [x] 5.2 Add `GET /events/:eventId/attendees/:attendeeId/assignment`, and verify functional tests for an assigned attendee and a not-assigned attendee (404 with a "not assigned" body)
+- [x] 5.3 Verify the end-to-end flow with a functional test: create an event, complete questionnaires for 5 attendees (including a duplicate completion and one after the icebreaker reveal), then check every assignment, the distribution counts and that `AttendeeGrouped` was published once per attendee

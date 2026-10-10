@@ -1,7 +1,14 @@
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
-import { Color } from './ValueObject/Color';
-import { PersonalityType } from './ValueObject/PersonalityType';
+import { Color, ColorValue } from './ValueObject/Color';
+import { PersonalityType, PersonalityTypeValue } from './ValueObject/PersonalityType';
+
+export interface AssignmentDTO {
+  eventId: string;
+  attendeeId: string;
+  color: ColorValue;
+  personalityType: PersonalityTypeValue;
+}
 
 export class Assignment {
   constructor(
@@ -20,7 +27,7 @@ export class Assignment {
     return this.color.equals(color);
   }
 
-  toDTO(): { eventId: string; attendeeId: string; color: string; personalityType: string } {
+  toDTO(): AssignmentDTO {
     return {
       eventId: this.eventId.value,
       attendeeId: this.attendeeId.value,

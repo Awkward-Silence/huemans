@@ -11,7 +11,7 @@ import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { Trait, TRAITS } from '@Huemans/Shared/Domain/ValueObject/Trait';
 import { MikroOrmTransactionManager } from '@Huemans/Shared/Infrastructure/Persistence/MikroOrm/MikroOrmTransactionManager';
 import { EntityManager } from '@mikro-orm/postgresql';
-import { bootIntegration, clearDatabase } from '../../../../Support/integration';
+import { bootIntegration } from '../../../../Support/integration';
 
 describe('MikroOrmEventDistributionRepository', () => {
   let module: TestingModule;
@@ -33,8 +33,8 @@ describe('MikroOrmEventDistributionRepository', () => {
     await module.close();
   });
 
-  beforeEach(async () => {
-    await clearDatabase(module);
+  // No truncation: every test uses a fresh event id, and functional suites share these tables in parallel.
+  beforeEach(() => {
     repository = module.get(MikroOrmEventDistributionRepository);
     transaction = module.get(MikroOrmTransactionManager);
     em = module.get(EntityManager);

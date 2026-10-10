@@ -4,7 +4,8 @@ import { Assignment } from '@Huemans/ColorDistribution/Domain/Assignment';
 import { AssignmentCollection } from '@Huemans/ColorDistribution/Domain/AssignmentCollection';
 import { EventDistribution } from '@Huemans/ColorDistribution/Domain/EventDistribution';
 import { EventDistributionView } from '@Huemans/ColorDistribution/Domain/EventDistributionView';
-import { COLORS } from '@Huemans/ColorDistribution/Domain/ValueObject/Color';
+import { COLORS, ColorValue } from '@Huemans/ColorDistribution/Domain/ValueObject/Color';
+import { PersonalityTypeValue } from '@Huemans/ColorDistribution/Domain/ValueObject/PersonalityType';
 import { EventDistributionRepository } from '@Huemans/ColorDistribution/Domain/Port/EventDistributionRepository';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
@@ -53,7 +54,7 @@ export class MikroOrmEventDistributionRepository
 
   async byEvent(eventId: EventId): Promise<EventDistributionView | null> {
     // An event with no assignments yields one row with a null color; an unknown event yields none.
-    const rows = await this.em.getConnection().execute<{ color: string | null; types: string[] }[]>(
+    const rows = await this.em.getConnection().execute<{ color: ColorValue | null; types: PersonalityTypeValue[] }[]>(
       `select a.color, array_agg(a.personality_type order by a.assigned_at, a.attendee_id) as types
          from event_distributions d
          left join assignments a on a.event_id = d.event_id
