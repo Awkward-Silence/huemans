@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { THEMES } from './Theme';
-import { TRAITS } from './Trait';
+import { THEMES } from '../../Domain/ValueObject/Theme';
+import { TRAITS } from '../../../Shared/Domain/ValueObject/Trait';
 
 /** An open question to start a conversation; it suits people with the given traits. */
 export const IcebreakerSchema = z.object({

@@ -1,9 +1,5 @@
-import type { TraitValue } from './Trait';
-
-// Provisional codes until the catalog names the types.
-export const PERSONALITY_TYPES = ['explorer', 'connector', 'planner', 'dreamer'] as const;
-
-export type PersonalityTypeValue = (typeof PERSONALITY_TYPES)[number];
+import type { TraitValue } from '@Huemans/Shared/Domain/ValueObject/Trait';
+import type { PersonalityTypeValue } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 
 export interface PersonalityTypeProfile {
   /** Title shown at the reveal. */

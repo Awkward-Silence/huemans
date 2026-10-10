@@ -1,6 +1,6 @@
 import { TestingModule } from '@nestjs/testing';
 import { EventDistribution } from '@Huemans/ColorDistribution/Domain/EventDistribution';
-import { PersonalityType } from '@Huemans/ColorDistribution/Domain/ValueObject/PersonalityType';
+import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 import { TraitProfile } from '@Huemans/ColorDistribution/Domain/ValueObject/TraitProfile';
 import { TraitTypeMapping } from '@Huemans/ColorDistribution/Domain/ValueObject/TraitTypeMapping';
 import { AssignmentSchema } from '@Huemans/ColorDistribution/Infrastructure/Persistence/MikroOrm/AssignmentSchema';

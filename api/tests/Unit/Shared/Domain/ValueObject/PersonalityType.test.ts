@@ -1,4 +1,4 @@
-import { PersonalityType } from '@Huemans/ColorDistribution/Domain/ValueObject/PersonalityType';
+import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentError';
 
 describe('PersonalityType', () => {

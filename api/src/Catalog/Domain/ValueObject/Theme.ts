@@ -1,3 +1,5 @@
+import { EnumValueObject } from '../../../Shared/Domain/ValueObject/EnumValueObject';
+
 // The themes a question or icebreaker belongs to.
 export const THEMES = [
   'animals',
@@ -23,3 +25,9 @@ export const THEMES = [
 ] as const;
 
 export type ThemeValue = (typeof THEMES)[number];
+
+export class Theme extends EnumValueObject<ThemeValue> {
+  constructor(value: string) {
+    super(value, THEMES);
+  }
+}

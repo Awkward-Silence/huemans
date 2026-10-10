@@ -36,7 +36,7 @@
 ## Value Object Candidates
 | Name | Kind | Construction Rule | Scope | Status |
 |---|---|---|---|---|
-| Trait | basic (wraps string) | One of the 33 catalog traits (closed list, now `api/src/Types/Trait.ts`) | ⬆️ SK::Trait | ⬆️ To Shared Kernel |
+| Trait | basic (wraps string) | One of the 33 catalog traits (closed list, now `api/src/Shared/Domain/ValueObject/Trait.ts`) | ⬆️ SK::Trait | ⬆️ To Shared Kernel |
 | TraitProfile | collection (of SK::Trait) | At least 1 trait; no maximum; duplicates allowed (each occurrence counts as a vote). Completeness of the questionnaire is Participation's concern | Local | ✅ Confirmed |
 | Color | basic (wraps string) | One of amber, coral, teal, violet | Local | 🔍 Candidate |
 | TraitTypeMapping | collection (of SK::Trait to PersonalityType pairs) | Every one of the 33 traits is mapped to exactly one personality type; contents come from the catalog | Local | ✅ Confirmed |

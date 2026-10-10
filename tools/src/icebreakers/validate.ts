@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
-import { IcebreakerListSchema } from "../../../api/src/Types/Icebreaker.ts";
-import { THEMES } from "../../../api/src/Types/Theme.ts";
-import { TRAITS } from "../../../api/src/Types/Trait.ts";
+import { IcebreakerListSchema } from "../../../api/src/Catalog/Infrastructure/Content/IcebreakerList.ts";
+import { THEMES } from "../../../api/src/Catalog/Domain/ValueObject/Theme.ts";
+import { TRAITS } from "../../../api/src/Shared/Domain/ValueObject/Trait.ts";
 
 
 const file = process.argv[2];

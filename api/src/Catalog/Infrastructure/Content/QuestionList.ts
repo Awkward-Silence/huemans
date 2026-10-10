@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { THEMES } from './Theme';
-import { TRAITS } from './Trait';
+import { THEMES } from '../../Domain/ValueObject/Theme';
+import { TRAITS } from '../../../Shared/Domain/ValueObject/Trait';
 
 /** One selectable answer; picking it hints at the given character trait. */
 export const AnswerSchema = z.object({

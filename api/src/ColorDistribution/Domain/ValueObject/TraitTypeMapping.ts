@@ -1,6 +1,6 @@
 import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentError';
 import { Trait, TRAITS, TraitValue } from '@Huemans/Shared/Domain/ValueObject/Trait';
-import { PersonalityType } from './PersonalityType';
+import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 
 export class TraitTypeMapping {
   private readonly types = new Map<TraitValue, PersonalityType>();

@@ -1,7 +1,7 @@
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { Color, ColorValue } from './ValueObject/Color';
-import { PersonalityType, PersonalityTypeValue } from './ValueObject/PersonalityType';
+import { PersonalityType, PersonalityTypeValue } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 
 export interface AssignmentDTO {
   eventId: string;

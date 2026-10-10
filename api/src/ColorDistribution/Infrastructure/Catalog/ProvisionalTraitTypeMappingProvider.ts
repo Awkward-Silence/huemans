@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TraitTypeMappingProvider } from '@Huemans/ColorDistribution/Domain/Port/TraitTypeMappingProvider';
-import { PersonalityType, PersonalityTypeValue } from '@Huemans/ColorDistribution/Domain/ValueObject/PersonalityType';
+import { PersonalityType, PersonalityTypeValue } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 import { TraitTypeMapping } from '@Huemans/ColorDistribution/Domain/ValueObject/TraitTypeMapping';
 import { Trait, TraitValue } from '@Huemans/Shared/Domain/ValueObject/Trait';
 

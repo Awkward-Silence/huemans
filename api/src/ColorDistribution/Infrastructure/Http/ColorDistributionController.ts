@@ -9,7 +9,7 @@ import { ApplicationService } from '@Huemans/ColorDistribution/Application/Appli
 import { AttendeeAssignmentView } from '@Huemans/ColorDistribution/Domain/AttendeeAssignmentView';
 import { EventDistributionNotFound } from '@Huemans/ColorDistribution/Domain/EventDistributionNotFound';
 import { ZodValidationPipe } from '@Huemans/Shared/Infrastructure/Http/ZodValidationPipe';
-import { PERSONALITY_TYPE_PROFILES } from '@Huemans/Types/PersonalityType';
+import { PERSONALITY_TYPE_PROFILES } from '@Huemans/Catalog/Infrastructure/Content/PersonalityTypeProfiles';
 
 const UuidV7Param = new ZodValidationPipe(z.uuidv7());
 

@@ -125,4 +125,3 @@ TraitTypeMapping itself is not shared. Catalog owns its content as a read model,
 ## Open Questions
 
 - Color Distribution's model still lists `PersonalityType` as Local. It must be updated to reference `SK::PersonalityType`. That's outside this model, so it's left to the color-distribution owner.
-- The shared kernel's `Trait` row points at `api/src/Types/Trait.ts`. Update it once the cleanup moves the list back into `api/src/Shared/Domain/ValueObject/Trait.ts`.

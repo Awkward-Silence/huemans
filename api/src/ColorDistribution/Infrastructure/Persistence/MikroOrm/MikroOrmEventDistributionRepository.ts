@@ -5,7 +5,7 @@ import { AttendeeAssignmentView } from '@Huemans/ColorDistribution/Domain/Attend
 import { EventDistribution } from '@Huemans/ColorDistribution/Domain/EventDistribution';
 import { EventDistributionView } from '@Huemans/ColorDistribution/Domain/EventDistributionView';
 import { COLORS, ColorValue } from '@Huemans/ColorDistribution/Domain/ValueObject/Color';
-import { PersonalityTypeValue } from '@Huemans/ColorDistribution/Domain/ValueObject/PersonalityType';
+import { PersonalityTypeValue } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 import { EventDistributionRepository } from '@Huemans/ColorDistribution/Domain/Port/EventDistributionRepository';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
