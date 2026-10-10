@@ -1,6 +1,6 @@
 # Domain Model — Color Distribution
 
-**Version**: 1.3.0
+**Version**: 1.4.0
 **Status**: Draft
 **Date**: 2026-10-10
 **Kind**: Read-write
@@ -68,14 +68,31 @@ primitives (free text, opaque payloads).
 | Name | Fields | Source | Read invariants |
 |---|---|---|---|
 | EventDistributionView | eventId: SK::EventId; groups: one entry per Color with members: count, personalityTypes: PersonalityTypeCollection (of SK::PersonalityType) | EventDistribution aggregate (this context) | Only assignments of the requested event; all four colors are always present, even when empty |
+| AttendeeAssignmentView | eventId: SK::EventId; attendeeId: SK::AttendeeId; color: Color; personalityType: SK::PersonalityType; mates: count | Assignments of this context | Only the requested attendee in the requested event. `mates` counts the other attendees with the same color in the same event, never the attendee themselves, and grows as others join. Absent while the attendee is not assigned yet |
+| AttendeeReveal | everything in AttendeeAssignmentView, plus ColorExplanation (nickname, blurb, traits, reason) | AttendeeAssignmentView + the ColorExplainer port | Same as AttendeeAssignmentView; the explanation always describes the attendee's own personality type and color |
 
 ## Queries
 
 | Repository | Accepts | Returns |
 |---|---|---|
-| EventDistributionRepository | SK::EventId | EventDistributionView |
+| EventDistributionRepository.byEvent | SK::EventId | EventDistributionView, or nothing for an unknown event |
+| EventDistributionRepository.assignmentOf | SK::EventId, SK::AttendeeId | AttendeeAssignmentView, or nothing while the attendee is not assigned |
 
-The live distribution is always read for one event, so no SK::Criteria is needed.
+Both reads target one event (and one attendee), so no SK::Criteria is needed. Reading an attendee's assignment in an unknown event fails with EventDistributionNotFound instead of returning nothing, so the caller can tell "not assigned yet" (keep polling) from "no such event".
+
+## Ports
+
+| Port | Operation | Returns | Implementations |
+|---|---|---|---|
+| TraitTypeMappingProvider | mapping() | TraitTypeMapping | Provisional static table until the catalog lane ships `CatalogTraitTypeMappingProvider` |
+| ColorExplainer | explain(AttendeeAssignmentView assignment) | ColorExplanation | `StaticColorExplainer`: copy from Catalog's PersonalityTypeProfile, plus a fixed reason sentence. The AI agent plugs in later behind the same port |
+
+**ColorExplanation:** the reveal copy for one assignment.
+- `nickname` and `blurb` describe the attendee's personality type, not the color, because groups are mixed on purpose.
+- `traits` are the type's 3 SK::Trait chips.
+- `reason` says why the attendee's group fits their type.
+
+All four fields are presentation copy and carry no rule. The explainer enriches the reveal and never decides anything: it gets an assignment that is already final, and the static implementation is the fallback, so the reveal never waits on an LLM.
 
 ---
 
@@ -134,6 +151,8 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 | Trait-type mapping | The table placing each of the 33 traits in exactly one personality type |
 | Tied attendee | An attendee whose traits point equally to two or more personality types; the tie resolves to the type their group lacks |
 | Assignment | The final group color and personality type given to one attendee; never changes |
+| Mates | The other attendees who share an attendee's color in the same event |
+| Reveal | The moment the attendee's phone shows their color and personality type, with the copy that explains it |
 | Distribution | The current state of an event's groups: per color, how many members and which personality types they hold |
 
 ---
@@ -141,4 +160,3 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 ## Open Questions
 
 - The content of the trait-type mapping is still provisional, until the catalog lane seeds it (see `docs/domain/catalog/model.md`). The names and descriptions of the 4 personality types are Catalog's PersonalityTypeProfile. Neither changes this model.
-- The attendee's color reveal reads their own assignment (color and personality type). Discovery only defined EventDistributionView (per color); a per-attendee read model was not discussed.

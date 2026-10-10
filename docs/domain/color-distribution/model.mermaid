@@ -69,6 +69,35 @@ classDiagram
   class EventDistributionRepository {
     <<Repository>>
     +byEvent(SK~EventId~ eventId) EventDistributionView
+    +assignmentOf(SK~EventId~ eventId, SK~AttendeeId~ attendeeId) AttendeeAssignmentView
+  }
+
+  class AttendeeAssignmentView {
+    <<ReadModel>>
+    +SK~EventId~ eventId
+    +SK~AttendeeId~ attendeeId
+    +Color color
+    +SK~PersonalityType~ personalityType
+    +int mates
+  }
+
+  class AttendeeReveal {
+    <<ReadModel>>
+    +AttendeeAssignmentView assignment
+    +ColorExplanation explanation
+  }
+
+  class ColorExplanation {
+    <<ReadModel>>
+    +string nickname
+    +string blurb
+    +SK~Trait~ traits
+    +string reason
+  }
+
+  class ColorExplainer {
+    <<Port>>
+    +explain(AttendeeAssignmentView assignment) ColorExplanation
   }
 
   EventDistribution *-- EventId : eventId
@@ -84,3 +113,8 @@ classDiagram
   EventDistribution ..> AttendeeGrouped : emits
   EventDistributionRepository ..> EventDistributionView : returns
   EventDistributionView *-- PersonalityTypeCollection
+  EventDistributionRepository ..> AttendeeAssignmentView : returns
+  ColorExplainer ..> AttendeeAssignmentView : explains
+  ColorExplainer ..> ColorExplanation : returns
+  AttendeeReveal *-- AttendeeAssignmentView
+  AttendeeReveal *-- ColorExplanation
