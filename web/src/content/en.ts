@@ -1,5 +1,9 @@
 import type { GroupColor } from "../domain/groupColor.ts";
 
+const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six"];
+const numberWord = (n: number) => NUMBER_WORDS[n] ?? String(n);
+const capitalise = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
 /**
  * Every user-facing string. Screens read from here, never from literals,
  * so copy can be edited (or translated) in one place.
@@ -56,6 +60,29 @@ const en = {
     submitting: "Sending your answers…",
     submitFailed: "Your answers didn't send.",
   },
+  sentence: {
+    lastOne: "last one",
+    title: "Finish the sentence",
+    hint: "Three words, picked for you just now. Tap one.",
+    thinking: "Finding three good ones…",
+    timeUpHint: (left: number) =>
+      `The clock stopped, nothing else did. Take your ${left === 1 ? "last word" : `${numberWord(left)} words`}.`,
+    timeUpPill: "Time's up, carry on",
+    progress: (picked: number, total: number) => `${picked} of ${total} words`,
+    loadingStatus: "Three more coming, one second.",
+    skip: "Skip the sentence",
+    /** The note under "skip", by how many words are left. */
+    footer: (left: number, total: number) =>
+      left === total
+        ? "Nothing here changes your colour. It's just for fun."
+        : left === 1
+          ? "One word to go."
+          : `${capitalise(numberWord(left))} more words and it's yours for the night.`,
+    footerLoading: "Your sentence stays put while they load.",
+    footerTimeUp: "The room waits for the last person. That is the whole point.",
+    done: "That'll do it",
+    doneNote: "It's yours to keep, nowhere near your colour.",
+  },
   sorted: {
     stats: (answers: number, seconds: number) => `${answers} answers · ${seconds} seconds`,
     title: (name: string) => [`${name},`, "you're sorted."] as const,
@@ -68,6 +95,8 @@ const en = {
   reveal: {
     eyebrow: "Your colour",
     mates: (color: string) => `others in this room are ${color} too`,
+    sentenceLabel: "You, in one sentence",
+    sentence: (sentence: string) => `“${sentence}”`,
     cta: "See the room",
   },
   room: {

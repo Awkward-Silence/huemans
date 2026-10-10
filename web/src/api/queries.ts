@@ -1,7 +1,8 @@
 import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { config } from "../config.ts";
 import { api } from "./index.ts";
-import type { SubmitAnswersRequest } from "./schemas.ts";
+import type { SentenceQuestion, SubmitAnswersRequest } from "./schemas.ts";
+import { suggestionsOrFallback } from "./wordSuggestions.ts";
 
 /**
  * Query keys and options for every API read. Screens use the hooks; route
@@ -20,6 +21,8 @@ const queryKeys = {
     [...queryKeys.attendee(eventId, attendeeId), "assignment"] as const,
   icebreaker: (eventId: string, attendeeId: string) =>
     [...queryKeys.attendee(eventId, attendeeId), "icebreaker"] as const,
+  wordSuggestions: (eventId: string, questionId: string, sentence: readonly string[]) =>
+    ["event", eventId, "sentence", questionId, sentence.join(" ")] as const,
 };
 
 const eventQuery = (eventId: string) =>
@@ -59,6 +62,28 @@ const icebreakerQuery = (eventId: string, attendeeId: string) =>
     refetchInterval: (query) => (query.state.data?.status === "ready" ? false : config.livePollMs),
   });
 
+/**
+ * The next 3 words for a sentence (starter included). Never fails: slow or
+ * failed requests resolve to fallback words. Words never reshuffle on screen,
+ * and the sentence step prefetches the follow-ups of the words it shows.
+ */
+const wordSuggestionsQuery = (
+  eventId: string,
+  question: SentenceQuestion,
+  attendeeId: string,
+  sentence: readonly string[],
+) =>
+  queryOptions({
+    queryKey: queryKeys.wordSuggestions(eventId, question.id, sentence),
+    queryFn: () =>
+      suggestionsOrFallback(
+        api.suggestWords(eventId, question.id, { attendeeId, sentence: [...sentence] }),
+        sentence,
+      ),
+    staleTime: Infinity,
+    retry: false,
+  });
+
 const useEvent = (eventId: string) => useQuery(eventQuery(eventId));
 const useQuiz = (eventId: string) => useQuery(quizQuery(eventId));
 const useAssignment = (eventId: string, attendeeId: string) =>
@@ -94,4 +119,5 @@ export {
   useQuiz,
   useRoom,
   useSubmitAnswers,
+  wordSuggestionsQuery,
 };

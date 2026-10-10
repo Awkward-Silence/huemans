@@ -1,0 +1,54 @@
+.intro {
+  margin-top: var(--space-lg);
+}
+
+.thinking {
+  animation: dim 1.6s ease-in-out infinite;
+}
+
+/* Room for three lines of the big sentence, so the cards below don't jump. */
+.sentence {
+  min-height: 176px;
+  margin-top: var(--space-lg);
+}
+
+.count {
+  letter-spacing: 0.08em;
+}
+
+.choices {
+  margin-top: var(--space-md);
+  margin-inline: -4px;
+}
+
+.footer {
+  padding-top: var(--space-lg);
+}
+
+/* A quiet text link, not the shouty uppercase ghost button. */
+.footer .skip {
+  color: var(--color-text-muted);
+  font-size: var(--type-small-size);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@keyframes dim {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thinking {
+    animation: none;
+    opacity: 0.7;
+  }
+}

@@ -35,17 +35,17 @@
 
 ## 6. Web: API layer
 
-- [ ] 6.1 Add `SentenceQuestionSchema` (optional `sentence` on `QuizSchema`), `WordSuggestionsRequestSchema` and `WordSuggestionsSchema` (exactly 3 words, `source`) to `web/src/api/schemas.ts`, and verify `npm run typecheck` passes
-- [ ] 6.2 Add `suggestWords` to `ApiClient`, `httpClient.ts` and `mockClient.ts` (the mock returns `sentence` in the quiz and 3 random words from local lists after its latency), and verify `mockClient.test.ts` covers both
-- [ ] 6.3 Add `wordSuggestionsQuery` to `queries.ts` (key includes the sentence, `staleTime: Infinity`, `retry: false`, a 1.5 s race resolving to client fallback words from `web/src/content/` on timeout or error), and verify a vitest that a rejected or slow request yields 3 fallback words
+- [x] 6.1 Add `SentenceQuestionSchema` (optional `sentence` on `QuizSchema`), `WordSuggestionsRequestSchema` and `WordSuggestionsSchema` (exactly 3 words, `source`) to `web/src/api/schemas.ts`, and verify `npm run typecheck` passes
+- [x] 6.2 Add `suggestWords` to `ApiClient`, `httpClient.ts` and `mockClient.ts` (the mock returns `sentence` in the quiz and 3 random words from local lists after its latency), and verify `mockClient.test.ts` covers both
+- [x] 6.3 Add `wordSuggestionsQuery` to `queries.ts` (key includes the sentence, `staleTime: Infinity`, `retry: false`, a 1.5 s race resolving to client fallback words from `web/src/content/` on timeout or error), and verify a vitest that a rejected or slow request yields 3 fallback words
 
 ## 7. Web: sentence step
 
-- [ ] 7.1 Extend the session with `sentence: string[]` and `sentenceSkipped: boolean`, and verify a vitest that an old session without these fields still parses
-- [ ] 7.2 Build the sentence step (sentence so far, 3 word buttons, skip) shown after the last multiple-choice question when `quiz.sentence` is present, with copy in `web/src/content/`, and verify in `npm run dev` on `/join/demo` that 4 taps build the sentence and that a reload mid-sentence resumes
-- [ ] 7.3 Prefetch the follow-up suggestions for the 3 shown words with `queryClient.prefetchQuery`, skipping the last pick, and verify a vitest (or the network panel in mock mode) that tapping a prefetched word shows the next words with no loading state
-- [ ] 7.4 Change the quiz auto-submit to fire once the multiple-choice questions are answered and the sentence is complete or skipped, with the submit body unchanged, and verify `progress.test.ts`/`steps.test.ts` cover both "sentence done" and "skipped"
-- [ ] 7.5 Show the finished sentence on `RevealScreen` and nothing when it was skipped, and verify both in `/join/demo`
+- [x] 7.1 Extend the session with `sentence: string[]` and `sentenceSkipped: boolean`, and verify a vitest that an old session without these fields still parses
+- [x] 7.2 Build the sentence step (sentence so far, 3 word buttons, skip) shown after the last multiple-choice question when `quiz.sentence` is present, with copy in `web/src/content/`, and verify in `npm run dev` on `/join/demo` that 4 taps build the sentence and that a reload mid-sentence resumes
+- [x] 7.3 Prefetch the follow-up suggestions for the 3 shown words with `queryClient.prefetchQuery`, skipping the last pick, and verify a vitest (or the network panel in mock mode) that tapping a prefetched word shows the next words with no loading state
+- [x] 7.4 Change the quiz auto-submit to fire once the multiple-choice questions are answered and the sentence is complete or skipped, with the submit body unchanged, and verify `progress.test.ts`/`steps.test.ts` cover both "sentence done" and "skipped"
+- [x] 7.5 Show the finished sentence on `RevealScreen` and nothing when it was skipped, and verify both in `/join/demo`
 
 ## 8. End-to-end checks
 
