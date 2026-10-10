@@ -1,0 +1,37 @@
+.text {
+  margin: 0;
+}
+
+.default {
+  color: var(--color-text);
+}
+.muted {
+  color: var(--color-text-muted);
+}
+.accent {
+  color: var(--color-accent);
+}
+.inherit {
+  color: inherit;
+}
+.groupText {
+  color: var(--group-text);
+}
+.groupInk {
+  color: var(--group-ink);
+}
+.groupInkSoft {
+  color: var(--group-ink-soft);
+}
+.danger {
+  color: var(--color-danger);
+}
+
+.center {
+  text-align: center;
+  margin-inline: auto;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}

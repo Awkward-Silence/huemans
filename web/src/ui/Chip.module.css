@@ -1,0 +1,21 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  font-size: var(--type-caption-size);
+  line-height: 1.2;
+}
+
+.accent {
+  padding: 5px 11px;
+  background: var(--color-accent-tint);
+  color: var(--color-accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.outline {
+  padding: 7px 13px;
+  border: 1px solid currentColor;
+  letter-spacing: 0.04em;
+}

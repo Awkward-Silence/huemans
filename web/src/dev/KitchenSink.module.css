@@ -1,0 +1,26 @@
+.page {
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  padding: var(--space-3xl) var(--layout-screen-padding-x);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.groupPanel {
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: var(--group-bg);
+}
+
+.backdrop {
+  position: relative;
+  height: 260px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}

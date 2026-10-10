@@ -1,0 +1,33 @@
+.track {
+  flex-shrink: 0;
+  width: 100%;
+  background: var(--color-track);
+  overflow: hidden;
+}
+
+.flush {
+  height: 6px;
+}
+
+.rounded {
+  height: 6px;
+  border-radius: 3px;
+}
+
+.fill {
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  transform: scaleX(var(--progress));
+  transition: transform 0.25s linear;
+}
+
+.accent {
+  background: var(--color-accent);
+}
+.text {
+  background: var(--color-text);
+}
+.group {
+  background: var(--group-bg);
+}

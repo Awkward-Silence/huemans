@@ -25,7 +25,7 @@ pnpm jest -t "testRejectsVersion4"                            # one test by name
 pnpm migration:create                # new migration in api/migrations
 ```
 
-- Layout: NestJS bootstrap in `apps/api/src`; each bounded context in `src/<BC>/{Domain,Application,Infrastructure}` (ports in `Domain/Port`, one `Application/ApplicationService.ts`, `Infrastructure/{Http,Persistence/MikroOrm,<BC>Module.ts}`); alias `@Huemans/*` -> `src/*`.
+- Layout: a single NestJS app — entry `src/main.ts`, `AppModule` in `src/app.module.ts`; each bounded context in `src/<BC>/{Domain,Application,Infrastructure}` (ports in `Domain/Port`, one `Application/ApplicationService.ts`, `Infrastructure/{Http,Persistence/MikroOrm,<BC>Module.ts}`); alias `@Huemans/*` -> `src/*`.
 - Persistence is MikroORM `EntitySchema` + value-object column types (`VO.uuid/string/number/enum` in `src/Shared/Infrastructure/Persistence/MikroOrm/Types`); schema files must be named `*Schema.ts` to be discovered. Never put ORM or Nest decorators in `Domain/` — `pnpm lint` fails on it.
 - Integration tests use `tests/Support/integration.ts` (`bootIntegration`, `clearDatabase`); functional tests use `tests/Support/functional.ts` (`bootFunctional`, `getJson`, `postJson`). The MikroORM CLI does not read `.env` by itself — always go through the `migration:*` scripts.
 
@@ -64,6 +64,21 @@ tools/       content and validation scripts (not production code)
 - **Bounded contexts in `api/`:** catalog, event, participation, color distribution (core domain, full DDD + tests), night icebreaker, agents. Each keeps a `domain/` folder free of NestJS decorators.
 - **Key seam:** Participation publishes `QuestionnaireCompleted` with the attendee's trait profile; Color Distribution emits `AttendeeGrouped { eventId, attendeeId, color, personalityType }`, pushed in realtime to the phone and host screen.
 - **Agents enrich, they never decide or block.** Mastra runs inside NestJS behind ports (`ColorExplainer`, `IcebreakerExplainer`), each with a static fallback. No LLM call in the join, answer, distribution or close paths.
+
+## Commands
+
+`web/` (run inside `web/`; structure and recipes in `web/README.md`):
+
+```
+npm run dev                                   # Vite dev server; open /join/demo (mock API) or /dev/kitchen-sink
+npm run build                                 # tsc -b + vite build
+npm run typecheck | npm run lint | npm run format
+npm test                                      # vitest run
+npx vitest run src/features/join/steps.test.ts   # one file
+npx vitest run -t "redirectFor"               # by test name
+```
+
+`VITE_API_MODE=mock|http` picks the in-browser mock or the real `api/` (`VITE_API_URL`). Theme tokens live in `web/src/theme/`, copy in `web/src/content/`, API schemas in `web/src/api/schemas.ts` (to move into `contracts/` once it exists).
 
 ## Workflow
 

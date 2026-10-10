@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { DatabaseHealthProbe } from '../../../apps/api/src/Health/DatabaseHealthProbe';
+import { DatabaseHealthProbe } from '@Huemans/Health/DatabaseHealthProbe';
 import { bootFunctional, getJson } from '../../Support/functional';
 
 describe('GET /health', () => {

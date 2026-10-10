@@ -1,0 +1,10 @@
+.container {
+  container-type: inline-size;
+  width: 100%;
+}
+
+.text {
+  margin: 0;
+  white-space: nowrap;
+  font-size: min(var(--fit-max), calc(100cqi / (var(--fit-chars) * var(--fit-glyph))));
+}

@@ -1,0 +1,4 @@
+/* The form only groups the fields; the Screen column does the layout. */
+.form {
+  display: contents;
+}
