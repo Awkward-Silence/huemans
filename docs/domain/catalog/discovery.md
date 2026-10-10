@@ -55,12 +55,13 @@
 
 ## Read Models
 <!-- Read-only contexts. Fields reference VOs, except rule-free primitives. -->
+<!-- Superseded in session 2: Catalog is read-write; the reads below are now served from the aggregates (Question, Icebreaker, PersonalityTypes) through DTOs. -->
 | Name | Fields | Source (producer) | Read invariants | Status |
 |---|---|---|---|---|
-| Question | id: QuestionId; theme: Theme; text (non-empty, rule-free); answers: AnswerCollection | Seed from `tools/` questions JSON | — | ✅ Confirmed |
-| Icebreaker | id: IcebreakerId; theme: Theme; text (non-empty, rule-free); traits: IcebreakerTraitCollection | Seed from `tools/` icebreakers JSON | — | ✅ Confirmed |
-| PersonalityTypeProfile | type: SK::PersonalityType; nickname (rule-free); blurb (rule-free); traits: ProfileTraitCollection | Seed from `tools/` personality types JSON (new) | Exactly one profile per SK::PersonalityType (4) | ✅ Confirmed |
-| TraitTypeMapping | 33 SK::Trait → SK::PersonalityType pairs | Seed from `tools/` mapping JSON (new) | Every one of the 33 traits appears exactly once | ✅ Confirmed |
+| Question | id: QuestionId; theme: Theme; text (non-empty, rule-free); answers: AnswerCollection | Seed from `tools/` questions JSON | — | ❌ Superseded (session 2) |
+| Icebreaker | id: IcebreakerId; theme: Theme; text (non-empty, rule-free); traits: IcebreakerTraitCollection | Seed from `tools/` icebreakers JSON | — | ❌ Superseded (session 2) |
+| PersonalityTypeProfile | type: SK::PersonalityType; nickname (rule-free); blurb (rule-free); traits: ProfileTraitCollection | Seed from `tools/` personality types JSON (new) | Exactly one profile per SK::PersonalityType (4) | ❌ Superseded (session 2) |
+| TraitTypeMapping | 33 SK::Trait → SK::PersonalityType pairs | Seed from `tools/` mapping JSON (new) | Every one of the 33 traits appears exactly once | ❌ Superseded (session 2) |
 
 ## Domain Events
 | Name | Trigger | Payload | Status |
@@ -75,17 +76,17 @@
 ## Rule placement
 | Rule | Lives in | Where exactly |
 |---|---|---|
-| Catalog JSON is valid before it is stored | boundary | Seed command validates the `tools/` JSON with the api's own schema |
+| Catalog JSON is valid before it is stored | boundary | Seed command validates the shape of the `tools/` JSON; since session 2 the content rules are the aggregates' |
 | Reveal copy (nickname, blurb, traits, reason sentence) for an assignment | infrastructure | Color Distribution's `ColorExplainer` port; its static implementation reads the PersonalityTypeProfile from Catalog and writes the reason. The Mastra agent plugs into the same port later |
 | The seed runs only once per database; the database records when it was seeded, and a later run does nothing | infrastructure | A seed record (seeded-at timestamp) in the database, checked before seeding |
 | An event's question set does not change once the event runs, whatever happens to the catalog | domain (consumer) | Participation/Event fix the question set of an event when it runs; Catalog revisions never reach a running or past event |
 | Which questions or icebreaker an event uses | domain (consumer) | Each consuming context selects from Catalog's full lists (Participation picks questions, Night icebreaker picks the icebreaker) |
-| Each profile trait is mapped to the profile's type | boundary | Seed command (and `tools/` validate) cross-checks the profiles JSON against the mapping JSON |
+| Each profile trait is mapped to the profile's type | domain | PersonalityTypes.define (session 2; was: the seed command's cross-check) |
 
 ## Open Ambiguities
 | Question | Context | Resolution |
 |---|---|---|
-| Where is "each profile trait is mapped to its type" checked? | The rule spans two read models (PersonalityTypeProfile and TraitTypeMapping) | At the seed: content is read-only, so the seed is the only place it can break |
+| Where is "each profile trait is mapped to its type" checked? | The rule spans two read models (PersonalityTypeProfile and TraitTypeMapping) | Session 1: at the seed. Superseded in session 2: in the PersonalityTypes aggregate |
 | Who owns PersonalityType: the shared kernel, or Catalog with Color Distribution keeping its own copy? | Color Distribution defines it as a Local VO, and Catalog needs the same 4 codes for profiles and the mapping | Shared kernel: both contexts reference SK::PersonalityType |
 | Is Catalog really read-only, or is loading content (the seed) a domain action with rules the domain must protect? | Session 2 code review: every write-side rule (4 answers, unique ids, 1-3 traits, one profile per type, chips mapped to their type, every trait once, answers replaced, nothing deleted) runs on zod-inferred primitives in Infrastructure; the domain objects are only built when reading | Read-write. Reading `tools/` JSON is infrastructure; the seed maps it into the aggregates, which enforce the rules. For the MVP the seed may write rows straight to the database, as long as what it writes is exactly what the aggregates accepted |
 | Does an unchanged re-seed record *Revised events? | The seed is idempotent and re-run on every deploy; revising 101 unchanged items would emit 101 events | Moot in production: the seed runs only once per database, and the database records when it was seeded; a later run does nothing |
