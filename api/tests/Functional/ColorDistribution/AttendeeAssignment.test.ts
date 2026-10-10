@@ -57,6 +57,10 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
     const response = await getJson(app, `/events/${EventId.random().value}/attendees/${attendeeId}/assignment`);
 
     expect(response.status).toBe(404);
+    expect(response.body).toEqual({
+      statusCode: 404,
+      message: expect.stringContaining('has no distribution') as string,
+    });
   });
 
   it('testInvalidAttendeeIdIsBadRequest', async () => {

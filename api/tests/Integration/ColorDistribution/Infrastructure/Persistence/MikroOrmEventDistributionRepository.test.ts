@@ -127,11 +127,11 @@ describe('MikroOrmEventDistributionRepository', () => {
       attendeeId: attendeeId.value,
       color: 'amber',
       personalityType: 'explorer',
-      groupMembers: 1,
+      mates: 0,
     });
   });
 
-  it('testAssignmentCountsTheMembersOfItsGroupOnly', async () => {
+  it('testMatesAreTheOtherMembersOfTheSameGroup', async () => {
     const first = AttendeeId.random();
     await repository.save(EventDistribution.open(eventId));
     await assignInTransaction(first);
@@ -140,7 +140,7 @@ describe('MikroOrmEventDistributionRepository', () => {
     }
 
     // Five attendees fill amber, coral, teal, violet, then amber again.
-    expect((await repository.assignmentOf(eventId, first))?.groupMembers).toBe(2);
+    expect((await repository.assignmentOf(eventId, first))?.mates).toBe(1);
   });
 
   it('testAssignmentOfAnUnknownAttendeeOrEventIsNull', async () => {

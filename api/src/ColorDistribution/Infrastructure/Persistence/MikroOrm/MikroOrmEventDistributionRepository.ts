@@ -79,9 +79,10 @@ export class MikroOrmEventDistributionRepository
   async assignmentOf(eventId: EventId, attendeeId: AttendeeId): Promise<AttendeeAssignmentView | null> {
     const [row] = await this.em
       .getConnection()
-      .execute<{ color: ColorValue; personality_type: PersonalityTypeValue; group_members: string }[]>(
+      .execute<{ color: ColorValue; personality_type: PersonalityTypeValue; mates: string }[]>(
         `select a.color, a.personality_type,
-              (select count(*) from assignments g where g.event_id = a.event_id and g.color = a.color) as group_members
+              (select count(*) from assignments g
+                where g.event_id = a.event_id and g.color = a.color and g.attendee_id <> a.attendee_id) as mates
          from assignments a
         where a.event_id = ? and a.attendee_id = ?`,
         [eventId.value, attendeeId.value],
@@ -94,7 +95,7 @@ export class MikroOrmEventDistributionRepository
       attendeeId: attendeeId.value,
       color: row.color,
       personalityType: row.personality_type,
-      groupMembers: Number(row.group_members),
+      mates: Number(row.mates),
     };
   }
 }
