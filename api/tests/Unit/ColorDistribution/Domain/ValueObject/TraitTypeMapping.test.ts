@@ -1,4 +1,4 @@
-import { PersonalityType } from '@Huemans/ColorDistribution/Domain/ValueObject/PersonalityType';
+import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 import { TraitTypeMapping } from '@Huemans/ColorDistribution/Domain/ValueObject/TraitTypeMapping';
 import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentError';
 import { Trait, TRAITS } from '@Huemans/Shared/Domain/ValueObject/Trait';

@@ -1,6 +1,6 @@
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
-import { Assignment } from '../Assignment';
+import { AttendeeAssignmentView } from '../AttendeeAssignmentView';
 import { EventDistribution } from '../EventDistribution';
 import { EventDistributionView } from '../EventDistributionView';
 
@@ -12,5 +12,5 @@ export interface EventDistributionRepository {
   searchForUpdate(eventId: EventId): Promise<EventDistribution | null>;
   exists(eventId: EventId): Promise<boolean>;
   byEvent(eventId: EventId): Promise<EventDistributionView | null>;
-  assignmentOf(eventId: EventId, attendeeId: AttendeeId): Promise<Assignment | null>;
+  assignmentOf(eventId: EventId, attendeeId: AttendeeId): Promise<AttendeeAssignmentView | null>;
 }

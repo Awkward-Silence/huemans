@@ -1,6 +1,6 @@
 import { TestingModule } from '@nestjs/testing';
 import { EventDistribution } from '@Huemans/ColorDistribution/Domain/EventDistribution';
-import { PersonalityType } from '@Huemans/ColorDistribution/Domain/ValueObject/PersonalityType';
+import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 import { TraitProfile } from '@Huemans/ColorDistribution/Domain/ValueObject/TraitProfile';
 import { TraitTypeMapping } from '@Huemans/ColorDistribution/Domain/ValueObject/TraitTypeMapping';
 import { AssignmentSchema } from '@Huemans/ColorDistribution/Infrastructure/Persistence/MikroOrm/AssignmentSchema';
@@ -91,10 +91,10 @@ describe('MikroOrmEventDistributionRepository', () => {
     expect(await repository.byEvent(eventId)).toEqual({
       eventId: eventId.value,
       groups: [
-        { color: 'RED', members: 1, personalityTypes: ['explorer'] },
-        { color: 'YELLOW', members: 1, personalityTypes: ['explorer'] },
-        { color: 'GREEN', members: 0, personalityTypes: [] },
-        { color: 'BLUE', members: 0, personalityTypes: [] },
+        { color: 'amber', members: 1, personalityTypes: ['explorer'] },
+        { color: 'coral', members: 1, personalityTypes: ['explorer'] },
+        { color: 'teal', members: 0, personalityTypes: [] },
+        { color: 'violet', members: 0, personalityTypes: [] },
       ],
     });
   });
@@ -122,12 +122,25 @@ describe('MikroOrmEventDistributionRepository', () => {
 
     const assignment = await repository.assignmentOf(eventId, attendeeId);
 
-    expect(assignment?.toDTO()).toEqual({
+    expect(assignment).toEqual({
       eventId: eventId.value,
       attendeeId: attendeeId.value,
-      color: 'RED',
+      color: 'amber',
       personalityType: 'explorer',
+      mates: 0,
     });
+  });
+
+  it('testMatesAreTheOtherMembersOfTheSameGroup', async () => {
+    const first = AttendeeId.random();
+    await repository.save(EventDistribution.open(eventId));
+    await assignInTransaction(first);
+    for (let i = 0; i < 4; i++) {
+      await assignInTransaction(AttendeeId.random());
+    }
+
+    // Five attendees fill amber, coral, teal, violet, then amber again.
+    expect((await repository.assignmentOf(eventId, first))?.mates).toBe(1);
   });
 
   it('testAssignmentOfAnUnknownAttendeeOrEventIsNull', async () => {

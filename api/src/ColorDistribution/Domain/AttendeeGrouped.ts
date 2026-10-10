@@ -3,7 +3,7 @@ import { DomainEvent } from '@Huemans/Shared/Domain/DomainEvent';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { Color } from './ValueObject/Color';
-import { PersonalityType } from './ValueObject/PersonalityType';
+import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 
 export class AttendeeGrouped extends DomainEvent {
   static readonly EVENT_NAME = 'color_distribution.attendee_grouped';

@@ -3,7 +3,7 @@ import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentErro
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { Assignment } from './Assignment';
 import { Color } from './ValueObject/Color';
-import { PersonalityType } from './ValueObject/PersonalityType';
+import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 
 export class AssignmentCollection extends Collection<Assignment> {
   constructor(assignments: readonly Assignment[]) {

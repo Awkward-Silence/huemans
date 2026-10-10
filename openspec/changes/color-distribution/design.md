@@ -36,7 +36,7 @@ Two inputs come from other lanes and are not built here: `EventCreated` (Event c
 
 **Persistence.** Tables `event_distributions(event_id PK)` and `assignments(event_id, attendee_id, color, personality_type, assigned_at, PK(event_id, attendee_id))`. The aggregate is rebuilt from its assignments; group counts are derived, never stored.
 
-**Reads.** `EventDistributionRepository.byEvent(eventId)` builds `EventDistributionView` with one grouped query and fills in missing colors with zero; it returns nothing for an unknown event (HTTP 404). The attendee assignment is a single-row read (HTTP 404 with a "not assigned" body when missing, so the client can tell it apart from an unknown route).
+**Reads.** `EventDistributionRepository.byEvent(eventId)` builds `EventDistributionView` with one grouped query and fills in missing colors with zero; it returns nothing for an unknown event (HTTP 404). The attendee assignment is a single-row read answered as a union on `status`: `200 {status: "assigned", ...}` or `200 {status: "pending"}` while the attendee has no group, never a 404, because the web treats 404 as final and stops polling. An unknown event is a 404. An unknown attendee reads as pending until Participation can tell it apart. The assigned body also carries the static reveal copy of the personality type (`api/src/Types/PersonalityType.ts`), `mates` (live group size minus one, counted in the same query) and `reason` with an empty color `lean`, so it fits the web's existing schema.
 
 **HTTP.** `GET /events/:eventId/distribution` and `GET /events/:eventId/attendees/:attendeeId/assignment`. Path ids are validated as UUIDv7 at the boundary (400 otherwise). Response shapes go into `contracts/`, together with the `AttendeeGrouped` payload.
 

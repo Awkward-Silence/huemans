@@ -1,7 +1,7 @@
 import { Collection } from '@Huemans/Shared/Domain/Collection';
 import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentError';
 import { Trait } from '@Huemans/Shared/Domain/ValueObject/Trait';
-import { PERSONALITY_TYPES, PersonalityType } from './PersonalityType';
+import { PERSONALITY_TYPES, PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 import { TraitTypeMapping } from './TraitTypeMapping';
 
 export class TraitProfile extends Collection<Trait> {

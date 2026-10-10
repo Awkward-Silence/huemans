@@ -7,7 +7,7 @@ The hackathon requires AI features. The places where AI makes huemans feel perso
 ## What Changes
 
 - Add an agents module in `api/` that hosts Mastra inside the NestJS process and exposes ports: `ColorExplainer` and `IcebreakerExplainer`.
-- Personalized color description: after the reveal, explain the attendee's color using their own answers ("You're BLUE because you'd spend three hours researching plant CPR"). It arrives asynchronously after the color is shown.
+- Personalized color description: after the reveal, explain the attendee's color using their own answers ("You're violet because you'd spend three hours researching plant CPR"). It arrives asynchronously after the color is shown.
 - Icebreaker explanation: when the event is revealed, add a short line on why this icebreaker fits tonight's room.
 - Every port has a static fallback (the catalog color description, no explanation) used on timeout or error. No LLM call sits in the join, answer, distribution or close paths.
 - Stretch: an offline Mastra workflow that proposes trait-to-color weights for human review.

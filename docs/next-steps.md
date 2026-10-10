@@ -29,7 +29,7 @@ The plan for the 24h hackathon, based on the updated `initial-raw-specs.md` and 
 ```
 before the demo: bots + a few people pre-answer, so the room has a profile
 judges scan QR -> intro -> name -> 4-5 funny questions (soft timer)
-  -> "tap to reveal your color" -> "You are BLUE" + why (AI)
+  -> "tap to reveal your color" -> "You are VIOLET" + why (AI)
   -> live distribution of the 4 colors fills up
   -> presenter taps "reveal" -> tonight's icebreaker on every phone
   -> phones go full-screen LED badge: name + "ask me anything"

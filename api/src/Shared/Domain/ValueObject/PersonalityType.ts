@@ -1,4 +1,4 @@
-import { EnumValueObject } from '@Huemans/Shared/Domain/ValueObject/EnumValueObject';
+import { EnumValueObject } from './EnumValueObject';
 
 // Provisional codes until the catalog names the types.
 export const PERSONALITY_TYPES = ['explorer', 'connector', 'planner', 'dreamer'] as const;

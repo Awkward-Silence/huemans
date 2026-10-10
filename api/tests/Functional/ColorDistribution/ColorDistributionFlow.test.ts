@@ -51,21 +51,43 @@ describe('Color distribution flow', () => {
     // A repeated EventCreated must not reset the distribution.
     await publish(app, new EventCreated(eventId));
 
-    expect(await assignmentOf(ana)).toEqual({ eventId, attendeeId: ana, color: 'RED', personalityType: 'explorer' });
-    expect(await assignmentOf(bea)).toEqual({ eventId, attendeeId: bea, color: 'YELLOW', personalityType: 'explorer' });
-    expect(await assignmentOf(carla)).toEqual({
+    expect(await assignmentOf(ana)).toMatchObject({
+      status: 'assigned',
+      eventId,
+      attendeeId: ana,
+      color: 'amber',
+      personalityType: 'explorer',
+    });
+    expect(await assignmentOf(bea)).toMatchObject({
+      status: 'assigned',
+      eventId,
+      attendeeId: bea,
+      color: 'coral',
+      personalityType: 'explorer',
+    });
+    expect(await assignmentOf(carla)).toMatchObject({
+      status: 'assigned',
       eventId,
       attendeeId: carla,
-      color: 'GREEN',
+      color: 'teal',
       personalityType: 'planner',
+      // Eva joins teal later, so the read is live.
+      mates: 1,
     });
-    expect(await assignmentOf(dani)).toEqual({
+    expect(await assignmentOf(dani)).toMatchObject({
+      status: 'assigned',
       eventId,
       attendeeId: dani,
-      color: 'BLUE',
+      color: 'violet',
       personalityType: 'connector',
     });
-    expect(await assignmentOf(eva)).toEqual({ eventId, attendeeId: eva, color: 'GREEN', personalityType: 'explorer' });
+    expect(await assignmentOf(eva)).toMatchObject({
+      status: 'assigned',
+      eventId,
+      attendeeId: eva,
+      color: 'teal',
+      personalityType: 'explorer',
+    });
 
     const distribution = await getJson(app, `/events/${eventId}/distribution`);
     expect((distribution.body as { groups: { members: number }[] }).groups.map((group) => group.members)).toEqual([

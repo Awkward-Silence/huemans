@@ -7,7 +7,7 @@ import { AttendeeGrouped } from './AttendeeGrouped';
 import { EventDistributionView } from './EventDistributionView';
 import { AssignmentCollection } from './AssignmentCollection';
 import { Color, COLORS } from './ValueObject/Color';
-import { PersonalityType } from './ValueObject/PersonalityType';
+import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 import { TraitProfile } from './ValueObject/TraitProfile';
 import { TraitTypeMapping } from './ValueObject/TraitTypeMapping';
 

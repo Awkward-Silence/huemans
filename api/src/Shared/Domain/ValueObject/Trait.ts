@@ -1,6 +1,6 @@
 import { EnumValueObject } from './EnumValueObject';
 
-// Mirrors tools/src/questions/Traits.ts, the catalog's content contract (api never imports tools/).
+// The 33 character traits an answer or icebreaker can point to. tools/ validates the catalog against this list.
 export const TRAITS = [
   'adventurous',
   'ambitious',

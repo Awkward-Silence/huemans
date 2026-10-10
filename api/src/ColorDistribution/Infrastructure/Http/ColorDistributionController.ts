@@ -1,10 +1,6 @@
 import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 import { z } from 'zod';
-import type {
-  AttendeeAssignment,
-  AttendeeNotAssigned,
-  EventDistributionView,
-} from '../../../../../contracts/colorDistribution';
+import type { AttendeeAssignmentResponse, EventDistributionView } from '../../../../../contracts/colorDistribution';
 import { ApplicationService } from '@Huemans/ColorDistribution/Application/ApplicationService';
 import { ZodValidationPipe } from '@Huemans/Shared/Infrastructure/Http/ZodValidationPipe';
 
@@ -27,15 +23,13 @@ export class ColorDistributionController {
   async assignment(
     @Param('eventId', UuidV7Param) eventId: string,
     @Param('attendeeId', UuidV7Param) attendeeId: string,
-  ): Promise<AttendeeAssignment> {
-    const assignment = await this.service.assignmentOf(eventId, attendeeId);
-    if (assignment === null) {
-      throw new NotFoundException({
-        statusCode: 404,
-        error: 'not_assigned',
-        message: `Attendee <${attendeeId}> is not assigned in event <${eventId}>`,
-      } satisfies AttendeeNotAssigned);
+  ): Promise<AttendeeAssignmentResponse> {
+    const reveal = await this.service.assignmentOf(eventId, attendeeId);
+    // Not assigned yet is a 200, never a 404: the web treats 404 as final and stops polling.
+    if (reveal === null) {
+      return { status: 'pending' };
     }
-    return assignment;
+    const { reason, ...assignment } = reveal;
+    return { status: 'assigned', ...assignment, reason: { lean: [], text: reason } };
   }
 }

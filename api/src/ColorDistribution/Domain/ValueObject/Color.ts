@@ -1,7 +1,7 @@
 import { EnumValueObject } from '@Huemans/Shared/Domain/ValueObject/EnumValueObject';
 
-// Declaration order is the tie-break order for assignment.
-export const COLORS = ['RED', 'YELLOW', 'GREEN', 'BLUE'] as const;
+// The four group colors, named as in web/. Declaration order is the tie-break order for assignment.
+export const COLORS = ['amber', 'coral', 'teal', 'violet'] as const;
 
 export type ColorValue = (typeof COLORS)[number];
 

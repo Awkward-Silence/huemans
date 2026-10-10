@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
-import { QuestionListSchema } from "./QuestionList.ts";
-import { THEMES } from "./Themes.ts";
-import { TRAITS } from "./Traits.ts";
+import { QuestionListSchema } from "../../../api/src/Catalog/Infrastructure/Content/QuestionList.ts";
+import { THEMES } from "../../../api/src/Catalog/Domain/ValueObject/Theme.ts";
+import { TRAITS } from "../../../api/src/Shared/Domain/ValueObject/Trait.ts";
 
 
 const file = process.argv[2];

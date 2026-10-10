@@ -1,0 +1,114 @@
+classDiagram
+  class Question {
+    <<ReadModel>>
+    +QuestionId id
+    +Theme theme
+    +string text
+    +AnswerCollection answers
+  }
+
+  class Icebreaker {
+    <<ReadModel>>
+    +IcebreakerId id
+    +Theme theme
+    +string text
+    +IcebreakerTraitCollection traits
+  }
+
+  class PersonalityTypeProfile {
+    <<ReadModel>>
+    +SK~PersonalityType~ type
+    +string nickname
+    +string blurb
+    +ProfileTraitCollection traits
+  }
+
+  class TraitTypeMapping {
+    <<ReadModel>>
+    +Map~SK_Trait, SK_PersonalityType~ pairs
+  }
+
+  class CatalogRepository {
+    <<Repository>>
+    +allQuestions() QuestionCollection
+    +allIcebreakers() IcebreakerCollection
+    +profileOf(SK~PersonalityType~ type) PersonalityTypeProfile
+    +mapping() TraitTypeMapping
+  }
+
+  class QuestionId {
+    <<ValueObject>>
+    +string value
+  }
+
+  class AnswerId {
+    <<ValueObject>>
+    +string value
+  }
+
+  class IcebreakerId {
+    <<ValueObject>>
+    +string value
+  }
+
+  class Theme {
+    <<ValueObject>>
+    +string value
+  }
+
+  class Answer {
+    <<ValueObject>>
+    +AnswerId id
+    +string text
+    +SK~Trait~ trait
+  }
+
+  class AnswerCollection {
+    <<Collection>>
+  }
+
+  class IcebreakerTraitCollection {
+    <<Collection>>
+  }
+
+  class ProfileTraitCollection {
+    <<Collection>>
+  }
+
+  class Trait {
+    <<SharedKernel>>
+  }
+
+  class PersonalityType {
+    <<SharedKernel>>
+  }
+
+  class CatalogContentEdited {
+    <<DomainEvent>>
+  }
+
+  CatalogRepository ..> Question : returns
+  CatalogRepository ..> Icebreaker : returns
+  CatalogRepository ..> PersonalityTypeProfile : returns
+  CatalogRepository ..> TraitTypeMapping : returns
+
+  Question *-- QuestionId
+  Question *-- Theme
+  Question *-- AnswerCollection
+  AnswerCollection "1" o-- "4" Answer : contains
+  Answer *-- AnswerId
+  Answer --> Trait
+
+  Icebreaker *-- IcebreakerId
+  Icebreaker *-- Theme
+  Icebreaker *-- IcebreakerTraitCollection
+  IcebreakerTraitCollection "1" o-- "1..3" Trait : contains
+
+  PersonalityTypeProfile --> PersonalityType
+  PersonalityTypeProfile *-- ProfileTraitCollection
+  ProfileTraitCollection "1" o-- "3" Trait : contains
+
+  TraitTypeMapping "1" o-- "33" Trait : maps
+  TraitTypeMapping --> PersonalityType
+
+  CatalogRepository ..> CatalogContentEdited : deferred

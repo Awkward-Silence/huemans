@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AssignmentDTO } from '@Huemans/ColorDistribution/Domain/Assignment';
+import { AttendeeReveal } from '@Huemans/ColorDistribution/Domain/AttendeeReveal';
 import { EventDistribution } from '@Huemans/ColorDistribution/Domain/EventDistribution';
 import { EventDistributionNotFound } from '@Huemans/ColorDistribution/Domain/EventDistributionNotFound';
 import { EventDistributionView } from '@Huemans/ColorDistribution/Domain/EventDistributionView';
+import { COLOR_EXPLAINER, ColorExplainer } from '@Huemans/ColorDistribution/Domain/Port/ColorExplainer';
 import {
   EVENT_DISTRIBUTION_REPOSITORY,
   EventDistributionRepository,
@@ -25,6 +26,7 @@ export class ApplicationService {
     @Inject(TRAIT_TYPE_MAPPING_PROVIDER) private readonly mappings: TraitTypeMappingProvider,
     @Inject(TRANSACTION_MANAGER) private readonly transaction: TransactionManager,
     @Inject(EVENT_DISPATCHER) private readonly dispatcher: EventDispatcher,
+    @Inject(COLOR_EXPLAINER) private readonly explainer: ColorExplainer,
   ) {}
 
   async open(eventId: string): Promise<void> {
@@ -57,8 +59,16 @@ export class ApplicationService {
     return this.distributions.byEvent(new EventId(eventId));
   }
 
-  async assignmentOf(eventId: string, attendeeId: string): Promise<AssignmentDTO | null> {
-    const assignment = await this.distributions.assignmentOf(new EventId(eventId), new AttendeeId(attendeeId));
-    return assignment?.toDTO() ?? null;
+  /** Null while the attendee is not assigned yet; throws for an unknown event. */
+  async assignmentOf(eventId: string, attendeeId: string): Promise<AttendeeReveal | null> {
+    const id = new EventId(eventId);
+    if (!(await this.distributions.exists(id))) {
+      throw new EventDistributionNotFound(id);
+    }
+    const assignment = await this.distributions.assignmentOf(id, new AttendeeId(attendeeId));
+    if (assignment === null) {
+      return null;
+    }
+    return { ...assignment, ...(await this.explainer.explain(assignment)) };
   }
 }

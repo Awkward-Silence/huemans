@@ -1,11 +1,10 @@
 import { EntityManager, EntitySchema, LockMode } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
-import { Assignment } from '@Huemans/ColorDistribution/Domain/Assignment';
 import { AssignmentCollection } from '@Huemans/ColorDistribution/Domain/AssignmentCollection';
+import { AttendeeAssignmentView } from '@Huemans/ColorDistribution/Domain/AttendeeAssignmentView';
 import { EventDistribution } from '@Huemans/ColorDistribution/Domain/EventDistribution';
 import { EventDistributionView } from '@Huemans/ColorDistribution/Domain/EventDistributionView';
-import { COLORS, ColorValue } from '@Huemans/ColorDistribution/Domain/ValueObject/Color';
-import { PersonalityTypeValue } from '@Huemans/ColorDistribution/Domain/ValueObject/PersonalityType';
+import { COLORS } from '@Huemans/ColorDistribution/Domain/ValueObject/Color';
 import { EventDistributionRepository } from '@Huemans/ColorDistribution/Domain/Port/EventDistributionRepository';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
@@ -53,30 +52,36 @@ export class MikroOrmEventDistributionRepository
   }
 
   async byEvent(eventId: EventId): Promise<EventDistributionView | null> {
-    // An event with no assignments yields one row with a null color; an unknown event yields none.
-    const rows = await this.em.getConnection().execute<{ color: ColorValue | null; types: PersonalityTypeValue[] }[]>(
-      `select a.color, array_agg(a.personality_type order by a.assigned_at, a.attendee_id) as types
-         from event_distributions d
-         left join assignments a on a.event_id = d.event_id
-        where d.event_id = ?
-        group by a.color`,
-      [eventId.value],
-    );
-    if (rows.length === 0) {
+    if (!(await this.exists(eventId))) {
       return null;
     }
-    const typesByColor = new Map(rows.filter((row) => row.color !== null).map((row) => [row.color, row.types]));
+    const assignments = await this.em.find(
+      AssignmentSchema,
+      { eventId },
+      { orderBy: { assignedAt: 'asc', attendeeId: 'asc' } },
+    );
 
     return {
       eventId: eventId.value,
       groups: COLORS.map((color) => {
-        const personalityTypes = typesByColor.get(color) ?? [];
+        const personalityTypes = assignments
+          .filter((assignment) => assignment.color.value === color)
+          .map((assignment) => assignment.personalityType.value);
         return { color, members: personalityTypes.length, personalityTypes };
       }),
     };
   }
 
-  async assignmentOf(eventId: EventId, attendeeId: AttendeeId): Promise<Assignment | null> {
-    return this.em.findOne(AssignmentSchema, { eventId, attendeeId });
+  async assignmentOf(eventId: EventId, attendeeId: AttendeeId): Promise<AttendeeAssignmentView | null> {
+    const assignment = await this.em.findOne(AssignmentSchema, { eventId, attendeeId });
+    if (assignment === null) {
+      return null;
+    }
+    const mates = await this.em.count(AssignmentSchema, {
+      eventId,
+      color: assignment.color,
+      attendeeId: { $ne: attendeeId },
+    });
+    return { ...assignment.toDTO(), mates };
   }
 }
