@@ -1,101 +1,13 @@
-/**
- * Words the sentence step falls back to when suggestions are slow or fail,
- * one list per pick (after "I"). They are not always grammatical together,
- * which is fine: it is usually funnier.
- */
-const sentenceFallbackWords: readonly (readonly string[])[] = [
-  // "I ..." adverbs and a few verbs
-  [
-    "secretly",
-    "once",
-    "never",
-    "allegedly",
-    "accidentally",
-    "proudly",
-    "still",
-    "quietly",
-    "sometimes",
-    "nearly",
-    "definitely",
-    "politely",
-    "mostly",
-    "apparently",
-    "dramatically",
-    "really",
-    "occasionally",
-    "always",
-    "collect",
-    "adore",
-  ],
-  // "I secretly ..." verbs
-  [
-    "lick",
-    "collect",
-    "hug",
-    "judge",
-    "fear",
-    "adopt",
-    "outsmart",
-    "serenade",
-    "interview",
-    "alphabetize",
-    "smell",
-    "avoid",
-    "tickle",
-    "sketch",
-    "rename",
-    "befriend",
-    "impersonate",
-    "negotiate",
-    "worship",
-    "high-five",
-  ],
-  // "I secretly lick ..." determiners and adjectives
-  [
-    "haunted",
-    "borrowed",
-    "municipal",
-    "tiny",
-    "suspicious",
-    "expired",
-    "enormous",
-    "emotional",
-    "every",
-    "vintage",
-    "sleepy",
-    "sticky",
-    "fancy",
-    "nervous",
-    "wobbly",
-    "glittery",
-    "my",
-    "other",
-    "dramatic",
-    "lukewarm",
-  ],
-  // "I secretly lick haunted ..." nouns
-  [
-    "spoons",
-    "pigeons",
-    "toasters",
-    "socks",
-    "penguins",
-    "spreadsheets",
-    "potatoes",
-    "librarians",
-    "moustaches",
-    "umbrellas",
-    "pickles",
-    "dinosaurs",
-    "cupcakes",
-    "goats",
-    "croissants",
-    "ducks",
-    "lamps",
-    "traffic-cones",
-    "vending-machines",
-    "disappointments",
-  ],
-];
+import type { SentenceTree } from "../domain/sentence.ts";
+import tree from "./sentenceTree.json";
 
-export { sentenceFallbackWords };
+/**
+ * The "I ..." sentence tree: every pick offers 3 options, and each option
+ * leads to its own 3 next options, so every path reads as a sentence.
+ * A verbatim copy of tools/src/sentences/sentences.test.json (re-copy it
+ * when that file changes). The traits are unused here: the sentence never
+ * leaves the phone.
+ */
+const sentenceTree: SentenceTree = tree;
+
+export { sentenceTree };

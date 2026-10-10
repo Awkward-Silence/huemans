@@ -3,6 +3,32 @@
  * It is fun only and never leaves the phone.
  */
 
+/** One option of the sentence tree: a word or a short group of words. */
+type SentenceOption = { text: string; next: readonly SentenceOption[] };
+
+type SentenceTree = { starter: string; picks: number; options: readonly SentenceOption[] };
+
+/**
+ * The tree's options for the next pick after `picks` (starter excluded), or
+ * undefined when the picks leave the tree or the sentence is complete.
+ */
+function treeOptions(tree: SentenceTree, picks: readonly string[]): string[] | undefined {
+  let options = tree.options;
+  for (const pick of picks) {
+    const match = options.find((option) => option.text.toLowerCase() === pick.toLowerCase());
+    if (!match) return undefined;
+    options = match.next;
+  }
+  return options.length > 0 ? options.map((option) => option.text) : undefined;
+}
+
+/** Every distinct option of the tree at pick `index` (0-based). */
+function treeWordsAt(tree: SentenceTree, index: number): string[] {
+  let level = tree.options;
+  for (let depth = 0; depth < index; depth++) level = level.flatMap((option) => option.next);
+  return [...new Set(level.map((option) => option.text))];
+}
+
 /** Words already in the sentence, compared without case. */
 const usedWords = (sentence: readonly string[]) =>
   new Set(sentence.map((word) => word.toLowerCase()));
@@ -31,8 +57,26 @@ function pickWords(
   return picked;
 }
 
+/**
+ * 3 words for the next pick of `sentence` (starter included): the tree's
+ * options while the picks follow it, otherwise random words from the same
+ * step of the tree (picks from elsewhere, e.g. the AI, can leave the tree).
+ */
+function nextWords(
+  tree: SentenceTree,
+  sentence: readonly string[],
+  random: () => number = Math.random,
+): string[] {
+  const picks = sentence.slice(1);
+  const onTree = treeOptions(tree, picks);
+  if (onTree) return onTree;
+  const step = Math.min(picks.length, tree.picks - 1);
+  return pickWords(treeWordsAt(tree, step), sentence, 3, random);
+}
+
 /** Long words or a long sentence get a smaller type size instead of clipping. */
 const isLongSentence = (sentence: readonly string[]) =>
   sentence.join(" ").length > 32 || sentence.some((word) => word.length > 11);
 
-export { isLongSentence, pickWords };
+export { isLongSentence, nextWords, pickWords, treeOptions, treeWordsAt };
+export type { SentenceOption, SentenceTree };

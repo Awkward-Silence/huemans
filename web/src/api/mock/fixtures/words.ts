@@ -1,14 +1,14 @@
+import { sentenceTree } from "../../../content/index.ts";
+
 /**
- * MOCK DATA. Stand-in for the AI word suggester in api/: one pool per pick
- * after "I". The real words come from the Agents context.
+ * MOCK DATA. Stand-in for the sentence question and the AI word suggester in
+ * api/: the mock suggests from the same tree as the fallback. The real words
+ * come from the Agents context.
  */
-const SENTENCE_QUESTION = { id: "sentence-i", starter: "I", picks: 4 } as const;
+const SENTENCE_QUESTION = {
+  id: "sentence-i",
+  starter: sentenceTree.starter,
+  picks: sentenceTree.picks,
+} as const;
 
-const MOCK_WORD_POOLS: readonly (readonly string[])[] = [
-  ["secretly", "allegedly", "once", "professionally", "reluctantly", "loudly", "weekly", "still"],
-  ["lick", "befriend", "narrate", "collect", "outrun", "apologise-to", "rate", "whisper-to"],
-  ["haunted", "borrowed", "municipal", "seventeen-year-old", "tiny", "suspicious", "retired", "my"],
-  ["spoons", "pigeons", "vending-machines", "disappointments", "goats", "lighthouses", "kettles"],
-];
-
-export { MOCK_WORD_POOLS, SENTENCE_QUESTION };
+export { SENTENCE_QUESTION };

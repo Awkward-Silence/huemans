@@ -65,12 +65,11 @@ describe("mock client", () => {
   it("announces the sentence question and suggests 3 next words", async () => {
     const { api } = setup();
     const { sentence } = await api.getQuiz("demo");
-    expect(sentence).toEqual({ id: "sentence-i", starter: "I", picks: 4 });
+    expect(sentence).toEqual({ id: "sentence-i", starter: "I", picks: 5 });
 
-    const body = { attendeeId: "a1", sentence: ["I", "secretly"] };
+    const body = { attendeeId: "a1", sentence: ["I", "loudly"] };
     const suggestions = await api.suggestWords("demo", sentence!.id, body);
-    expect(suggestions.words).toHaveLength(3);
-    expect(suggestions.words).not.toContain("secretly");
+    expect(suggestions.words).toEqual(["apologise to", "sing to", "argue with"]);
   });
 
   it("rejects bad suggestion requests", async () => {
