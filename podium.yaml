@@ -1,0 +1,11 @@
+# Podium deploys each top-level key as its own Application.
+#
+# web: the React (Vite) SPA. The nodejs/react template runs `npm ci && npm run build`
+# in web/ and serves dist/ with nginx, so nothing runs on Node at runtime.
+# No NODE_ENV: if it ever reached the build, `npm ci` would skip devDependencies
+# (vite, typescript) and the build would fail.
+
+web:
+  src: web
+  lang: nodejs
+  framework: react
