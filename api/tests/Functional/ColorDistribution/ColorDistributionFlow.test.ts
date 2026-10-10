@@ -4,7 +4,7 @@ import { AttendeeGrouped } from '@Huemans/ColorDistribution/Domain/AttendeeGroup
 import { DomainEvent } from '@Huemans/Shared/Domain/DomainEvent';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
-import { EventCreated } from '@Huemans/Shared/Domain/Event/EventCreated';
+import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
 import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
 import { publish, recordPublished } from '../../Support/events';
 import { bootFunctional, getJson } from '../../Support/functional';

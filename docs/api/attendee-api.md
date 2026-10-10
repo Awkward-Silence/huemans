@@ -72,14 +72,17 @@ Loaded first, on the intro screen. Gives the event name and the quiz size and du
   name: string;                 // "Demo night"
   quizDurationSeconds: number;  // int > 0; soft timer for the whole quiz
   questionCount: number;        // int > 0
+  status: "open" | "revealed";  // extra, the web ignores it for now
 }
 ```
 
 ```json
-{ "id": "0199c5a2-…", "name": "Demo night", "quizDurationSeconds": 20, "questionCount": 5 }
+{ "id": "0199c5a2-…", "name": "Demo night", "quizDurationSeconds": 20, "questionCount": 5, "status": "open" }
 ```
 
-**Errors:** `404` if the event does not exist.
+**Behaviour:** `quizDurationSeconds` and `questionCount` are Participation's quiz settings, the same for every event in the MVP (20 and 5). Served by the Event context (`contracts/event.d.ts`).
+
+**Errors:** `404` if the event does not exist; `400` if the id is not a UUIDv7.
 
 ---
 
@@ -332,13 +335,13 @@ The web contract was written before the domain model. These conflict with `docs/
 3. ~~**Personality type is missing; `lean` contradicts the model.**~~ Resolved in `api/` only, without changing `web/`: the assigned response adds `personalityType`; `nickname`, `blurb` and `traits` describe the personality type (static copy in `api/src/Catalog/Infrastructure/Content/PersonalityTypeProfiles.ts`), not the color; `mates` is the live group size minus one; `reason.lean` is always `[]` (answers decide the type, not the color) and `reason.text` explains the mixed placement. The web schema accepts this shape as is. If the web wants a type lean later ("60% explorer, 40% planner"), it needs a schema change on its side and the trait profile from Participation.
 4. **Room vs distribution.** The web wants `GET /events/:eventId/room` (`answered`, `total`, per-color `count`). The backend plans `GET /events/:eventId/distribution` (per-color members and personality types, no `answered`/`total`). `total`/`answered` need Participation data, so `/room` is a read model that spans Participation and Color Distribution.
 5. **Id format.** The backend validates UUIDv7 and answers `400` for anything else. The web dev entry point is `/join/demo`, so the demo event needs a UUIDv7 id (or a slug lookup) when running against `api/`.
-6. **Event status.** `Event` has no `status` (`OPEN | REVEALED`). The web infers the reveal from the icebreaker endpoint. Adding `status` is harmless (extra fields are allowed) but nothing reads it yet.
+6. ~~**Event status.**~~ Resolved: `GET /events/:eventId` returns `status` (`open` | `revealed`) as an extra field. The web still infers the reveal from the icebreaker endpoint.
 
 ## Missing from the web contract
 
 Needed by the product flow but not in `ApiClient` yet. The backend should define these and add them to `contracts/`:
 
-- **Create event** (host/demo setup), e.g. `POST /events` → `{ id, name, … }`.
+- ~~**Create event**~~ Defined: `POST /events` with `{ name }` (trimmed, 1-255 characters) → `201` with the same body as `GET /events/:eventId`; `400` for an invalid name. Types in `contracts/event.d.ts`.
 - **Close event / reveal icebreaker** (host), e.g. `POST /events/:eventId/close`, `OPEN` → `REVEALED`, once only.
 - **Host big-screen data**: the distribution and the revealed icebreaker without an `attendeeId`. `GET /events/:eventId/room` covers the distribution; an event-level icebreaker read is still needed.
 - **Realtime**: the web is ready to swap polling for pushed `AttendeeGrouped` / icebreaker-revealed events carrying the same shapes as endpoints 5–7.
