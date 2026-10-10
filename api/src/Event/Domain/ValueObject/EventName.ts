@@ -5,7 +5,10 @@ export class EventName extends StringValueObject {
   static readonly MAX_LENGTH = 255;
 
   constructor(value: string) {
-    super(value?.trim());
+    if (typeof value !== 'string') {
+      throw new InvalidArgumentError('<EventName> must be text');
+    }
+    super(value.trim());
     if (this.value.length === 0 || this.value.length > EventName.MAX_LENGTH) {
       throw new InvalidArgumentError(`<EventName> must have 1 to ${EventName.MAX_LENGTH} characters`);
     }

@@ -10,6 +10,10 @@ describe('EventName', () => {
     expect(() => new EventName('   ')).toThrow(InvalidArgumentError);
   });
 
+  it('testRejectsANameThatIsNotText', () => {
+    expect(() => new EventName(42 as unknown as string)).toThrow(InvalidArgumentError);
+  });
+
   it('testAcceptsAt255Characters', () => {
     expect(new EventName('a'.repeat(255)).value).toHaveLength(255);
   });
