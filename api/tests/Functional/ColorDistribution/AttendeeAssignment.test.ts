@@ -1,5 +1,10 @@
 import { INestApplication } from '@nestjs/common';
 import type { AttendeeAssignment, AttendeePending } from '../../../../contracts/colorDistribution';
+import { PersonalityTypeProfileNotFound } from '@Huemans/Catalog/Domain/PersonalityTypeProfileNotFound';
+import { CATALOG_REPOSITORY } from '@Huemans/Catalog/Domain/Port/CatalogRepository';
+import { TraitTypeMapping } from '@Huemans/Catalog/Domain/TraitTypeMapping';
+import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
+import { Trait } from '@Huemans/Shared/Domain/ValueObject/Trait';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { EventCreated } from '@Huemans/Shared/Domain/Event/EventCreated';
@@ -82,5 +87,41 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
     const response = await getJson(app, `/events/${eventId}/attendees/not-a-uuid/assignment`);
 
     expect(response.status).toBe(400);
+  });
+});
+
+describe('GET /events/:eventId/attendees/:attendeeId/assignment without catalog profiles', () => {
+  let app: INestApplication;
+
+  beforeAll(async () => {
+    const mapping = new TraitTypeMapping(
+      Object.entries(realContent().mapping).map(([trait, type]) => [new Trait(trait), new PersonalityType(type)] as const),
+    );
+    app = await bootFunctional({
+      overrides: [
+        {
+          provide: CATALOG_REPOSITORY,
+          useValue: {
+            mapping: () => Promise.resolve(mapping),
+            profileOf: (type: PersonalityType) => Promise.reject(new PersonalityTypeProfileNotFound(type)),
+          },
+        },
+      ],
+    });
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('testUnseededCatalogIsAServerErrorNotAnUnknownEvent', async () => {
+    const eventId = EventId.random().value;
+    const attendeeId = AttendeeId.random().value;
+    await publish(app, new EventCreated(eventId));
+    await publish(app, new QuestionnaireCompleted(attendeeId, eventId, ['romantic', 'nostalgic', 'sociable']));
+
+    const response = await getJson(app, `/events/${eventId}/attendees/${attendeeId}/assignment`);
+
+    expect(response.status).toBe(500);
   });
 });
