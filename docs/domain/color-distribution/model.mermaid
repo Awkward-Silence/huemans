@@ -10,7 +10,7 @@ classDiagram
   class Assignment {
     +SK~AttendeeId~ attendeeId
     +Color color
-    +PersonalityType personalityType
+    +SK~PersonalityType~ personalityType
   }
 
   class AssignmentCollection {
@@ -31,8 +31,7 @@ classDiagram
   }
 
   class PersonalityType {
-    <<ValueObject>>
-    +string value
+    <<SharedKernel>>
   }
 
   class TraitProfile {
@@ -56,7 +55,7 @@ classDiagram
     +SK~EventId~ eventId
     +SK~AttendeeId~ attendeeId
     +Color color
-    +PersonalityType personalityType
+    +SK~PersonalityType~ personalityType
   }
 
   class EventDistributionView {

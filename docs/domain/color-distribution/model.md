@@ -1,6 +1,6 @@
 # Domain Model — Color Distribution
 
-**Version**: 1.2.0
+**Version**: 1.3.0
 **Status**: Draft
 **Date**: 2026-10-10
 **Kind**: Read-write
@@ -67,7 +67,7 @@ primitives (free text, opaque payloads).
 
 | Name | Fields | Source | Read invariants |
 |---|---|---|---|
-| EventDistributionView | eventId: SK::EventId; groups: one entry per Color with members: count, personalityTypes: PersonalityTypeCollection | EventDistribution aggregate (this context) | Only assignments of the requested event; all four colors are always present, even when empty |
+| EventDistributionView | eventId: SK::EventId; groups: one entry per Color with members: count, personalityTypes: PersonalityTypeCollection (of SK::PersonalityType) | EventDistribution aggregate (this context) | Only assignments of the requested event; all four colors are always present, even when empty |
 
 ## Queries
 
@@ -84,11 +84,11 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 | Name | Kind | Base / Components | Construction Rule | Invalid States | Scope |
 |---|---|---|---|---|---|
 | Color | basic | string | One of amber, coral, teal, violet | any other value | Local |
-| PersonalityType | basic | string | One of exactly 4 personality types | any value outside the 4 types | Local |
+| PersonalityType | basic | string | One of exactly 4 personality types | any value outside the 4 types | SK::PersonalityType |
 | TraitProfile | collection | SK::Trait | At least 1 trait; no maximum; duplicates allowed, each occurrence counts as a vote | empty | Local |
-| TraitTypeMapping | collection | SK::Trait to PersonalityType pairs | Every one of the 33 traits is mapped to exactly one personality type | a trait missing or mapped twice | Local |
+| TraitTypeMapping | collection | SK::Trait to SK::PersonalityType pairs | Every one of the 33 traits is mapped to exactly one personality type | a trait missing or mapped twice | Local |
 | AssignmentCollection | collection | Assignment | No two assignments for the same SK::AttendeeId | duplicate SK::AttendeeId | Local |
-| PersonalityTypeCollection | collection | PersonalityType | Duplicates allowed (one entry per group member) | — | Local |
+| PersonalityTypeCollection | collection | SK::PersonalityType | Duplicates allowed (one entry per group member) | — | Local |
 
 ### TraitProfile — Detail
 
@@ -108,7 +108,7 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 
 | Event | Trigger | Aggregate | Payload | Status |
 |---|---|---|---|---|
-| AttendeeGrouped | An attendee receives their group color and personality type | EventDistribution | eventId: SK::EventId, attendeeId: SK::AttendeeId, color: Color, personalityType: PersonalityType | Active |
+| AttendeeGrouped | An attendee receives their group color and personality type | EventDistribution | eventId: SK::EventId, attendeeId: SK::AttendeeId, color: Color, personalityType: SK::PersonalityType | Active |
 
 ---
 
@@ -119,6 +119,7 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 | SK::EventId | EventDistribution, EventDistributionView, AttendeeGrouped | Issued by the Event context and referenced by Participation, Color Distribution and icebreaker selection; one definition (UUIDv7) |
 | SK::AttendeeId | Assignment, AttendeeGrouped | Issued by Participation and referenced by Color Distribution; one definition (UUIDv7) |
 | SK::Trait | TraitProfile, TraitTypeMapping | The closed list of 33 traits is used by Catalog (answers, icebreakers), Participation (trait profiles), Color Distribution (personality types) and icebreaker selection, so it is defined once |
+| SK::PersonalityType | Assignment, TraitTypeMapping, PersonalityTypeCollection, AttendeeGrouped, EventDistributionView | A closed set of 4. Catalog keys the profiles and the trait-type mapping by it; this context assigns it and balances groups with it. It was Local here until the Catalog model moved it to the shared kernel |
 
 ---
 
@@ -139,5 +140,5 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 
 ## Open Questions
 
-- Names and descriptions of the 4 personality types, and the content of the trait-type mapping (deferred to the catalog lane; does not change the model).
+- The content of the trait-type mapping is still provisional, until the catalog lane seeds it (see `docs/domain/catalog/model.md`). The names and descriptions of the 4 personality types are Catalog's PersonalityTypeProfile. Neither changes this model.
 - The attendee's color reveal reads their own assignment (color and personality type). Discovery only defined EventDistributionView (per color); a per-attendee read model was not discussed.
