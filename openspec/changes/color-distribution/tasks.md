@@ -2,9 +2,9 @@
 
 ## 1. Contracts and shared kernel
 
-- [ ] 1.1 Add `AttendeeGrouped`, the distribution view and the attendee assignment response as type-only definitions in `contracts/`, and verify `web/` and `api/` type-check when importing them with `import type`
-- [ ] 1.2 Implement `EventId` and `AttendeeId` (UUIDv7) in `api/src/Shared/Domain/ValueObject`, test-first, and verify unit tests cover valid UUIDv7, other UUID versions and malformed strings (skip if an earlier change already added them)
-- [ ] 1.3 Implement `Trait` (closed list of the 33 catalog traits) in the shared kernel, test-first, and verify a unit test rejects a value outside the list
+- [x] 1.1 Add `AttendeeGrouped`, the distribution view and the attendee assignment response as type-only definitions in `contracts/`, and verify `web/` and `api/` type-check when importing them with `import type`
+- [x] 1.2 Implement `EventId` and `AttendeeId` (UUIDv7) in `api/src/Shared/Domain/ValueObject`, test-first, and verify unit tests cover valid UUIDv7, other UUID versions and malformed strings (skip if an earlier change already added them)
+- [x] 1.3 Implement `Trait` (closed list of the 33 catalog traits) in the shared kernel, test-first, and verify a unit test rejects a value outside the list
 
 ## 2. Domain (unit tests first, no NestJS or ORM imports)
 
