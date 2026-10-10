@@ -2,14 +2,14 @@
 
 ## 1. Shared kernel and contracts
 
-- [ ] 1.1 Move `Color` to `api/src/Shared/Domain/ValueObject/Color.ts` (and its unit test to `tests/Unit/Shared/`), update Color Distribution's imports and `docs/domain/color-distribution/model.md` to `SK::Color`, and verify `pnpm lint && pnpm test` pass
+- [x] 1.1 Move `Color` to `api/src/Shared/Domain/ValueObject/Color.ts` (and its unit test to `tests/Unit/Shared/`), update Color Distribution's imports and `docs/domain/color-distribution/model.md` to `SK::Color`, and verify `pnpm lint && pnpm test` pass
 - [ ] 1.2 Add `RoomResponse` as a type-only definition in `contracts/room.d.ts`, and verify `api/` type-checks when importing it with `import type`
 
 ## 2. Room domain (unit tests first, no NestJS or ORM imports)
 
-- [ ] 2.1 Implement `AttendeeCount` (whole number ≥ 0), and verify unit tests reject a negative and a fractional count and accept 0
-- [ ] 2.2 Implement `GroupCount` and `GroupCountCollection` (exactly the four colors in `SK::Color` order, `answered()` sum, `toDTO()`), and verify unit tests reject a missing, repeated or misordered color and sum the counts
-- [ ] 2.3 Implement `RoomView.of`, `RoomNotFound` and the ports `EventLookup`, `GroupCounter` and `JoinedAttendeeCounter`, and verify a unit test builds a view whose `answered` is the groups' sum
+- [x] 2.1 Implement `AttendeeCount` (whole number ≥ 0), and verify unit tests reject a negative and a fractional count and accept 0
+- [x] 2.2 Implement `GroupCount` and `GroupCountCollection` (exactly the four colors in `SK::Color` order, `answered()` sum, `toDTO()`), and verify unit tests reject a missing, repeated or misordered color and sum the counts
+- [x] 2.3 Implement `RoomView.of`, `RoomNotFound` and the ports `EventLookup`, `GroupCounter` and `JoinedAttendeeCounter`, and verify a unit test builds a view whose `answered` is the groups' sum
 
 ## 3. Room application and HTTP
 

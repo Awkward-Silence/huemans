@@ -4,7 +4,7 @@ import { AssignmentCollection } from '@Huemans/ColorDistribution/Domain/Assignme
 import { AttendeeAssignmentView } from '@Huemans/ColorDistribution/Domain/AttendeeAssignmentView';
 import { EventDistribution } from '@Huemans/ColorDistribution/Domain/EventDistribution';
 import { EventDistributionView } from '@Huemans/ColorDistribution/Domain/EventDistributionView';
-import { COLORS } from '@Huemans/ColorDistribution/Domain/ValueObject/Color';
+import { COLORS } from '@Huemans/Shared/Domain/ValueObject/Color';
 import { EventDistributionRepository } from '@Huemans/ColorDistribution/Domain/Port/EventDistributionRepository';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';

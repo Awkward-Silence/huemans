@@ -2,7 +2,7 @@ import { Collection } from '@Huemans/Shared/Domain/Collection';
 import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentError';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { Assignment } from './Assignment';
-import { Color } from './ValueObject/Color';
+import { Color } from '@Huemans/Shared/Domain/ValueObject/Color';
 import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 
 export class AssignmentCollection extends Collection<Assignment> {

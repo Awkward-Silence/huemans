@@ -1,6 +1,6 @@
 # Domain Model — Color Distribution
 
-**Version**: 1.4.0
+**Version**: 1.5.0
 **Status**: Draft
 **Date**: 2026-10-10
 **Kind**: Read-write
@@ -67,8 +67,8 @@ primitives (free text, opaque payloads).
 
 | Name | Fields | Source | Read invariants |
 |---|---|---|---|
-| EventDistributionView | eventId: SK::EventId; groups: one entry per Color with members: count, personalityTypes: PersonalityTypeCollection (of SK::PersonalityType) | EventDistribution aggregate (this context) | Only assignments of the requested event; all four colors are always present, even when empty |
-| AttendeeAssignmentView | eventId: SK::EventId; attendeeId: SK::AttendeeId; color: Color; personalityType: SK::PersonalityType; mates: count | Assignments of this context | Only the requested attendee in the requested event. `mates` counts the other attendees with the same color in the same event, never the attendee themselves, and grows as others join. Absent while the attendee is not assigned yet |
+| EventDistributionView | eventId: SK::EventId; groups: one entry per SK::Color with members: count, personalityTypes: PersonalityTypeCollection (of SK::PersonalityType) | EventDistribution aggregate (this context) | Only assignments of the requested event; all four colors are always present, even when empty |
+| AttendeeAssignmentView | eventId: SK::EventId; attendeeId: SK::AttendeeId; color: SK::Color; personalityType: SK::PersonalityType; mates: count | Assignments of this context | Only the requested attendee in the requested event. `mates` counts the other attendees with the same color in the same event, never the attendee themselves, and grows as others join. Absent while the attendee is not assigned yet |
 | AttendeeReveal | everything in AttendeeAssignmentView, plus ColorExplanation (nickname, blurb, traits, reason) | AttendeeAssignmentView + the ColorExplainer port | Same as AttendeeAssignmentView; the explanation always describes the attendee's own personality type and color |
 
 ## Queries
@@ -100,7 +100,7 @@ All four fields are presentation copy and carry no rule. The explainer enriches 
 
 | Name | Kind | Base / Components | Construction Rule | Invalid States | Scope |
 |---|---|---|---|---|---|
-| Color | basic | string | One of amber, coral, teal, violet | any other value | Local |
+| Color | basic | string | One of amber, coral, teal, violet, in that fixed order | any other value | SK::Color |
 | PersonalityType | basic | string | One of exactly 4 personality types | any value outside the 4 types | SK::PersonalityType |
 | TraitProfile | collection | SK::Trait | At least 1 trait; no maximum; duplicates allowed, each occurrence counts as a vote | empty | Local |
 | TraitTypeMapping | collection | SK::Trait to SK::PersonalityType pairs | Every one of the 33 traits is mapped to exactly one personality type | a trait missing or mapped twice | Local |
@@ -125,7 +125,7 @@ All four fields are presentation copy and carry no rule. The explainer enriches 
 
 | Event | Trigger | Aggregate | Payload | Status |
 |---|---|---|---|---|
-| AttendeeGrouped | An attendee receives their group color and personality type | EventDistribution | eventId: SK::EventId, attendeeId: SK::AttendeeId, color: Color, personalityType: SK::PersonalityType | Active |
+| AttendeeGrouped | An attendee receives their group color and personality type | EventDistribution | eventId: SK::EventId, attendeeId: SK::AttendeeId, color: SK::Color, personalityType: SK::PersonalityType | Active |
 
 ---
 
@@ -137,6 +137,7 @@ All four fields are presentation copy and carry no rule. The explainer enriches 
 | SK::AttendeeId | Assignment, AttendeeGrouped | Issued by Participation and referenced by Color Distribution; one definition (UUIDv7) |
 | SK::Trait | TraitProfile, TraitTypeMapping | The closed list of 33 traits is used by Catalog (answers, icebreakers), Participation (trait profiles), Color Distribution (personality types) and icebreaker selection, so it is defined once |
 | SK::PersonalityType | Assignment, TraitTypeMapping, PersonalityTypeCollection, AttendeeGrouped, EventDistributionView | A closed set of 4. Catalog keys the profiles and the trait-type mapping by it; this context assigns it and balances groups with it. It was Local here until the Catalog model moved it to the shared kernel |
+| SK::Color | Assignment, AttendeeGrouped, EventDistributionView, AttendeeAssignmentView | The four group colors and their fixed order. This context assigns them and breaks ties with the order; Room and Night Icebreaker read them too. It was Local here until the Room model moved it to the shared kernel |
 
 ---
 

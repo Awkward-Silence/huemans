@@ -1,4 +1,4 @@
-import { ColorValue } from './ValueObject/Color';
+import { ColorValue } from '@Huemans/Shared/Domain/ValueObject/Color';
 import { PersonalityTypeValue } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 
 export interface EventDistributionView {
