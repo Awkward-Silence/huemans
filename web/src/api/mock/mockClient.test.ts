@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createMockClient } from "./mockClient.ts";
 
 /** A mock with no latency and a clock the test moves by hand. */
-function setup() {
+function setup(overrides: Partial<Parameters<typeof createMockClient>[0]> = {}) {
   let now = Date.parse("2026-10-10T20:00:00Z");
   const api = createMockClient({
     latencyMs: 0,
@@ -11,6 +11,7 @@ function setup() {
     now: () => now,
     crowdFinishMs: 10_000,
     groupingDelayMs: 1_000,
+    ...overrides,
   });
   return { api, advance: (ms: number) => (now += ms) };
 }
@@ -47,6 +48,26 @@ describe("mock client", () => {
     expect(finalRoom.answered).toBe(finalRoom.total);
     const icebreaker = await api.getIcebreaker("demo", attendeeId);
     expect(icebreaker.status).toBe("ready");
+  });
+
+  it("puts the attendee in a random group, whatever they answered", async () => {
+    const { api, advance } = setup({ random: () => 0.99 });
+    const quiz = await api.getQuiz("demo");
+    const { attendeeId } = await api.join("demo", { name: "Ana" });
+    await api.submitAnswers("demo", attendeeId, {
+      answers: quiz.questions.map((question) => ({
+        questionId: question.id,
+        answerId: question.answers[0]!.id,
+      })),
+      elapsedMs: 12_000,
+    });
+
+    advance(1_000);
+    expect(await api.getAssignment("demo", attendeeId)).toMatchObject({
+      status: "assigned",
+      color: "violet",
+      reason: { lean: [] },
+    });
   });
 
   it("gives every phone the same quiz for an event", async () => {
