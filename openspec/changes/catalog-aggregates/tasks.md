@@ -14,10 +14,10 @@
 
 ## 3. Ports, persistence and the seed record
 
-- [ ] 3.1 Rewrite the `CatalogRepository` port (`allQuestions`, `allIcebreakers`, `personalityTypes`, `saveQuestions`, `saveIcebreakers`, `savePersonalityTypes`) and add the `CatalogSeedRecord` (`markSeeded(at): boolean`) and `CatalogContentSource` (`read()`) ports, and verify `pnpm build` compiles the domain
-- [ ] 3.2 Add the migration creating `catalog_seed` (`id` text primary key, `seeded_at` timestamptz) that inserts the `catalog` record when `catalog_questions` already has rows, and verify on the test database that it applies, backfills an already-seeded database, and rolls back
-- [ ] 3.3 Rewrite `MikroOrmCatalogRepository` around the aggregates (inserts, no upsert; rebuild on read) and delete `MikroOrmCatalogSeeder`, and verify integration tests: save/read round trip for a fixture question, icebreaker and the real personality types, ordering by id, answers in authored order, `PersonalityTypesNotDefined` when missing, fixtures removed afterwards
-- [ ] 3.4 Add `MikroOrmCatalogSeedRecord` (`insert ... on conflict do nothing`), and verify integration tests: the first `markSeeded` returns true, a second returns false, and a rolled-back transaction leaves no record
+- [x] 3.1 Rewrite the `CatalogRepository` port (`allQuestions`, `allIcebreakers`, `personalityTypes`, `saveQuestions`, `saveIcebreakers`, `savePersonalityTypes`) and add the `CatalogSeedRecord` (`markSeeded(at): boolean`) and `CatalogContentSource` (`read()`) ports, and verify `pnpm build` compiles the domain
+- [x] 3.2 Add the migration creating `catalog_seed` (`id` text primary key, `seeded_at` timestamptz) that inserts the `catalog` record when `catalog_questions` already has rows, and verify on the test database that it applies, backfills an already-seeded database, and rolls back
+- [x] 3.3 Rewrite `MikroOrmCatalogRepository` around the aggregates (inserts, no upsert; rebuild on read), and verify integration tests: save/read round trip for a fixture question, icebreaker and the real personality types, ordering by id, answers in authored order, `PersonalityTypesNotDefined` when missing, fixtures removed afterwards
+- [x] 3.4 Add `MikroOrmCatalogSeedRecord` (`insert ... on conflict do nothing`), and verify integration tests: the first `markSeeded` returns true, a second returns false, and a rolled-back transaction leaves no record
 
 ## 4. Content files move into Catalog infrastructure
 
@@ -28,7 +28,7 @@
 ## 5. Application service and commands
 
 - [ ] 5.1 Add `seed()` (read the source, then in one transaction `markSeeded` then save everything, then dispatch the pulled events; returns seeded or already-seeded) and `check()` to Catalog's `ApplicationService`, keep `allQuestions`, `allIcebreakers`, `profileOf`, `mapping` on top of the new repository, and verify the Color Distribution functional suites still pass unchanged
-- [ ] 5.2 Rewrite `seed.ts` on `ApplicationService.seed()` (prints `Seeded ...` or `Catalog already seeded at ...; nothing written.`, exit 0 in both) and add `catalog:validate` (no Nest app, no database), and verify both by running them against the test database
+- [ ] 5.2 Rewrite `seed.ts` on `ApplicationService.seed()` and delete `MikroOrmCatalogSeeder` (kept until here so the seed keeps working) (prints `Seeded ...` or `Catalog already seeded at ...; nothing written.`, exit 0 in both) and add `catalog:validate` (no Nest app, no database), and verify both by running them against the test database
 - [ ] 5.3 Point `seedCatalogFiles`, `realContent` and the fixture helpers in `tests/Support/catalog.ts` at the new API, and verify the full suite (`pnpm test`) passes with the shared test database
 
 ## 6. Once-only seed, end to end

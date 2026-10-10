@@ -98,4 +98,44 @@ export class MikroOrmCatalogRepository implements CatalogRepository {
       ),
     );
   }
+
+  async saveQuestions(questions: Question[]): Promise<void> {
+    await this.em.insertMany(
+      CatalogQuestionSchema,
+      questions.map(({ id, theme, text }) => ({ id: id.value, theme: theme.value, text: text.value })),
+    );
+    await this.em.insertMany(
+      CatalogAnswerSchema,
+      questions.flatMap((question) =>
+        question.answers.all().map(({ id, text, trait }, position) => ({
+          id: id.value,
+          questionId: question.id.value,
+          position,
+          text: text.value,
+          trait: trait.value,
+        })),
+      ),
+    );
+  }
+
+  async saveIcebreakers(icebreakers: Icebreaker[]): Promise<void> {
+    await this.em.insertMany(
+      CatalogIcebreakerSchema,
+      icebreakers.map(({ id, theme, text, traits }) => ({
+        id: id.value,
+        theme: theme.value,
+        text: text.value,
+        traits: traits.all().map((trait) => trait.value),
+      })),
+    );
+  }
+
+  async savePersonalityTypes(personalityTypes: PersonalityTypes): Promise<void> {
+    const { mapping, profiles } = personalityTypes.toDTO();
+    await this.em.insertMany(CatalogPersonalityTypeProfileSchema, profiles);
+    await this.em.insertMany(
+      CatalogTraitTypeSchema,
+      Object.entries(mapping).map(([trait, personalityType]) => ({ trait, personalityType })),
+    );
+  }
 }

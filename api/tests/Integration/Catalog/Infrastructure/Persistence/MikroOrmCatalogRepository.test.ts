@@ -18,10 +18,9 @@ import {
 } from '../../../../Support/catalog';
 import { bootIntegration } from '../../../../Support/integration';
 
-describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
+describe('MikroOrmCatalogRepository', () => {
   let module: TestingModule;
   let repository: MikroOrmCatalogRepository;
-  let seeder: MikroOrmCatalogSeeder;
 
   beforeAll(async () => {
     module = await bootIntegration({
@@ -35,7 +34,6 @@ describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
       providers: [MikroOrmCatalogRepository, MikroOrmCatalogSeeder],
     });
     repository = module.get(MikroOrmCatalogRepository);
-    seeder = module.get(MikroOrmCatalogSeeder);
     await seedCatalogFiles(module);
   });
 
@@ -44,64 +42,35 @@ describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
     await module.close();
   });
 
-  it('testListsQuestionsOrderedByIdWithAnswersInOrder', async () => {
+  it('testSavesQuestionsAndListsThemOrderedByIdWithAnswersInOrder', async () => {
     const question = aQuestion(['thrifty', 'chaotic', 'loyal', 'romantic']);
-    await seeder.seed({ questions: [question] });
+    await repository.saveQuestions([question]);
 
     const all = await repository.allQuestions();
     const ids = all.map((found) => found.id.value);
 
     expect(ids).toEqual([...ids].sort());
-    expect(all.map((found) => found.toDTO()).find((found) => found.id === question.id)).toEqual(question);
+    expect(all.find((found) => found.id.equals(question.id))?.toDTO()).toEqual(question.toDTO());
   });
 
-  it('testUpdatesAnEditedQuestionAndKeepsAMissingOne', async () => {
-    const edited = aQuestion();
-    const kept = aQuestion();
-    await seeder.seed({ questions: [edited, kept] });
-
-    const newText = { ...edited, text: 'Edited text' };
-    await seeder.seed({ questions: [newText] });
-
-    const all = (await repository.allQuestions()).map((found) => found.toDTO());
-    expect(all).toEqual(expect.arrayContaining([newText, kept]));
-  });
-
-  it('testReplacesTheAnswersOfAReseededQuestion', async () => {
+  it('testReadingAQuestionBackRecordsNothing', async () => {
     const question = aQuestion();
-    await seeder.seed({ questions: [question] });
+    await repository.saveQuestions([question]);
 
-    const renamed = {
-      ...question,
-      answers: [...question.answers].reverse().map((answer) => ({ ...answer, id: `${answer.id}-renamed` })),
-    };
-    await seeder.seed({ questions: [renamed] });
+    const found = (await repository.allQuestions()).find((candidate) => candidate.id.equals(question.id))!;
 
-    const found = (await repository.allQuestions())
-      .map((found) => found.toDTO())
-      .find((candidate) => candidate.id === question.id);
-    expect(found).toEqual(renamed);
+    expect(found.pullDomainEvents()).toEqual([]);
   });
 
-  it('testAFailedWriteRollsBackTheWholeSeed', async () => {
-    const question = aQuestion();
-    const unstorable = { ...anIcebreaker(), text: null as unknown as string };
-
-    await expect(seeder.seed({ questions: [question], icebreakers: [unstorable] })).rejects.toThrow();
-
-    expect((await repository.allQuestions()).some((found) => found.id.value === question.id)).toBe(false);
-  });
-
-  it('testListsIcebreakersOrderedById', async () => {
+  it('testSavesIcebreakersAndListsThemOrderedById', async () => {
     const icebreaker = anIcebreaker(['humorous', 'curious']);
-    await seeder.seed({ icebreakers: [icebreaker] });
+    await repository.saveIcebreakers([icebreaker]);
 
     const all = await repository.allIcebreakers();
     const ids = all.map((found) => found.id.value);
-    const found = all.find((candidate) => candidate.id.value === icebreaker.id)!;
 
     expect(ids).toEqual([...ids].sort());
-    expect(found.toDTO()).toEqual(icebreaker);
+    expect(all.find((found) => found.id.equals(icebreaker.id))?.toDTO()).toEqual(icebreaker.toDTO());
   });
 
   it('testReadsThePersonalityTypes', async () => {
