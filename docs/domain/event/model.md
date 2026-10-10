@@ -1,7 +1,7 @@
 # Domain Model — Event
 
 **Version**: 1.0.0
-**Status**: Draft
+**Status**: Accepted
 **Date**: 2026-10-10
 **Kind**: Read-write
 **Source**: discovery.md session 2026-10-10
