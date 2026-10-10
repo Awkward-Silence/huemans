@@ -1,7 +1,7 @@
 # Domain Model — Catalog
 
 **Version**: 2.0.0
-**Status**: Draft
+**Status**: Accepted
 **Date**: 2026-10-11
 **Kind**: Read-write
 **Source**: discovery.md session 2026-10-11 (supersedes model 1.0.0, read-only, from session 2026-10-10)
@@ -211,4 +211,3 @@ TraitTypeMapping itself is not shared. Catalog owns its content, and Color Distr
 ## Open Questions
 
 - Do the content JSON files physically move from `tools/` into `api/` (Catalog infrastructure), or does only reading them count as infrastructure? Deferred to implementation; it does not change the model.
-- Modeling choices made while formalizing, not confirmed explicitly in discovery: PersonalityTypeProfile as an entity identified by its SK::PersonalityType, the `TraitType` composite as the element of `TraitTypeMapping`, the `PersonalityTypeProfileCollection`, and `CatalogRepository.personalityTypes` as the one read of the aggregate. Confirm before marking the model Accepted.
