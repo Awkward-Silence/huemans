@@ -1,0 +1,87 @@
+classDiagram
+  class EventDistribution {
+    <<AggregateRoot>>
+    +SK~EventId~ eventId
+    +AssignmentCollection assignments
+    +open(SK~EventId~ eventId)$ void
+    +assign(SK~AttendeeId~ attendeeId, TraitProfile traitProfile, TraitTypeMapping mapping) AttendeeGrouped
+  }
+
+  class Assignment {
+    +SK~AttendeeId~ attendeeId
+    +Color color
+    +PersonalityType personalityType
+  }
+
+  class AssignmentCollection {
+    <<Collection>>
+  }
+
+  class EventId {
+    <<SharedKernel>>
+  }
+
+  class AttendeeId {
+    <<SharedKernel>>
+  }
+
+  class Color {
+    <<ValueObject>>
+    +string value
+  }
+
+  class PersonalityType {
+    <<ValueObject>>
+    +string value
+  }
+
+  class TraitProfile {
+    <<Collection>>
+  }
+
+  class TraitTypeMapping {
+    <<Collection>>
+  }
+
+  class PersonalityTypeCollection {
+    <<Collection>>
+  }
+
+  class Trait {
+    <<SharedKernel>>
+  }
+
+  class AttendeeGrouped {
+    <<DomainEvent>>
+    +SK~EventId~ eventId
+    +SK~AttendeeId~ attendeeId
+    +Color color
+    +PersonalityType personalityType
+  }
+
+  class EventDistributionView {
+    <<ReadModel>>
+    +SK~EventId~ eventId
+    +Color color
+    +int members
+    +PersonalityTypeCollection personalityTypes
+  }
+
+  class EventDistributionRepository {
+    <<Repository>>
+    +byEvent(SK~EventId~ eventId) EventDistributionView
+  }
+
+  EventDistribution *-- EventId : eventId
+  EventDistribution *-- AssignmentCollection : assignments
+  AssignmentCollection "1" o-- "*" Assignment : contains
+  Assignment *-- AttendeeId
+  Assignment *-- Color
+  Assignment *-- PersonalityType
+  TraitProfile "1" o-- "1..*" Trait : contains
+  TraitTypeMapping "1" o-- "33" Trait : maps each to one PersonalityType
+  TraitTypeMapping ..> PersonalityType : maps to
+  PersonalityTypeCollection "1" o-- "*" PersonalityType : contains
+  EventDistribution ..> AttendeeGrouped : emits
+  EventDistributionRepository ..> EventDistributionView : returns
+  EventDistributionView *-- PersonalityTypeCollection
