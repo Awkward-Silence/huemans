@@ -6,9 +6,8 @@ import type {
   JoinResponse,
   Quiz,
   Room,
+  SentenceTreeResponse,
   SubmitAnswersRequest,
-  WordSuggestions,
-  WordSuggestionsRequest,
 } from "./schemas.ts";
 
 /**
@@ -23,12 +22,8 @@ interface ApiClient {
   getAssignment(eventId: string, attendeeId: string): Promise<Assignment>;
   getRoom(eventId: string): Promise<Room>;
   getIcebreaker(eventId: string, attendeeId: string): Promise<Icebreaker>;
-  /** The next 3 words for the sentence question. */
-  suggestWords(
-    eventId: string,
-    questionId: string,
-    body: WordSuggestionsRequest,
-  ): Promise<WordSuggestions>;
+  /** The whole "I ..." sentence tree; can take long while api/ generates it. */
+  getSentenceTree(signal?: AbortSignal): Promise<SentenceTreeResponse>;
 }
 
 export type { ApiClient };

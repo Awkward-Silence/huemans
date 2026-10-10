@@ -3,10 +3,23 @@
  * It is fun only and never leaves the phone.
  */
 
+/** How many options every pick offers. */
+const BRANCHING = 3;
+
 /** One option of the sentence tree: a word or a short group of words. */
 type SentenceOption = { text: string; next: readonly SentenceOption[] };
 
 type SentenceTree = { starter: string; picks: number; options: readonly SentenceOption[] };
+
+/** True when every pick, down to the last, offers exactly BRANCHING options. */
+function isCompleteTree(tree: SentenceTree): boolean {
+  const complete = (options: readonly SentenceOption[], picksLeft: number): boolean =>
+    picksLeft === 0
+      ? options.length === 0
+      : options.length === BRANCHING &&
+        options.every((option) => complete(option.next, picksLeft - 1));
+  return tree.picks > 0 && complete(tree.options, tree.picks);
+}
 
 /**
  * The tree's options for the next pick after `picks` (starter excluded), or
@@ -78,5 +91,13 @@ function nextWords(
 const isLongSentence = (sentence: readonly string[]) =>
   sentence.join(" ").length > 32 || sentence.some((word) => word.length > 11);
 
-export { isLongSentence, nextWords, pickWords, treeOptions, treeWordsAt };
+export {
+  BRANCHING,
+  isCompleteTree,
+  isLongSentence,
+  nextWords,
+  pickWords,
+  treeOptions,
+  treeWordsAt,
+};
 export type { SentenceOption, SentenceTree };
