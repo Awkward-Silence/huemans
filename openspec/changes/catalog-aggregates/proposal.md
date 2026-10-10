@@ -13,7 +13,7 @@ The Catalog code only has a domain model on the read path: the seed, the one thi
 - The aggregates record `QuestionAuthored`, `IcebreakerAuthored` and `PersonalityTypesDefined`; the seed dispatches them after writing. No context subscribes yet.
 - **BREAKING** The seed runs once per database: the database records when it was seeded, and a second run does nothing. Re-seeding no longer updates content by key, keeps entries missing from the files, or replaces a question's answers; changing content means recreating the database (MVP).
 - The seed builds every aggregate before writing anything, so any content rule it breaks rejects the whole seed and names the entry.
-- **BREAKING** Move the catalog content JSON (questions, icebreakers, profiles, trait-type mapping) from `tools/src/` into `api/src/Catalog/Infrastructure/Content/`, and remove the `tools/` package. Its `validate` scripts are replaced by an `api/` command that checks the files through the aggregates without touching the database.
+- **BREAKING** Move the catalog content JSON (questions, icebreakers, profiles, trait-type mapping) from `tools/src/` into `api/src/Catalog/Infrastructure/Content/`, and remove the catalog part of the `tools/` package (its content and `validate` scripts). An `api/` command that checks the files through the aggregates without touching the database replaces those scripts. `tools/` stays for the sentence builder (`tools/src/sentences/`), which is not catalog content.
 - Catalog's reads for other contexts (`allQuestions`, `allIcebreakers`, `profileOf`, `mapping`) keep returning the same DTOs; Color Distribution needs no change.
 
 ## Capabilities
@@ -27,7 +27,7 @@ The Catalog code only has a domain model on the read path: the seed, the one thi
 
 - `api/src/Catalog/`: new aggregates, entities, value objects and domain events; repository port and MikroORM adapter rewritten around the aggregates; seed reworked; new migration for the seed record.
 - `api/` scripts: `catalog:seed` / `catalog:seed:test` keep their names; a new `catalog:validate` replaces `tools/` `npm run validate*`. The content JSON must ship with the built app.
-- `tools/` removed: the `huemans-tools` package, its lockfile and validate scripts.
+- `tools/` loses the catalog content and its `validate` / `validate:icebreakers` / `validate:personality-types` scripts; it keeps the sentence builder and its scripts.
 - References to `tools/` paths updated: `CLAUDE.md`, `web/README.md`, `docs/prompts/attendee-flow-web.md`, `docs/next-steps.md`, `docs/api/attendee-api.md`, and the links in `initial-raw-specs.md`. `web/` keeps its own copy of the questions (it never imported `tools/`).
 - Tests: catalog unit, integration and functional suites updated to the new model; Color Distribution suites keep working through the unchanged DTOs.
 - Databases seeded before this change: the new migration records them as seeded when they already hold catalog content, so nobody has to recreate them.

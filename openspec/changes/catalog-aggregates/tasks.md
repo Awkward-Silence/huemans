@@ -39,6 +39,6 @@
 
 ## 7. Remove `tools/` and update references
 
-- [x] 7.1 Delete the `tools/` package (`package.json`, lockfile, `tsconfig.json`, validate scripts) and verify no file outside `openspec/changes/archive/` still references `tools/` (`git grep`)
-- [ ] 7.2 Update `CLAUDE.md` (API commands, the catalog bullet, the architecture tree without `tools/`, and the OpenSpec change list with `catalog-aggregates`), `web/README.md`, `docs/prompts/attendee-flow-web.md`, `docs/next-steps.md`, `docs/api/attendee-api.md`, the links in `initial-raw-specs.md` and the `Trait.ts` comment, and verify every new path exists
-- [ ] 7.3 Run `pnpm lint`, `pnpm build` and `pnpm test` in `api/` and verify all pass
+- [x] 7.1 Delete the catalog part of `tools/` (content and its validate scripts; the package stays for the sentence builder) and verify no file outside `openspec/changes/archive/` still references the removed paths (`git grep`)
+- [x] 7.2 Update `CLAUDE.md` (API commands, the catalog bullet, the architecture tree without `tools/`, and the OpenSpec change list with `catalog-aggregates`), `web/README.md`, `docs/prompts/attendee-flow-web.md`, `docs/next-steps.md`, `docs/api/attendee-api.md`, the links in `initial-raw-specs.md` and the `Trait.ts` comment, and verify every new path exists
+- [x] 7.3 Run `pnpm lint`, `pnpm build` and `pnpm test` in `api/` and verify all pass
