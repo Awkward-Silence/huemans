@@ -1,6 +1,6 @@
 import { EntitySchema } from '@mikro-orm/core';
 import { Assignment } from '@Huemans/ColorDistribution/Domain/Assignment';
-import { Color } from '@Huemans/ColorDistribution/Domain/ValueObject/Color';
+import { Color } from '@Huemans/Shared/Domain/ValueObject/Color';
 import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';

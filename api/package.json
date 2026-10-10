@@ -19,7 +19,8 @@
     "migration:up:test": "dotenv -e .env.test -- mikro-orm migration:up",
     "catalog:seed": "dotenv -e .env -- ts-node -r tsconfig-paths/register src/Catalog/Infrastructure/Seed/seed.ts",
     "catalog:seed:test": "dotenv -e .env.test -- ts-node -r tsconfig-paths/register src/Catalog/Infrastructure/Seed/seed.ts",
-    "catalog:validate": "ts-node -r tsconfig-paths/register src/Catalog/Infrastructure/Seed/validate.ts"
+    "catalog:validate": "ts-node -r tsconfig-paths/register src/Catalog/Infrastructure/Seed/validate.ts",
+    "seed:demo": "dotenv -e .env -- ts-node -r tsconfig-paths/register src/Event/Infrastructure/Cli/seedDemoEvent.ts"
   },
   "mikro-orm": {
     "useTsNode": true,

@@ -2,7 +2,7 @@ import type { AttendeeGrouped as AttendeeGroupedPayload } from '../../../../cont
 import { DomainEvent } from '@Huemans/Shared/Domain/DomainEvent';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
-import { Color } from './ValueObject/Color';
+import { Color } from '@Huemans/Shared/Domain/ValueObject/Color';
 import { PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
 
 export class AttendeeGrouped extends DomainEvent {

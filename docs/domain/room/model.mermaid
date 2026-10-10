@@ -1,0 +1,56 @@
+classDiagram
+  class RoomView {
+    <<ReadModel>>
+    +SK~EventId~ eventId
+    +AttendeeCount total
+    +AttendeeCount answered
+    +GroupCountCollection groups
+  }
+
+  class EventLookup {
+    <<Repository>>
+    +exists(SK~EventId~ eventId) boolean
+  }
+
+  class GroupCounter {
+    <<Repository>>
+    +countsOf(SK~EventId~ eventId) GroupCountCollection
+  }
+
+  class JoinedAttendeeCounter {
+    <<Repository>>
+    +joinedIn(SK~EventId~ eventId) AttendeeCount
+  }
+
+  class GroupCountCollection {
+    <<Collection>>
+  }
+
+  class GroupCount {
+    <<ValueObject>>
+    +SK~Color~ color
+    +AttendeeCount count
+  }
+
+  class AttendeeCount {
+    <<ValueObject>>
+    +int value
+  }
+
+  class EventId {
+    <<SharedKernel>>
+  }
+
+  class Color {
+    <<SharedKernel>>
+  }
+
+  GroupCounter ..> GroupCountCollection : returns
+  JoinedAttendeeCounter ..> AttendeeCount : returns
+  EventLookup ..> EventId : checks
+  RoomView *-- GroupCountCollection : groups
+  RoomView *-- AttendeeCount : total, answered
+  RoomView *-- EventId : eventId
+  GroupCountCollection "1" o-- "4" GroupCount : contains
+  GroupCount *-- Color : color
+  GroupCount *-- AttendeeCount : count
