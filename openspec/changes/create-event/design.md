@@ -42,14 +42,14 @@ Code uses those names. Requirements are in `specs/event/spec.md`; motivation is 
 - The length lives in the value object rather than zod, so the seed in `web-live-distribution` cannot create an invalid name.
 
 **Application service.** `Event/Application/ApplicationService`:
-- `create(name): Promise<EventView>` builds the value objects, generates the id with `EventId.random()`, then saves and dispatches the pulled events inside one `TransactionManager.run`.
+- `create(name): Promise<EventView>` builds the value objects, generates the id with `EventId.random()`, saves, then dispatches the pulled events.
 - `eventOf(eventId): Promise<EventView>` throws `EventNotFound` (a `NotFoundError`), which maps to `404`.
 
 A single insert needs no explicit transaction.
 
 **Cross-context read.** `EventModule` exports its `ApplicationService`. Other contexts call `eventOf` from an adapter in their own `Infrastructure/`, behind a port in their own `Domain/Port`.
 
-**Synchronous, transactional announcement.** The service dispatches after the save and awaits it, so the distribution is open before `201` is returned. Both happen in one transaction, and the subscriber's writes join it. If a subscriber throws, neither the event nor its distribution is stored and the request fails with `500`. Nothing re-publishes `EventCreated` for a stored event, so committing the event alone would leave it broken for good.
+**Synchronous announcement after the save.** The service dispatches only once the save has succeeded and awaits it, so the distribution is open before `201` is returned. A failed save publishes nothing. If a subscriber throws, the event stays stored and the request fails with `500`. That is accepted: the save is the step that realistically fails, and nothing re-publishes `EventCreated`, so the host creates a new event.
 
 **Persistence.**
 - Table `events(id uuid primary key, name text not null, status text not null)`, created by a hand-written migration, `Migration<timestamp>_event.ts`.
@@ -72,4 +72,4 @@ A single insert needs no explicit transaction.
 - [The quiz-settings constants could outlive their placeholder role] → `quiz-and-answers` has a task to replace them, and the functional test keeps checking 5 and 20 either way.
 - [Moving `EventCreated` touches Color Distribution] → It is an import-only change, covered by Color Distribution's existing functional tests.
 - [Anyone can create events, since there is no host auth] → Acceptable for a 24h demo. Ids are unguessable UUIDv7s.
-- [A subscriber failure after the event is saved would leave it without a distribution, with no way to repair it] → `create` saves and dispatches `EventCreated` inside one transaction, so a failing subscriber rolls the event back and returns `500`. Covered by a functional test with a throwing subscriber. Subscribers that only enrich (e.g. word-suggestions warming) must catch their own errors.
+- [A subscriber failure after the save leaves the event without a distribution, and nothing re-publishes `EventCreated`] → Accepted for the demo. Subscribers are in-process and the realistic failure is the save, which publishes nothing. The host creates a new event.
