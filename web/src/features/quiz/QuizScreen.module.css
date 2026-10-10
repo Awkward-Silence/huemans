@@ -20,3 +20,13 @@
 .footer {
   padding-top: var(--space-xl);
 }
+
+.timeUp {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.12em;
+}

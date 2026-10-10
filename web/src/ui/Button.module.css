@@ -26,7 +26,8 @@
   width: 100%;
 }
 
-.lg {
+.lg,
+.xl {
   min-height: var(--layout-cta-height);
   padding: 0 var(--space-xl);
   font-family: var(--type-cta-family);
@@ -34,6 +35,14 @@
   font-weight: var(--type-cta-weight);
   letter-spacing: var(--type-cta-letter-spacing);
   line-height: var(--type-cta-line-height);
+}
+
+.xl {
+  min-height: calc(var(--layout-cta-height) + var(--space-md));
+  padding: 0 var(--space-lg);
+  gap: var(--space-sm);
+  /* A touch smaller than "lg" so a long label still fits one line inside a block. */
+  font-size: calc(var(--type-cta-size) * 0.9);
 }
 
 .md {
@@ -59,6 +68,12 @@
 .groupInk:hover {
   background: var(--group-ink);
   color: var(--group-bg);
+}
+
+.page,
+.page:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .ghost,

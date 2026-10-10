@@ -11,6 +11,9 @@ const SessionSchema = z.object({
   name: z.string().optional(),
   /** questionId -> answerId, in answer order. */
   answers: z.record(z.string(), z.string()).default({}),
+  /** Words picked for the "I ..." sentence, starter excluded. Stays on the phone. */
+  sentence: z.array(z.string()).default([]),
+  sentenceSkipped: z.boolean().default(false),
   quizStartedAt: z.number().optional(),
   quizFinishedAt: z.number().optional(),
   submitted: z.boolean().default(false),
@@ -18,7 +21,7 @@ const SessionSchema = z.object({
 
 type Session = z.infer<typeof SessionSchema>;
 
-const EMPTY: Session = { answers: {}, submitted: false };
+const EMPTY: Session = { answers: {}, sentence: [], sentenceSkipped: false, submitted: false };
 const storageKey = (eventId: string) => `huemans:session:${eventId}`;
 
 const cache = new Map<string, Session>();

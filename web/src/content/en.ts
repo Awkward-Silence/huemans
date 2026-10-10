@@ -1,5 +1,9 @@
 import type { GroupColor } from "../domain/groupColor.ts";
 
+const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six"];
+const numberWord = (n: number) => NUMBER_WORDS[n] ?? String(n);
+const capitalise = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
 /**
  * Every user-facing string. Screens read from here, never from literals,
  * so copy can be edited (or translated) in one place.
@@ -46,6 +50,16 @@ const en = {
     privacy: "No sign-up, no email. Your answers are deleted when the event ends.",
     joinFailed: "We couldn't add you to the room. Try again.",
   },
+  welcome: {
+    event: (app: string, event: string) => `${app} · ${event}`,
+    live: "still running",
+    title: (name: string) => ["Welcome back,", `${name}.`] as const,
+    body: "Your phone kept your place. Nothing was lost while you were away.",
+    progressLabel: (answered: number, total: number) => `${answered} of ${total} answered`,
+    cta: "Pick up where you left off",
+    footnote:
+      "Same link, same phone. There is no account to sign back into, and answers you already gave stay as they are.",
+  },
   quiz: {
     positionLabel: (current: number, total: number) => `Question ${current} of ${total}`,
     secondsUnit: "s",
@@ -55,6 +69,29 @@ const en = {
       `When the bar empties nothing closes — you still get to finish. The ${seconds} seconds are a nudge, not a gate.`,
     submitting: "Sending your answers…",
     submitFailed: "Your answers didn't send.",
+  },
+  sentence: {
+    lastOne: "last one",
+    title: "Finish the sentence",
+    hint: "Three words, picked for you just now. Tap one.",
+    thinking: "Finding three good ones…",
+    timeUpHint: (left: number) =>
+      `The clock stopped, nothing else did. Take your ${left === 1 ? "last word" : `${numberWord(left)} words`}.`,
+    timeUpPill: "Time's up, carry on",
+    progress: (picked: number, total: number) => `${picked} of ${total} words`,
+    loadingStatus: "Three more coming, one second.",
+    skip: "Skip the sentence",
+    /** The note under "skip", by how many words are left. */
+    footer: (left: number, total: number) =>
+      left === total
+        ? "Nothing here changes your colour. It's just for fun."
+        : left === 1
+          ? "One word to go."
+          : `${capitalise(numberWord(left))} more words and it's yours for the night.`,
+    footerLoading: "Your sentence stays put while they load.",
+    footerTimeUp: "The room waits for the last person. That is the whole point.",
+    done: "That'll do it",
+    doneNote: "It's yours to keep, nowhere near your colour.",
   },
   sorted: {
     stats: (answers: number, seconds: number) => `${answers} answers · ${seconds} seconds`,
@@ -68,6 +105,8 @@ const en = {
   reveal: {
     eyebrow: "Your colour",
     mates: (color: string) => `others in this room are ${color} too`,
+    sentenceLabel: "You, in one sentence",
+    sentence: (sentence: string) => `“${sentence}”`,
     cta: "See the room",
   },
   room: {

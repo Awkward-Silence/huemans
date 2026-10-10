@@ -14,6 +14,7 @@ const defaultTheme: Theme = {
     accent: "#F5B13F",
     accentHover: "#FFD08A",
     accentTint: "rgba(245, 177, 63, 0.14)",
+    onAccent: "#1A1410",
     border: "rgba(255, 255, 255, 0.14)",
     track: "rgba(255, 255, 255, 0.12)",
     onLight: "#121016",

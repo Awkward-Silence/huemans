@@ -40,18 +40,23 @@ judges scan QR -> intro -> name -> 4-5 funny questions (soft timer)
 Each change has a proposal in `openspec/changes/<name>/`. Run `/opsx:propose <name>` to add specs, design and tasks, then `/opsx:apply <name>` to implement it.
 
 ```
-backend-skeleton-and-catalog --> event-join-and-answers --> color-distribution
-                                                                   |
-                                  ai-enrichment <-- night-icebreaker <-+
+create-event ----------------+--> web-live-distribution  (walking skeleton)
+                             |
+backend-skeleton-and-catalog +--> quiz-and-answers --> color-distribution (applied)
+                                                              |
+                             ai-enrichment <-- night-icebreaker <-+
 ```
 
 | Change | Delivers | Owner | Rough hours |
 | --- | --- | --- | --- |
 | `backend-skeleton-and-catalog` | NestJS + Postgres + test suites, deployed. Seeds questions/icebreakers from the catalog content JSON, defines the 4 colors with trait weights | Adrián (skeleton), Diego (catalog) | H0-H5 |
-| `event-join-and-answers` | Create event (4-5 questions), fetch quiz, join with name, submit answers (soft timer), attendee state for reloads | Diego | H4-H8 |
+| `create-event` | Event context: create event (`OPEN`, quiz settings), read it, publish `EventCreated` | Adrián | H4-H6 |
+| `quiz-and-answers` | Participation context: quiz picked from the event id, join with name, submit answers (soft timer), publish `QuestionnaireCompleted` with traits | Diego | H4-H8 |
 | `color-distribution` | Trait-to-color scoring, balanced final assignment, reveal endpoint, live counts + realtime push | Adrián | H3-H10 |
+| `web-live-distribution` | `/room` read model and a UUIDv7 demo event, so `web/` runs against `api/` | Adrián | H6-H10 |
 | `night-icebreaker` | Host closes the event, room-profile-based icebreaker pick, broadcast | Adrián | H10-H13 |
 | `ai-enrichment` | Mastra in NestJS: personalized color explanation, icebreaker rationale, fallbacks | Diego + Adrián | H12-H18 |
+| `word-suggestions` | The "I ..." sentence-builder question with AI-suggested words and fallbacks | TBD | — |
 
 Frontend and host changes (`attendee-flow`, `event-and-host`) are still to be proposed by Daniel and Miguel.
 
@@ -59,8 +64,8 @@ Frontend and host changes (`attendee-flow`, `event-and-host`) are still to be pr
 
 ```
          H0  H2      H6      H10     H14     H18   H20     H24
- Adrián  |ctr|skel| distribution |icebrk| AI   |bots | rehearse
- Diego   |ctr|catalog| event+join+answers | AI   |polish|  "
+ Adrián  |ctr|skel|distrib+event+room|icebrk| AI |bots | rehearse
+ Diego   |ctr|catalog| quiz+join+answers | AI   |polish|  "
  Miguel  |ctr|RT spike| host screen | reveal btn |polish|  "
  Daniel  |ctr| intro+name+quiz | reveal+distrib | icebrk+LED |  "
                          ^               ^
@@ -75,14 +80,14 @@ Frontend and host changes (`attendee-flow`, `event-and-host`) are still to be pr
 ## Next steps per person
 
 ### Adrián (architect)
-1. Run `/ddd-bc` for color distribution, then `/ddd-model` (output in `docs/domain/`).
-2. Lead the contract kickoff and write `contracts/`.
-3. `/opsx:propose backend-skeleton-and-catalog`, then apply the skeleton part and deploy it.
-4. Propose and apply `color-distribution`, then `night-icebreaker`.
+1. Done: color distribution modeled and applied, `api-skeleton` archived, Catalog modeled.
+2. Propose and apply `create-event`, so `quiz-and-answers` and color distribution get real events.
+3. Propose and apply `web-live-distribution` to close the walking skeleton.
+4. Lead the contract kickoff and write `contracts/`, then `night-icebreaker`.
 
 ### Diego (backend)
 1. Apply the catalog part of `backend-skeleton-and-catalog`: seed from the catalog content JSON and the colors with trait weights.
-2. Propose and apply `event-join-and-answers`. Publish `QuestionnaireCompleted` before distribution exists, against a stub.
+2. Propose and apply `quiz-and-answers`. Use a stub event lookup until `create-event` lands; color distribution already consumes `QuestionnaireCompleted`.
 3. From H12, `ai-enrichment` with Adrián.
 
 ### Miguel (fullstack)

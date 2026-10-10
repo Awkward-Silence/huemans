@@ -28,9 +28,30 @@ const QuestionSchema = z.object({
   answers: z.array(z.object({ id: IdSchema, text: z.string().min(1) })).length(4),
 });
 
+/** The "I ..." sentence builder: the last quiz question, for fun only (no trait). */
+const SentenceQuestionSchema = z.object({
+  id: IdSchema,
+  starter: z.string().min(1),
+  /** How many words the attendee adds after the starter. */
+  picks: z.number().int().positive(),
+});
+
 const QuizSchema = z.object({
   questions: z.array(QuestionSchema).min(1),
   durationSeconds: z.number().int().positive(),
+  /** Optional so an api/ without the sentence question still works. */
+  sentence: SentenceQuestionSchema.optional(),
+});
+
+const WordSuggestionsRequestSchema = z.object({
+  attendeeId: IdSchema,
+  /** The words so far, starting with the starter. */
+  sentence: z.array(z.string().min(1)).min(1),
+});
+
+const WordSuggestionsSchema = z.object({
+  words: z.array(z.string().min(1)).length(3),
+  source: z.enum(["ai", "fallback"]),
 });
 
 const SubmitAnswersRequestSchema = z.object({
@@ -79,7 +100,10 @@ type Event = z.infer<typeof EventSchema>;
 type JoinRequest = z.infer<typeof JoinRequestSchema>;
 type JoinResponse = z.infer<typeof JoinResponseSchema>;
 type Question = z.infer<typeof QuestionSchema>;
+type SentenceQuestion = z.infer<typeof SentenceQuestionSchema>;
 type Quiz = z.infer<typeof QuizSchema>;
+type WordSuggestionsRequest = z.infer<typeof WordSuggestionsRequestSchema>;
+type WordSuggestions = z.infer<typeof WordSuggestionsSchema>;
 type SubmitAnswersRequest = z.infer<typeof SubmitAnswersRequestSchema>;
 type Assignment = z.infer<typeof AssignmentSchema>;
 type AssignedGroup = Extract<Assignment, { status: "assigned" }>;
@@ -96,7 +120,10 @@ export {
   QuestionSchema,
   QuizSchema,
   RoomSchema,
+  SentenceQuestionSchema,
   SubmitAnswersRequestSchema,
+  WordSuggestionsRequestSchema,
+  WordSuggestionsSchema,
 };
 export type {
   AssignedGroup,
@@ -109,5 +136,8 @@ export type {
   Quiz,
   ReadyIcebreaker,
   Room,
+  SentenceQuestion,
   SubmitAnswersRequest,
+  WordSuggestions,
+  WordSuggestionsRequest,
 };

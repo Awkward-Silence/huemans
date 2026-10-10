@@ -16,6 +16,7 @@ const daylightTheme: Theme = {
     accent: "#A8620A",
     accentHover: "#7F4906",
     accentTint: "rgba(168, 98, 10, 0.12)",
+    onAccent: "#FFFFFF",
     border: "rgba(20, 18, 22, 0.16)",
     track: "rgba(20, 18, 22, 0.1)",
     onLight: "#F6F3EF",

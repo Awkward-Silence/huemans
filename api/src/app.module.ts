@@ -2,6 +2,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { CatalogModule } from '@Huemans/Catalog/Infrastructure/CatalogModule';
 import { ColorDistributionModule } from '@Huemans/ColorDistribution/Infrastructure/ColorDistributionModule';
+import { EventModule } from '@Huemans/Event/Infrastructure/EventModule';
 import { mikroOrmConfig } from '@Huemans/Shared/Infrastructure/Persistence/MikroOrm/mikro-orm.config';
 import { SharedModule } from '@Huemans/Shared/Infrastructure/SharedModule';
 import { DatabaseHealthProbe } from './Health/DatabaseHealthProbe';
@@ -12,6 +13,7 @@ import { HealthController } from './Health/HealthController';
     MikroOrmModule.forRoot({ ...mikroOrmConfig(), autoLoadEntities: true }),
     SharedModule,
     CatalogModule,
+    EventModule,
     ColorDistributionModule,
   ],
   controllers: [HealthController],

@@ -11,12 +11,15 @@ type ButtonVariant =
   | "group"
   /** Group ink on a group-coloured screen. */
   | "groupInk"
+  /** The page's own colours, as a pill on a filled block. */
+  | "page"
   /** Text-only, for secondary actions. */
   | "ghost";
 
 type ButtonStyleProps = {
   variant?: ButtonVariant;
-  size?: "md" | "lg";
+  /** "xl" is the one big action on a screen, sitting inside a block. */
+  size?: "md" | "lg" | "xl";
   /** Trailing icon. */
   icon?: IconName;
   /** Full width (default). */

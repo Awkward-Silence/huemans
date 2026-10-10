@@ -6,6 +6,7 @@ function setup() {
   let now = Date.parse("2026-10-10T20:00:00Z");
   const api = createMockClient({
     latencyMs: 0,
+    suggestLatencyMs: 0,
     persist: false,
     now: () => now,
     crowdFinishMs: 10_000,
@@ -59,6 +60,26 @@ describe("mock client", () => {
     const { api } = setup();
     const quiz = await api.getQuiz("demo");
     expect(quiz.questions[0]!.answers[0]).not.toHaveProperty("trait");
+  });
+
+  it("announces the sentence question and suggests 3 next words", async () => {
+    const { api } = setup();
+    const { sentence } = await api.getQuiz("demo");
+    expect(sentence).toEqual({ id: "sentence-i", starter: "I", picks: 5 });
+
+    const body = { attendeeId: "a1", sentence: ["I", "loudly"] };
+    const suggestions = await api.suggestWords("demo", sentence!.id, body);
+    expect(suggestions.words).toEqual(["apologise to", "sing to", "argue with"]);
+  });
+
+  it("rejects bad suggestion requests", async () => {
+    const { api } = setup();
+    await expect(
+      api.suggestWords("demo", "nope", { attendeeId: "a1", sentence: ["I"] }),
+    ).rejects.toMatchObject({ kind: "not-found" });
+    await expect(
+      api.suggestWords("demo", "sentence-i", { attendeeId: "a1", sentence: ["You", "eat"] }),
+    ).rejects.toMatchObject({ status: 400 });
   });
 
   it("rejects unknown attendees", async () => {

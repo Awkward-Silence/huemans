@@ -1,7 +1,7 @@
 import { EntityManager, RequestContext } from '@mikro-orm/postgresql';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ApplicationService } from '@Huemans/ColorDistribution/Application/ApplicationService';
-import { EventCreated } from '@Huemans/Shared/Domain/Event/EventCreated';
+import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
 import { InMemoryEventDispatcher } from '@Huemans/Shared/Infrastructure/EventDispatcher/InMemoryEventDispatcher';
 
 @Injectable()

@@ -8,6 +8,13 @@ const PATHS = {
       <path d="M12 5l7 7-7 7" />
     </>
   ),
+  check: <path d="M20 6 9 17l-5-5" />,
+  clock: (
+    <>
+      <circle cx="12" cy="13" r="8" />
+      <path d="M12 9v4l2.5 2" />
+    </>
+  ),
   quote: (
     <>
       <path d="M7 11h3V7a4 4 0 0 0-4 4v6" />

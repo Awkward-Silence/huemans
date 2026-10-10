@@ -4,7 +4,7 @@
 
 There is no application code yet: `api/` is created by `backend-skeleton-and-catalog` (NestJS, Postgres, Unit/Integration/Functional suites). The domain contract is `docs/domain/color-distribution/model.md` (aggregate `EventDistribution`, entity `Assignment`, actions `open` and `assign`, event `AttendeeGrouped`, read model `EventDistributionView`) and `docs/domain/shared-kernel/model.md` (`Trait`, `EventId`, `AttendeeId`). Code uses those names. Requirements are in `specs/color-distribution/spec.md`; motivation in `proposal.md`.
 
-Two inputs come from other lanes and are not built here: `EventCreated` (Event context) and `QuestionnaireCompleted` with the trait profile (Participation, `event-join-and-answers`), plus the trait-type mapping content (catalog).
+Two inputs come from other lanes and are not built here: `EventCreated` (Event context, `create-event`) and `QuestionnaireCompleted` with the trait profile (Participation, `quiz-and-answers`), plus the trait-type mapping content (catalog).
 
 ## Goals / Non-Goals
 

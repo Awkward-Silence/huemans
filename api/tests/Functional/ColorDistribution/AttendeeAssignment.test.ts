@@ -4,7 +4,7 @@ import { ApplicationService as CatalogService } from '@Huemans/Catalog/Applicati
 import { PersonalityTypesNotDefined } from '@Huemans/Catalog/Domain/PersonalityTypesNotDefined';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
-import { EventCreated } from '@Huemans/Shared/Domain/Event/EventCreated';
+import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
 import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
 import { publish } from '../../Support/events';
 import { realContent, seedCatalogFiles } from '../../Support/catalog';

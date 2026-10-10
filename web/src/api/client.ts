@@ -7,6 +7,8 @@ import type {
   Quiz,
   Room,
   SubmitAnswersRequest,
+  WordSuggestions,
+  WordSuggestionsRequest,
 } from "./schemas.ts";
 
 /**
@@ -21,6 +23,12 @@ interface ApiClient {
   getAssignment(eventId: string, attendeeId: string): Promise<Assignment>;
   getRoom(eventId: string): Promise<Room>;
   getIcebreaker(eventId: string, attendeeId: string): Promise<Icebreaker>;
+  /** The next 3 words for the sentence question. */
+  suggestWords(
+    eventId: string,
+    questionId: string,
+    body: WordSuggestionsRequest,
+  ): Promise<WordSuggestions>;
 }
 
 export type { ApiClient };

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EventRouteImport } from './routes/event'
 import { Route as DevKitchenSinkRouteImport } from './routes/dev/kitchen-sink'
 import { Route as JoinEventIdRouteRouteImport } from './routes/join/$eventId/route'
 import { Route as JoinEventIdIndexRouteImport } from './routes/join/$eventId/index'
@@ -20,10 +21,16 @@ import { Route as JoinEventIdQuizRouteImport } from './routes/join/$eventId/quiz
 import { Route as JoinEventIdRevealRouteImport } from './routes/join/$eventId/reveal'
 import { Route as JoinEventIdRoomRouteImport } from './routes/join/$eventId/room'
 import { Route as JoinEventIdSortedRouteImport } from './routes/join/$eventId/sorted'
+import { Route as JoinEventIdWelcomeRouteImport } from './routes/join/$eventId/welcome'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventRoute = EventRouteImport.update({
+  id: '/event',
+  path: '/event',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DevKitchenSinkRoute = DevKitchenSinkRouteImport.update({
@@ -76,9 +83,15 @@ const JoinEventIdSortedRoute = JoinEventIdSortedRouteImport.update({
   path: '/sorted',
   getParentRoute: () => JoinEventIdRouteRoute,
 } as any)
+const JoinEventIdWelcomeRoute = JoinEventIdWelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => JoinEventIdRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/event': typeof EventRoute
   '/join/$eventId': typeof JoinEventIdRouteRouteWithChildren
   '/dev/kitchen-sink': typeof DevKitchenSinkRoute
   '/join/$eventId/badge': typeof JoinEventIdBadgeRoute
@@ -88,10 +101,12 @@ export interface FileRoutesByFullPath {
   '/join/$eventId/reveal': typeof JoinEventIdRevealRoute
   '/join/$eventId/room': typeof JoinEventIdRoomRoute
   '/join/$eventId/sorted': typeof JoinEventIdSortedRoute
+  '/join/$eventId/welcome': typeof JoinEventIdWelcomeRoute
   '/join/$eventId/': typeof JoinEventIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/event': typeof EventRoute
   '/dev/kitchen-sink': typeof DevKitchenSinkRoute
   '/join/$eventId/badge': typeof JoinEventIdBadgeRoute
   '/join/$eventId/icebreaker': typeof JoinEventIdIcebreakerRoute
@@ -100,11 +115,13 @@ export interface FileRoutesByTo {
   '/join/$eventId/reveal': typeof JoinEventIdRevealRoute
   '/join/$eventId/room': typeof JoinEventIdRoomRoute
   '/join/$eventId/sorted': typeof JoinEventIdSortedRoute
+  '/join/$eventId/welcome': typeof JoinEventIdWelcomeRoute
   '/join/$eventId': typeof JoinEventIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/event': typeof EventRoute
   '/join/$eventId': typeof JoinEventIdRouteRouteWithChildren
   '/dev/kitchen-sink': typeof DevKitchenSinkRoute
   '/join/$eventId/badge': typeof JoinEventIdBadgeRoute
@@ -114,12 +131,14 @@ export interface FileRoutesById {
   '/join/$eventId/reveal': typeof JoinEventIdRevealRoute
   '/join/$eventId/room': typeof JoinEventIdRoomRoute
   '/join/$eventId/sorted': typeof JoinEventIdSortedRoute
+  '/join/$eventId/welcome': typeof JoinEventIdWelcomeRoute
   '/join/$eventId/': typeof JoinEventIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/event'
     | '/join/$eventId'
     | '/dev/kitchen-sink'
     | '/join/$eventId/badge'
@@ -129,10 +148,12 @@ export interface FileRouteTypes {
     | '/join/$eventId/reveal'
     | '/join/$eventId/room'
     | '/join/$eventId/sorted'
+    | '/join/$eventId/welcome'
     | '/join/$eventId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/event'
     | '/dev/kitchen-sink'
     | '/join/$eventId/badge'
     | '/join/$eventId/icebreaker'
@@ -141,10 +162,12 @@ export interface FileRouteTypes {
     | '/join/$eventId/reveal'
     | '/join/$eventId/room'
     | '/join/$eventId/sorted'
+    | '/join/$eventId/welcome'
     | '/join/$eventId'
   id:
     | '__root__'
     | '/'
+    | '/event'
     | '/join/$eventId'
     | '/dev/kitchen-sink'
     | '/join/$eventId/badge'
@@ -154,11 +177,13 @@ export interface FileRouteTypes {
     | '/join/$eventId/reveal'
     | '/join/$eventId/room'
     | '/join/$eventId/sorted'
+    | '/join/$eventId/welcome'
     | '/join/$eventId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EventRoute: typeof EventRoute
   JoinEventIdRouteRoute: typeof JoinEventIdRouteRouteWithChildren
   DevKitchenSinkRoute: typeof DevKitchenSinkRoute
 }
@@ -170,6 +195,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/event': {
+      id: '/event'
+      path: '/event'
+      fullPath: '/event'
+      preLoaderRoute: typeof EventRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dev/kitchen-sink': {
@@ -242,6 +274,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JoinEventIdSortedRouteImport
       parentRoute: typeof JoinEventIdRouteRoute
     }
+    '/join/$eventId/welcome': {
+      id: '/join/$eventId/welcome'
+      path: '/welcome'
+      fullPath: '/join/$eventId/welcome'
+      preLoaderRoute: typeof JoinEventIdWelcomeRouteImport
+      parentRoute: typeof JoinEventIdRouteRoute
+    }
   }
 }
 
@@ -253,6 +292,7 @@ interface JoinEventIdRouteRouteChildren {
   JoinEventIdRevealRoute: typeof JoinEventIdRevealRoute
   JoinEventIdRoomRoute: typeof JoinEventIdRoomRoute
   JoinEventIdSortedRoute: typeof JoinEventIdSortedRoute
+  JoinEventIdWelcomeRoute: typeof JoinEventIdWelcomeRoute
   JoinEventIdIndexRoute: typeof JoinEventIdIndexRoute
 }
 
@@ -264,6 +304,7 @@ const JoinEventIdRouteRouteChildren: JoinEventIdRouteRouteChildren = {
   JoinEventIdRevealRoute: JoinEventIdRevealRoute,
   JoinEventIdRoomRoute: JoinEventIdRoomRoute,
   JoinEventIdSortedRoute: JoinEventIdSortedRoute,
+  JoinEventIdWelcomeRoute: JoinEventIdWelcomeRoute,
   JoinEventIdIndexRoute: JoinEventIdIndexRoute,
 }
 
@@ -272,6 +313,7 @@ const JoinEventIdRouteRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EventRoute: EventRoute,
   JoinEventIdRouteRoute: JoinEventIdRouteRouteWithChildren,
   DevKitchenSinkRoute: DevKitchenSinkRoute,
 }

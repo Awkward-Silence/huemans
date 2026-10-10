@@ -1,10 +1,7 @@
 import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
-import { z } from 'zod';
 import type { AttendeeAssignmentResponse, EventDistributionView } from '../../../../../contracts/colorDistribution';
 import { ApplicationService } from '@Huemans/ColorDistribution/Application/ApplicationService';
-import { ZodValidationPipe } from '@Huemans/Shared/Infrastructure/Http/ZodValidationPipe';
-
-const UuidV7Param = new ZodValidationPipe(z.uuidv7());
+import { UuidV7Param } from '@Huemans/Shared/Infrastructure/Http/UuidV7Param';
 
 @Controller('events/:eventId')
 export class ColorDistributionController {

@@ -6,7 +6,7 @@ import { Button, SegmentedProgress, Screen, Stack, Text, TextField } from "../..
 import { NAME_MAX_LENGTH, NameSchema } from "./name.ts";
 import styles from "./NameScreen.module.css";
 import { updateSession } from "./session.ts";
-import { useGoToStep } from "./steps.ts";
+import { markPresent, useGoToStep } from "./steps.ts";
 
 /** The three big moments the step indicator counts: name, quiz, colour. */
 const JOURNEY_LENGTH = 3;
@@ -29,6 +29,7 @@ function NameScreen({ eventId }: { eventId: string }) {
     join.mutate(parsed.data, {
       onSuccess: ({ attendeeId }) => {
         updateSession(eventId, { attendeeId, name: parsed.data });
+        markPresent(eventId);
         void goTo("quiz", { replace: true });
       },
     });

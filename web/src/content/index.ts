@@ -4,4 +4,5 @@ import { en } from "./en.ts";
 const copy = en;
 
 export { copy };
+export { sentenceTree } from "./sentenceWords.ts";
 export type { Copy } from "./en.ts";

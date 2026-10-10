@@ -1,8 +1,14 @@
+import { cx } from "../lib/cx.ts";
 import styles from "./PulseDot.module.css";
 
-/** Small pulsing dot in the group colour: "this is live". */
-function PulseDot() {
-  return <span className={styles.dot} aria-hidden="true" />;
+type PulseDotProps = {
+  /** "accent" for before the reveal, when no group colour may show. */
+  tone?: "group" | "accent";
+};
+
+/** Small pulsing dot: "this is live". */
+function PulseDot({ tone = "group" }: PulseDotProps) {
+  return <span className={cx(styles.dot, styles[tone])} aria-hidden="true" />;
 }
 
 export { PulseDot };

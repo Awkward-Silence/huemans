@@ -1,3 +1,5 @@
+import { useQuery } from "@tanstack/react-query";
+import { quizQuery } from "../../api/queries.ts";
 import { copy } from "../../content/index.ts";
 import {
   ButtonLink,
@@ -10,15 +12,25 @@ import {
   Stack,
   Text,
 } from "../../ui/index.ts";
+import { useJoinedSession } from "../join/session.ts";
 import { STEP_ROUTES } from "../join/steps.ts";
+import { sentenceStatus } from "../quiz/progress.ts";
 import { AssignedGroupGate } from "./AssignedGroupGate.tsx";
 import styles from "./RevealScreen.module.css";
 
 /** When the content starts rising, relative to the flood. */
 const CONTENT_AFTER = "0.55s";
 
-/** Step 5: the colour floods the screen. */
+/** Step 5: the colour floods the screen, with the attendee's sentence if they finished it. */
 function RevealScreen({ eventId }: { eventId: string }) {
+  const session = useJoinedSession(eventId);
+  const sentenceQuestion = useQuery(quizQuery(eventId)).data?.sentence;
+  const sentence =
+    sentenceQuestion &&
+    sentenceStatus(sentenceQuestion, session.sentence, session.sentenceSkipped) === "done"
+      ? [sentenceQuestion.starter, ...session.sentence].join(" ")
+      : undefined;
+
   return (
     <AssignedGroupGate eventId={eventId}>
       {(group) => {
@@ -51,10 +63,20 @@ function RevealScreen({ eventId }: { eventId: string }) {
                   ))}
                 </Stack>
               </Rise>
+              {sentence && (
+                <Rise step={5} after={CONTENT_AFTER}>
+                  <Stack gap="2xs" className={styles.sentence}>
+                    <Eyebrow tone="groupInkSoft">{copy.reveal.sentenceLabel}</Eyebrow>
+                    <Text scale="cta" tone="groupInk">
+                      {copy.reveal.sentence(sentence)}
+                    </Text>
+                  </Stack>
+                </Rise>
+              )}
             </Stack>
 
-            <Stack pushEnd>
-              <Rise step={5} after={CONTENT_AFTER}>
+            <Stack pushEnd className={styles.footer}>
+              <Rise step={sentence ? 6 : 5} after={CONTENT_AFTER}>
                 <Stack gap="lg">
                   <Stack direction="row" gap="sm" align="baseline">
                     <Text as="span" scale="stat" tone="groupInk" tabular>

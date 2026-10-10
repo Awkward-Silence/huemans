@@ -65,6 +65,8 @@ const ThemeSchema = z.object({
     accent: z.string(),
     accentHover: z.string(),
     accentTint: z.string(),
+    /** Text drawn on a block filled with `accent`. */
+    onAccent: z.string(),
     border: z.string(),
     track: z.string(),
     /** Text on the light pill button. */
