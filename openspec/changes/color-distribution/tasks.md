@@ -25,7 +25,7 @@
 
 ## 4. Application and triggers
 
-- [ ] 4.1 Add the `TraitTypeMappingProvider` port and a provisional implementation mapping all 33 traits, and verify the provisional mapping constructs a valid `TraitTypeMapping`
+- [x] 4.1 Add the `TraitTypeMappingProvider` port and a provisional implementation mapping all 33 traits, and verify the provisional mapping constructs a valid `TraitTypeMapping`
 - [ ] 4.2 Implement `Application/ApplicationService` (`open`, `assign`, `distributionOf`, `assignmentOf`) dispatching pulled events through `EventDispatcher` only after a successful save, and wire it in `Infrastructure/ColorDistributionModule`; verify through the functional tests in section 5
 - [ ] 4.3 Subscribe to `EventCreated` (calls `open`, no-op if it already exists) and to `QuestionnaireCompleted` (calls `assign`, ignores already-assigned), handled synchronously, and verify through the functional flow test in 5.3
 
