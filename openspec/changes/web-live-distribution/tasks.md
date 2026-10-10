@@ -23,6 +23,6 @@
 
 ## 5. Web and docs
 
-- [ ] 5.1 Add `VITE_DEMO_EVENT_ID` (`config.demoEventId`, default `demo`) and use it in the home and status screens' demo links, document it in `web/.env.example`, and verify a vitest for the link plus `npm run typecheck && npm run lint && npm test` pass
+- [x] 5.1 Add `VITE_DEMO_EVENT_ID` (`config.demoEventId`, default `demo`) and use it in the home and status screens' demo links, document it in `web/.env.example`, and verify a vitest for the link plus `npm run typecheck && npm run lint && npm test` pass
 - [ ] 5.2 Run the API with the seeded demo event and the web with `VITE_API_MODE=http`, and verify the demo link opens the event intro and that `/events/<demo id>/room` answers the web's `RoomSchema`
 - [ ] 5.3 Update `docs/api/attendee-api.md` (gaps 4 and 5 resolved, `Color` reference, `seed:demo`), `CLAUDE.md` (Color in the shared kernel, the seed command), and verify `pnpm lint && pnpm build && pnpm test` pass

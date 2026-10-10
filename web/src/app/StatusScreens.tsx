@@ -1,6 +1,7 @@
 import type { ErrorComponentProps } from "@tanstack/react-router";
 import { copy } from "../content/index.ts";
 import { Button, ButtonLink, MessageScreen } from "../ui/index.ts";
+import { config } from "../config.ts";
 
 /** App-wide loading, error and not-found screens, wired into the router defaults. */
 
@@ -25,7 +26,7 @@ function NotFoundScreen() {
       body={copy.app.notFoundBody}
       action={
         import.meta.env.DEV ? (
-          <ButtonLink to="/join/$eventId" params={{ eventId: "demo" }}>
+          <ButtonLink to="/join/$eventId" params={{ eventId: config.demoEventId }}>
             {copy.home.demoLink}
           </ButtonLink>
         ) : undefined
