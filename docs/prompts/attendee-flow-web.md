@@ -94,7 +94,7 @@ The type scale uses display font weight 700–800 with tight negative tracking (
 - Every response goes through its zod schema before it reaches a component. A parse failure becomes a typed error that the UI can show.
 - `api/queries.ts` holds a query-key factory plus `queryOptions` / hooks (`useEvent`, `useQuiz`, `useAssignment`, `useRoom`, `useIcebreaker`) and mutations (`useJoin`, `useSubmitAnswers`).
 - "Live" data such as room counts and icebreaker unlock uses `refetchInterval` for now. Put it behind the hook so a WebSocket adapter can replace polling later without changing screens.
-- Mock fixtures: reuse question text from `tools/src/questions/questions.test.json` (copy it, don't import across apps). Questions have the shape `{ id, theme, text, answers[4]: { id, text } }`. The client doesn't need `trait`.
+- Mock fixtures: reuse question text from `api/src/Catalog/Infrastructure/Content/questions.json` (copy it, don't import across apps). Questions have the shape `{ id, theme, text, answers[4]: { id, text } }`. The client doesn't need `trait`.
 
 Suggested resources (adjust to `contracts/` if it exists):
 

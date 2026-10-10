@@ -1,4 +1,4 @@
-import { INestApplication, Type } from '@nestjs/common';
+import { INestApplication, InjectionToken, Type } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { App } from 'supertest/types';
@@ -6,7 +6,7 @@ import { AppModule } from '@Huemans/app.module';
 import { configureApp } from '@Huemans/configureApp';
 
 export async function bootFunctional(
-  options: { controllers?: Type[]; overrides?: { provide: Type; useValue: unknown }[] } = {},
+  options: { controllers?: Type[]; overrides?: { provide: InjectionToken; useValue: unknown }[] } = {},
 ): Promise<INestApplication> {
   let builder = Test.createTestingModule({ imports: [AppModule], controllers: options.controllers ?? [] });
   for (const override of options.overrides ?? []) {

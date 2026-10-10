@@ -5,6 +5,11 @@
   "entryFile": "main",
   "compilerOptions": {
     "deleteOutDir": true,
-    "tsConfigPath": "tsconfig.build.json"
+    "tsConfigPath": "tsconfig.build.json",
+    "assets": [
+      {
+        "include": "Catalog/Infrastructure/Content/*.json"
+      }
+    ]
   }
 }

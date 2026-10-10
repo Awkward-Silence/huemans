@@ -1,10 +1,13 @@
 import { INestApplication } from '@nestjs/common';
 import type { AttendeeAssignment, AttendeePending } from '../../../../contracts/colorDistribution';
+import { ApplicationService as CatalogService } from '@Huemans/Catalog/Application/ApplicationService';
+import { PersonalityTypesNotDefined } from '@Huemans/Catalog/Domain/PersonalityTypesNotDefined';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
 import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
 import { publish } from '../../Support/events';
+import { realContent, seedCatalogFiles } from '../../Support/catalog';
 import { bootFunctional, getJson } from '../../Support/functional';
 
 describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
@@ -14,6 +17,7 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
 
   beforeAll(async () => {
     app = await bootFunctional();
+    await seedCatalogFiles(app);
   });
 
   afterAll(async () => {
@@ -27,6 +31,7 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
   });
 
   it('testAssignedAttendeeReadsTheirGroup', async () => {
+    const dreamer = realContent().profiles.find((profile) => profile.type === 'dreamer')!;
     await publish(app, new QuestionnaireCompleted(attendeeId, eventId, ['romantic', 'nostalgic', 'sociable']));
 
     const response = await getJson(app, `/events/${eventId}/attendees/${attendeeId}/assignment`);
@@ -38,12 +43,24 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
       attendeeId,
       color: 'amber',
       personalityType: 'dreamer',
-      nickname: 'The Dreamers',
-      blurb: expect.any(String) as string,
-      traits: ['creative', 'romantic', 'nostalgic'],
+      // The reveal copy is the catalog's dreamer profile.
+      nickname: dreamer.nickname,
+      blurb: dreamer.blurb,
+      traits: dreamer.traits,
       mates: 0,
       reason: { lean: [], text: expect.stringContaining('amber') as string },
     } satisfies AttendeeAssignment);
+  });
+
+  it('testPersonalityTypeComesFromTheCatalogMapping', async () => {
+    const planner = Object.entries(realContent().mapping)
+      .filter(([, type]) => type === 'planner')
+      .map(([trait]) => trait);
+    await publish(app, new QuestionnaireCompleted(attendeeId, eventId, planner.slice(0, 4)));
+
+    const response = await getJson(app, `/events/${eventId}/attendees/${attendeeId}/assignment`);
+
+    expect(response.body).toMatchObject({ status: 'assigned', personalityType: 'planner' });
   });
 
   it('testAttendeeNotAssignedYet', async () => {
@@ -67,5 +84,39 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
     const response = await getJson(app, `/events/${eventId}/attendees/not-a-uuid/assignment`);
 
     expect(response.status).toBe(400);
+  });
+});
+
+describe('GET /events/:eventId/attendees/:attendeeId/assignment without catalog profiles', () => {
+  let app: INestApplication;
+
+  beforeAll(async () => {
+    const { mapping } = realContent();
+    app = await bootFunctional({
+      overrides: [
+        {
+          provide: CatalogService,
+          useValue: {
+            mapping: () => Promise.resolve(mapping),
+            profileOf: () => Promise.reject(new PersonalityTypesNotDefined()),
+          },
+        },
+      ],
+    });
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('testUnseededCatalogIsAServerErrorNotAnUnknownEvent', async () => {
+    const eventId = EventId.random().value;
+    const attendeeId = AttendeeId.random().value;
+    await publish(app, new EventCreated(eventId));
+    await publish(app, new QuestionnaireCompleted(attendeeId, eventId, ['romantic', 'nostalgic', 'sociable']));
+
+    const response = await getJson(app, `/events/${eventId}/attendees/${attendeeId}/assignment`);
+
+    expect(response.status).toBe(500);
   });
 });

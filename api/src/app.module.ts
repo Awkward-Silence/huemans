@@ -1,5 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
+import { CatalogModule } from '@Huemans/Catalog/Infrastructure/CatalogModule';
 import { ColorDistributionModule } from '@Huemans/ColorDistribution/Infrastructure/ColorDistributionModule';
 import { EventModule } from '@Huemans/Event/Infrastructure/EventModule';
 import { RoomModule } from '@Huemans/Room/Infrastructure/RoomModule';
@@ -12,6 +13,7 @@ import { HealthController } from './Health/HealthController';
   imports: [
     MikroOrmModule.forRoot({ ...mikroOrmConfig(), autoLoadEntities: true }),
     SharedModule,
+    CatalogModule,
     EventModule,
     ColorDistributionModule,
     RoomModule,

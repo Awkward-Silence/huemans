@@ -158,7 +158,7 @@ The questions for this event. Every phone in the event must get **the same quest
 **Behaviour**
 
 - Do **not** send each answer's `trait`. The web ignores it, and it would give the grouping away. Traits are resolved server-side from `answerId`.
-- Content comes from the catalog (`tools/` questions JSON, seeded into `api/`).
+- Content comes from the catalog (`api/src/Catalog/Infrastructure/Content/questions.json`, seeded into Postgres).
 
 **Errors:** `404` unknown event.
 
@@ -338,7 +338,7 @@ The web contract was written before the domain model. These conflict with `docs/
 
 1. ~~**Color names.**~~ Resolved: both sides use `amber | coral | teal | violet` (also the tie order), defined in `api/src/Shared/Domain/ValueObject/Color.ts` (shared kernel).
 2. ~~**Assignment "not yet".**~~ Resolved: `api/` answers `200 {status:"pending"}` until the attendee is grouped, `200 {status:"assigned", eventId, attendeeId, color, personalityType}` after, and 404 only for an unknown event. The assigned fields the web also needs (`nickname`, `blurb`, `traits`, `mates`, `reason`) are gap 3.
-3. ~~**Personality type is missing; `lean` contradicts the model.**~~ Resolved in `api/` only, without changing `web/`: the assigned response adds `personalityType`; `nickname`, `blurb` and `traits` describe the personality type (static copy in `api/src/Catalog/Infrastructure/Content/PersonalityTypeProfiles.ts`), not the color; `mates` is the live group size minus one; `reason.lean` is always `[]` (answers decide the type, not the color) and `reason.text` explains the mixed placement. The web schema accepts this shape as is. If the web wants a type lean later ("60% explorer, 40% planner"), it needs a schema change on its side and the trait profile from Participation.
+3. ~~**Personality type is missing; `lean` contradicts the model.**~~ Resolved in `api/` only, without changing `web/`: the assigned response adds `personalityType`; `nickname`, `blurb` and `traits` describe the personality type (the catalog's personality type profiles, seeded from `api/src/Catalog/Infrastructure/Content/profiles.json`), not the color; `mates` is the live group size minus one; `reason.lean` is always `[]` (answers decide the type, not the color) and `reason.text` explains the mixed placement. The web schema accepts this shape as is. If the web wants a type lean later ("60% explorer, 40% planner"), it needs a schema change on its side and the trait profile from Participation.
 4. ~~**Room vs distribution.**~~ Resolved: `api/` serves `GET /events/:eventId/room` in the web's shape (see endpoint 6), from the Room context. `GET /events/:eventId/distribution` stays for the host screen. `total` equals `answered` until Participation lands.
 5. ~~**Id format.**~~ Resolved: `pnpm seed:demo` (in `api/`) creates "Demo night" with the fixed UUIDv7 `0199c0de-0000-7000-8000-000000000001`, and is safe to run again. The web's demo link opens `VITE_DEMO_EVENT_ID` (default `demo` for the mock). The API allows cross-origin calls (`CORS_ORIGIN`, default `*`).
 6. ~~**Event status.**~~ Resolved: `GET /events/:eventId` returns `status` (`open` | `revealed`) as an extra field. The web still infers the reveal from the icebreaker endpoint.

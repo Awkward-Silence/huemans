@@ -5,6 +5,7 @@ import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
 import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
 import { publish } from '../../Support/events';
+import { seedCatalogFiles } from '../../Support/catalog';
 import { bootFunctional, getJson } from '../../Support/functional';
 
 describe('GET /events/:eventId/distribution', () => {
@@ -13,6 +14,7 @@ describe('GET /events/:eventId/distribution', () => {
 
   beforeAll(async () => {
     app = await bootFunctional();
+    await seedCatalogFiles(app);
   });
 
   afterAll(async () => {

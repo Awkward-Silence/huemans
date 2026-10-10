@@ -1,6 +1,6 @@
 import { EnumValueObject } from './EnumValueObject';
 
-// The 33 character traits an answer or icebreaker can point to. tools/ validates the catalog against this list.
+// The 33 character traits an answer or icebreaker can point to; the Catalog content is checked against this list.
 export const TRAITS = [
   'adventurous',
   'ambitious',

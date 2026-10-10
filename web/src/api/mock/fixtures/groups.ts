@@ -37,7 +37,7 @@ const GROUP_PROFILES: Record<
   },
 };
 
-/** Which group each answer trait (tools/src/questions/Traits.ts) points to. */
+/** Which group each answer trait (api/src/Shared/Domain/ValueObject/Trait.ts) points to. */
 const TRAIT_TO_GROUP: Record<string, GroupColor> = {
   sociable: "amber",
   spontaneous: "amber",
