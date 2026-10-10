@@ -8,13 +8,13 @@
 
 ## 2. Domain (unit tests first, no NestJS or ORM imports)
 
-- [ ] 2.1 Implement `Color` and `PersonalityType` (`explorer`, `connector`, `planner`, `dreamer`) and verify unit tests reject unknown values
-- [ ] 2.2 Implement `TraitProfile` (at least one trait, duplicates allowed) and verify a unit test rejects an empty profile
-- [ ] 2.3 Implement `TraitTypeMapping` (every trait mapped to exactly one type) and verify unit tests reject a missing or doubly mapped trait
-- [ ] 2.4 Implement `EventDistribution.open` with `Assignment` and `AssignmentCollection`, and verify a unit test shows four empty groups
-- [ ] 2.5 Implement `EventDistribution.assign` with candidate types from the majority of traits, and verify the "clear majority" and "repeated trait" scenarios pass as unit tests
-- [ ] 2.6 Add smallest-group selection, fewest-of-type selection and the RED, YELLOW, GREEN, BLUE tie order, and verify the "color order", "smallest groups", "lacking type", "tied attendee" and "13 attendees" scenarios pass as unit tests
-- [ ] 2.7 Reject a second assignment for the same attendee without emitting anything, and record `AttendeeGrouped` on success, and verify both with unit tests
+- [x] 2.1 Implement `Color` and `PersonalityType` (`explorer`, `connector`, `planner`, `dreamer`) and verify unit tests reject unknown values
+- [x] 2.2 Implement `TraitProfile` (at least one trait, duplicates allowed) and verify a unit test rejects an empty profile
+- [x] 2.3 Implement `TraitTypeMapping` (every trait mapped to exactly one type) and verify unit tests reject a missing or doubly mapped trait
+- [x] 2.4 Implement `EventDistribution.open` with `Assignment` and `AssignmentCollection`, and verify a unit test shows four empty groups
+- [x] 2.5 Implement `EventDistribution.assign` with candidate types from the majority of traits, and verify the "clear majority" and "repeated trait" scenarios pass as unit tests
+- [x] 2.6 Add smallest-group selection, fewest-of-type selection and the RED, YELLOW, GREEN, BLUE tie order, and verify the "color order", "smallest groups", "lacking type", "tied attendee" and "13 attendees" scenarios pass as unit tests
+- [x] 2.7 Reject a second assignment for the same attendee without emitting anything, and record `AttendeeGrouped` on success, and verify both with unit tests
 
 ## 3. Persistence
 
