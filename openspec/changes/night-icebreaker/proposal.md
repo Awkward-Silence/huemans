@@ -22,5 +22,5 @@ The flow ends with ONE icebreaker shared by everyone that night. That gives ever
 
 - New host endpoint in `api/` (close event), an event status field, and a realtime broadcast whose shape goes into `contracts/`.
 - Host screen (Miguel) gets the "reveal icebreaker" button, and the attendee flow (Daniel) gets the final icebreaker screen.
-- Depends on `event-join-and-answers` and `backend-skeleton-and-catalog`.
+- Depends on `create-event` (event status), `quiz-and-answers` (trait profiles) and `backend-skeleton-and-catalog`.
 - Owner: Adrián.

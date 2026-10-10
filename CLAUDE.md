@@ -83,4 +83,4 @@ npx vitest run -t "redirectFor"               # by test name
 ## Workflow
 
 - **DDD:** `/ddd-bc` (discovery) then `/ddd-model` write to `docs/domain/<bc>/` (config in `ddd-config.yml`). Color Distribution is modeled; its `model.md` is the contract for `/opsx:propose color-distribution`.
-- **OpenSpec** (`schema: spec-driven`): `/opsx:explore` -> `/opsx:propose` -> `/opsx:apply` -> `/opsx:sync` -> `/opsx:archive`. Backend changes: `backend-skeleton-and-catalog`, `event-join-and-answers`, `color-distribution`, `night-icebreaker`, `ai-enrichment` (proposals only so far). `attendee-flow` and `event-and-host` are still to be proposed.
+- **OpenSpec** (`schema: spec-driven`): `/opsx:explore` -> `/opsx:propose` -> `/opsx:apply` -> `/opsx:sync` -> `/opsx:archive`. Backend changes: `backend-skeleton-and-catalog`, `create-event`, `quiz-and-answers`, `color-distribution`, `web-live-distribution`, `night-icebreaker`, `ai-enrichment`, `word-suggestions` (`color-distribution` is applied, `word-suggestions` has specs and tasks, the rest are proposals only). `attendee-flow` and `event-and-host` are still to be proposed.

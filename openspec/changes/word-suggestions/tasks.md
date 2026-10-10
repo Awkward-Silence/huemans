@@ -31,7 +31,7 @@
 ## 5. Attendee API contract
 
 - [ ] 5.1 Document the new endpoint and the optional `sentence` field on `GET /events/:eventId/quiz` in `docs/api/attendee-api.md`, and verify the examples match the functional test payloads
-- [ ] 5.2 Add the optional `sentence` field to the `event-join-and-answers` proposal's quiz response (or to the quiz endpoint, if it already exists, with a functional test asserting the field)
+- [ ] 5.2 Add the optional `sentence` field to the `quiz-and-answers` quiz response (or to the quiz endpoint, if it already exists, with a functional test asserting the field)
 
 ## 6. Web: API layer
 

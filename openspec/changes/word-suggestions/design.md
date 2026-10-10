@@ -4,7 +4,7 @@
 
 The motivation is in `proposal.md` and the requirements are in `specs/word-suggestions/spec.md`. Current state:
 
-- `api/` is a single NestJS app. `ColorDistribution` is the only bounded context so far. The shared kernel already has `EventId`, `AttendeeId`, `EventCreated` and an in-process `InMemoryEventDispatcher`. There is no `Agents` context, no Mastra and no Event context yet. The quiz endpoint belongs to `event-join-and-answers`, which is still only a proposal.
+- `api/` is a single NestJS app. `ColorDistribution` is the only bounded context so far. The shared kernel already has `EventId`, `AttendeeId`, `EventCreated` and an in-process `InMemoryEventDispatcher`. There is no `Agents` context, no Mastra and no Event context yet. The quiz endpoint belongs to `quiz-and-answers` and event lookup to `create-event`, both still only proposals.
 - `web/` already has the full attendee flow against an in-browser mock. The API layer is `ApiClient` (`web/src/api/client.ts`), with HTTP and mock implementations and zod schemas in `web/src/api/schemas.ts`. React Query lives in `web/src/api/queries.ts`, and the per-event session lives in localStorage (`web/src/features/join/session.ts`). `QuizScreen` auto-submits once every question is answered.
 - The deployment is one API process, serving a demo of 10–15 phones, sometimes on venue wifi.
 
@@ -32,7 +32,7 @@ There are no ORM entities and no migration.
 
 **Sentence question as a shared-kernel constant.** `SentenceQuestion { id: "sentence-i", starter: "I", picks: 4 }` lives in `api/src/Shared/Domain/`, so the quiz endpoint (Event context) and `Agents` agree on it without importing each other. Every event has the same sentence question. Alternative: per-event sentence questions picked from the catalog. Rejected because there is no content for it and it adds nothing to the demo.
 
-**Event existence through a port.** `EventDirectory.exists(eventId)` returns the 404. Until the Event context exists, a provisional adapter accepts any well-formed `EventId`, the same pattern as `ProvisionalTraitTypeMappingProvider`. The real adapter is swapped in when `event-join-and-answers` lands. `attendeeId` is used only as the rate-limit key and is not checked against Participation. A fake id gains nothing but fallback words.
+**Event existence through a port.** `EventDirectory.exists(eventId)` returns the 404. Until the Event context exists, a provisional adapter accepts any well-formed `EventId`, the same pattern as `ProvisionalTraitTypeMappingProvider`. The real adapter is swapped in when `create-event` lands. `attendeeId` is used only as the rate-limit key and is not checked against Participation. A fake id gains nothing but fallback words.
 
 **Mastra agent with structured output.**
 - `MastraWordSuggester` runs a Mastra `Agent` on the OpenAI provider, with the model taken from `OPENAI_MODEL`.
@@ -87,7 +87,7 @@ Alternative: one AI call per request. That gives the most variety, but every ste
 - [Users can't send arbitrary text into the prompt] → Words are validated as single, short tokens and the starter is fixed, so prompt injection has no surface worth defending further.
 - [Fallback sentences can be ungrammatical] → Accepted: they are still funny, and `source` lets us see how often it happens.
 - [The cache and rate limit live in one process] → Fine for one instance. Moving to more instances would need a shared store, which is out of scope.
-- [The quiz field and event lookup depend on `event-join-and-answers`] → Provisional `EventDirectory`, an optional `sentence` field, and the web mock let both sides ship first.
+- [The quiz field and event lookup depend on `quiz-and-answers` and `create-event`] → Provisional `EventDirectory`, an optional `sentence` field, and the web mock let both sides ship first.
 
 ## Migration Plan
 
