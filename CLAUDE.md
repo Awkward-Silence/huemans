@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **huemans** is a mobile-first web app that breaks the ice at events: attendees answer a few funny questions, are split into **diverse color groups**, and share **one icebreaker for the night**. It is being built by a team of 4 (Adrián architect, Diego backend, Miguel fullstack, Daniel frontend) during a **24h hackathon**, for a 2-3 minute live demo to 10-15 people; the hackathon requires AI features. `api/` is scaffolded (skeleton only, no bounded context yet); `web/` and `contracts/` are not — add their commands below when they exist.
 
-Sources of truth: `initial-raw-specs.md` (product spec, written by the team), `docs/next-steps.md` (plan, owners, open decisions), `docs/domain/` (DDD models), `openspec/changes/` (one change per backend lane).
+Sources of truth: `initial-raw-specs.md` (product spec, written by the team), `docs/next-steps.md` (plan, owners, open decisions), `docs/domain/` (DDD models), `docs/architecture/adr/` (architecture decisions), `openspec/changes/` (one change per backend lane).
 
 ## API commands (run inside `api/`)
 
@@ -66,6 +66,22 @@ tools/       content and validation scripts (not production code)
 - **Domain events belong to the context that publishes them** (Event owns `EventCreated`/`EventRevealed`, Participation owns `QuestionnaireCompleted`); other contexts subscribe. Handlers are synchronous and in-process: no queue or background job.
 - **Key seam:** Participation publishes `QuestionnaireCompleted` with the attendee's trait profile; Color Distribution emits `AttendeeGrouped { eventId, attendeeId, color, personalityType }`, pushed in realtime to the phone and host screen.
 - **Agents enrich, they never decide or block.** Mastra runs inside NestJS behind ports (`ColorExplainer`, `IcebreakerExplainer`), each with a static fallback. No LLM call in the join, answer, distribution or close paths.
+
+## Architecture decisions
+
+New code follows the ADRs in `docs/architecture/adr/` ([index](docs/architecture/adr/README.md)). A change that deviates from one needs a new ADR that supersedes it.
+
+- [ADR-001](docs/architecture/adr/ADR-001-tdd-outside-in.md) TDD outside-in: functional tests for acceptance criteria, unit tests for the domain, integration tests against real Postgres; no unit tests for application services or DTOs; camelCase `testXxx` names.
+- [ADR-002](docs/architecture/adr/ADR-002-tell-dont-ask.md) Tell, Don't Ask: business logic in intention-named domain methods; application services only orchestrate.
+- [ADR-003](docs/architecture/adr/ADR-003-value-objects.md) No primitives in the domain: immutable value objects that validate themselves; composite concepts are one VO.
+- [ADR-004](docs/architecture/adr/ADR-004-aggregate-identity-and-domain-events.md) Aggregates generate their own UUIDv7 id and record events; events are dispatched only after a successful save.
+- [ADR-005](docs/architecture/adr/ADR-005-references-by-id.md) Aggregates reference each other (and other contexts) by typed id only.
+- [ADR-006](docs/architecture/adr/ADR-006-canonical-dtos.md) One `toDTO()` per aggregate; no domain object crosses the boundary.
+- [ADR-007](docs/architecture/adr/ADR-007-domain-free-of-infrastructure.md) `Domain/` imports no Nest, ORM or HTTP; mapping lives in `*Schema.ts` (enforced by `pnpm lint`).
+- [ADR-008](docs/architecture/adr/ADR-008-application-service-no-buses.md) One `ApplicationService` per context, one method per use case; no command or query bus.
+- [ADR-009](docs/architecture/adr/ADR-009-criteria-for-dynamic-queries.md) Named repository methods for frequent queries; a `Criteria` object only for dynamic ones.
+- [ADR-010](docs/architecture/adr/ADR-010-explicit-optionality.md) Optional domain data is explicit inside the domain and plain at the boundary.
+- [ADR-011](docs/architecture/adr/ADR-011-typed-validation-at-the-edge.md) Every external input is validated by a typed payload (zod pipe) before reaching the application service.
 
 ## Commands
 
