@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Holds the read-only game content (questions with trait-tagged answers, icebreakers, the personality type profiles and the trait-type mapping), seeds it from the content files in `tools/`, and lets the other contexts read it through simple named reads.
+Holds the game content (questions with trait-tagged answers, icebreakers, the personality type profiles and the trait-type mapping), seeds it once per database from the content files in Catalog's infrastructure, and lets the other contexts read it through simple named reads.
 
 ## Requirements
 
