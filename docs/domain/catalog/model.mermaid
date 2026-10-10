@@ -1,39 +1,66 @@
 classDiagram
   class Question {
-    <<ReadModel>>
+    <<AggregateRoot>>
     +QuestionId id
     +Theme theme
-    +string text
+    +QuestionText text
     +AnswerCollection answers
+    +author(QuestionId id, Theme theme, QuestionText text, AnswerCollection answers) QuestionAuthored
+  }
+
+  class Answer {
+    +AnswerId id
+    +AnswerText text
+    +SK~Trait~ trait
+  }
+
+  class AnswerCollection {
+    <<Collection>>
   }
 
   class Icebreaker {
-    <<ReadModel>>
+    <<AggregateRoot>>
     +IcebreakerId id
     +Theme theme
-    +string text
+    +IcebreakerText text
     +IcebreakerTraitCollection traits
+    +author(IcebreakerId id, Theme theme, IcebreakerText text, IcebreakerTraitCollection traits) IcebreakerAuthored
+  }
+
+  class IcebreakerTraitCollection {
+    <<Collection>>
+  }
+
+  class PersonalityTypes {
+    <<AggregateRoot>>
+    +TraitTypeMapping mapping
+    +PersonalityTypeProfileCollection profiles
+    +define(TraitTypeMapping mapping, PersonalityTypeProfileCollection profiles) PersonalityTypesDefined
   }
 
   class PersonalityTypeProfile {
-    <<ReadModel>>
     +SK~PersonalityType~ type
-    +string nickname
-    +string blurb
+    +Nickname nickname
+    +Blurb blurb
     +ProfileTraitCollection traits
   }
 
-  class TraitTypeMapping {
-    <<ReadModel>>
-    +Map~SK_Trait, SK_PersonalityType~ pairs
+  class PersonalityTypeProfileCollection {
+    <<Collection>>
   }
 
-  class CatalogRepository {
-    <<Repository>>
-    +allQuestions() QuestionCollection
-    +allIcebreakers() IcebreakerCollection
-    +profileOf(SK~PersonalityType~ type) PersonalityTypeProfile
-    +mapping() TraitTypeMapping
+  class ProfileTraitCollection {
+    <<Collection>>
+  }
+
+  class TraitTypeMapping {
+    <<Collection>>
+  }
+
+  class TraitType {
+    <<ValueObject>>
+    +SK~Trait~ trait
+    +SK~PersonalityType~ type
   }
 
   class QuestionId {
@@ -56,23 +83,29 @@ classDiagram
     +string value
   }
 
-  class Answer {
+  class QuestionText {
     <<ValueObject>>
-    +AnswerId id
-    +string text
-    +SK~Trait~ trait
+    +string value
   }
 
-  class AnswerCollection {
-    <<Collection>>
+  class AnswerText {
+    <<ValueObject>>
+    +string value
   }
 
-  class IcebreakerTraitCollection {
-    <<Collection>>
+  class IcebreakerText {
+    <<ValueObject>>
+    +string value
   }
 
-  class ProfileTraitCollection {
-    <<Collection>>
+  class Nickname {
+    <<ValueObject>>
+    +string value
+  }
+
+  class Blurb {
+    <<ValueObject>>
+    +string value
   }
 
   class Trait {
@@ -83,32 +116,58 @@ classDiagram
     <<SharedKernel>>
   }
 
-  class CatalogContentEdited {
+  class QuestionAuthored {
+    <<DomainEvent>>
+    +QuestionId questionId
+  }
+
+  class IcebreakerAuthored {
+    <<DomainEvent>>
+    +IcebreakerId icebreakerId
+  }
+
+  class PersonalityTypesDefined {
     <<DomainEvent>>
   }
 
-  CatalogRepository ..> Question : returns
-  CatalogRepository ..> Icebreaker : returns
-  CatalogRepository ..> PersonalityTypeProfile : returns
-  CatalogRepository ..> TraitTypeMapping : returns
+  class CatalogRepository {
+    <<Repository>>
+    +allQuestions() Question
+    +allIcebreakers() Icebreaker
+    +personalityTypes() PersonalityTypes
+  }
 
-  Question *-- QuestionId
-  Question *-- Theme
-  Question *-- AnswerCollection
-  AnswerCollection "1" o-- "4" Answer : contains
-  Answer *-- AnswerId
-  Answer --> Trait
+  Question *-- QuestionId : id
+  Question *-- Theme : theme
+  Question *-- QuestionText : text
+  Question *-- AnswerCollection : answers
+  AnswerCollection "1" *-- "4" Answer : contains
+  Answer *-- AnswerId : id
+  Answer *-- AnswerText : text
+  Answer --> Trait : trait
 
-  Icebreaker *-- IcebreakerId
-  Icebreaker *-- Theme
-  Icebreaker *-- IcebreakerTraitCollection
+  Icebreaker *-- IcebreakerId : id
+  Icebreaker *-- Theme : theme
+  Icebreaker *-- IcebreakerText : text
+  Icebreaker *-- IcebreakerTraitCollection : traits
   IcebreakerTraitCollection "1" o-- "1..3" Trait : contains
 
-  PersonalityTypeProfile --> PersonalityType
-  PersonalityTypeProfile *-- ProfileTraitCollection
+  PersonalityTypes *-- TraitTypeMapping : mapping
+  PersonalityTypes *-- PersonalityTypeProfileCollection : profiles
+  TraitTypeMapping "1" o-- "33" TraitType : contains
+  TraitType --> Trait : trait
+  TraitType --> PersonalityType : type
+  PersonalityTypeProfileCollection "1" *-- "4" PersonalityTypeProfile : contains
+  PersonalityTypeProfile --> PersonalityType : type
+  PersonalityTypeProfile *-- Nickname : nickname
+  PersonalityTypeProfile *-- Blurb : blurb
+  PersonalityTypeProfile *-- ProfileTraitCollection : traits
   ProfileTraitCollection "1" o-- "3" Trait : contains
 
-  TraitTypeMapping "1" o-- "33" Trait : maps
-  TraitTypeMapping --> PersonalityType
+  Question ..> QuestionAuthored : emits
+  Icebreaker ..> IcebreakerAuthored : emits
+  PersonalityTypes ..> PersonalityTypesDefined : emits
 
-  CatalogRepository ..> CatalogContentEdited : deferred
+  CatalogRepository ..> Question : returns
+  CatalogRepository ..> Icebreaker : returns
+  CatalogRepository ..> PersonalityTypes : returns
