@@ -7,7 +7,10 @@ import { CatalogQuestionSchema } from '../Persistence/MikroOrm/CatalogQuestionSc
 import { CatalogTraitTypeSchema } from '../Persistence/MikroOrm/CatalogTraitTypeSchema';
 import { CatalogContent } from './CatalogContent';
 
-/** Upserts validated content by key in one transaction. Never deletes: events keep the questions they picked. */
+/**
+ * Upserts validated content by key in one transaction. Never deletes a question or icebreaker: events keep the
+ * questions they picked. The answers of a seeded question are replaced, since they only exist as part of it.
+ */
 @Injectable()
 export class MikroOrmCatalogSeeder {
   constructor(private readonly em: EntityManager) {}
@@ -19,7 +22,8 @@ export class MikroOrmCatalogSeeder {
           CatalogQuestionSchema,
           questions.map(({ id, theme, text }) => ({ id, theme, text })),
         );
-        await em.upsertMany(
+        await em.nativeDelete(CatalogAnswerSchema, { questionId: { $in: questions.map(({ id }) => id) } });
+        await em.insertMany(
           CatalogAnswerSchema,
           questions.flatMap((question) =>
             question.answers.map(({ id, text, trait }, position) => ({

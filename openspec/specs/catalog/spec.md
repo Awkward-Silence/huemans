@@ -7,7 +7,7 @@ Holds the read-only game content (questions with trait-tagged answers, icebreake
 ## Requirements
 
 ### Requirement: Catalog content is seeded from the content files
-The system SHALL load the catalog content from four JSON files in `tools/` into its database: the questions, the icebreakers, the personality type profiles and the trait-type mapping (default paths, or paths given to the seed command). All four files SHALL be validated against Catalog's content schemas, and each profile's trait chips SHALL be cross-checked against the mapping, before anything is written; if any check fails, nothing SHALL be written. Seeding SHALL be repeatable: running it again with the same files SHALL leave the catalog unchanged, and running it with edited files SHALL update the existing entries by key. Questions and icebreakers that disappear from a file SHALL be kept, so events that already use them keep working.
+The system SHALL load the catalog content from four JSON files in `tools/` into its database: the questions, the icebreakers, the personality type profiles and the trait-type mapping (default paths, or paths given to the seed command). All four files SHALL be validated against Catalog's content schemas, and each profile's trait chips SHALL be cross-checked against the mapping, before anything is written; if any check fails, nothing SHALL be written. Seeding SHALL be repeatable: running it again with the same files SHALL leave the catalog unchanged, and running it with edited files SHALL update the existing entries by key. Questions and icebreakers that disappear from a file SHALL be kept, so events that already use them keep working. The answers of a seeded question SHALL be replaced by the answers in the file, since they only exist as part of their question.
 
 #### Scenario: First seed loads all content
 - **WHEN** the seed command runs on an empty catalog with the current content files
@@ -28,6 +28,10 @@ The system SHALL load the catalog content from four JSON files in `tools/` into 
 #### Scenario: Edited text updates the entry
 - **WHEN** the text of question `q0001` is changed in the file and the seed command runs again
 - **THEN** question `q0001` has the new text and keeps its id and answers
+
+#### Scenario: Renamed answers replace the old ones
+- **WHEN** the answers of a seeded question get new ids or a new order in the file and the seed command runs again
+- **THEN** the question has exactly the 4 answers of the file, in file order
 
 #### Scenario: Removed question is kept
 - **WHEN** a question that was seeded before is missing from the file and the seed command runs again

@@ -70,6 +70,20 @@ describe('MikroOrmCatalogRepository and MikroOrmCatalogSeeder', () => {
     expect(all).toEqual(expect.arrayContaining([newText, kept]));
   });
 
+  it('testReplacesTheAnswersOfAReseededQuestion', async () => {
+    const question = aQuestion();
+    await seeder.seed({ questions: [question] });
+
+    const renamed = {
+      ...question,
+      answers: [...question.answers].reverse().map((answer) => ({ ...answer, id: `${answer.id}-renamed` })),
+    };
+    await seeder.seed({ questions: [renamed] });
+
+    const found = (await repository.allQuestions()).map(asPlain).find((candidate) => candidate.id === question.id);
+    expect(found).toEqual(renamed);
+  });
+
   it('testListsIcebreakersOrderedById', async () => {
     const icebreaker = anIcebreaker(['humorous', 'curious']);
     await seeder.seed({ icebreakers: [icebreaker] });
