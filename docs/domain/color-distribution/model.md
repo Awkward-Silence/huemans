@@ -58,6 +58,14 @@ The trait-type mapping is passed in by the caller: the catalog owns the table's 
 5. Remaining ties are broken by the fixed color order amber, coral, teal, violet, the same for every event, so assignment is deterministic and repeatable.
 6. Record the Assignment and emit AttendeeGrouped.
 
+**Alternative kept on file: trait-only distribution (not built).** The goal is the same either way: groups as heterogeneous as possible, sizes within 1. Personality types are only the yardstick for "different", so they can be removed if they turn out not to help:
+
+1. Candidate groups = the colors with the fewest members (unchanged).
+2. For each candidate group, score = how many of the attendee's traits (repeats counted) the group's members already have.
+3. Pick the group with the lowest score; remaining ties by the fixed color order (unchanged).
+
+What changes if it is adopted: `Assignment` and `AttendeeGrouped` lose `personalityType`; the aggregate keeps each member's `TraitProfile` instead; `TraitTypeMapping`, `PersonalityType` and the catalog's trait-type table go away; `EventDistributionView` shows trait counts per color instead of types; the reveal shows trait chips and loses the type's nickname and blurb. Why it is not the default: with 33 traits and 4-5 answers per attendee, two people rarely share a trait, so most scores are 0 and placement falls back to color order (close to random); and near-synonyms (sociable/humorous, analytical/organized) count as different, so a group of similar people can still score as diverse. Types fold related traits together, which is what makes "fewest of your kind" meaningful.
+
 ---
 
 ## Read Models
