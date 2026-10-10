@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EventRouteImport } from './routes/event'
 import { Route as DevKitchenSinkRouteImport } from './routes/dev/kitchen-sink'
 import { Route as JoinEventIdRouteRouteImport } from './routes/join/$eventId/route'
 import { Route as JoinEventIdIndexRouteImport } from './routes/join/$eventId/index'
@@ -25,6 +26,11 @@ import { Route as JoinEventIdWelcomeRouteImport } from './routes/join/$eventId/w
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventRoute = EventRouteImport.update({
+  id: '/event',
+  path: '/event',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DevKitchenSinkRoute = DevKitchenSinkRouteImport.update({
@@ -85,6 +91,7 @@ const JoinEventIdWelcomeRoute = JoinEventIdWelcomeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/event': typeof EventRoute
   '/join/$eventId': typeof JoinEventIdRouteRouteWithChildren
   '/dev/kitchen-sink': typeof DevKitchenSinkRoute
   '/join/$eventId/badge': typeof JoinEventIdBadgeRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/event': typeof EventRoute
   '/dev/kitchen-sink': typeof DevKitchenSinkRoute
   '/join/$eventId/badge': typeof JoinEventIdBadgeRoute
   '/join/$eventId/icebreaker': typeof JoinEventIdIcebreakerRoute
@@ -113,6 +121,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/event': typeof EventRoute
   '/join/$eventId': typeof JoinEventIdRouteRouteWithChildren
   '/dev/kitchen-sink': typeof DevKitchenSinkRoute
   '/join/$eventId/badge': typeof JoinEventIdBadgeRoute
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/event'
     | '/join/$eventId'
     | '/dev/kitchen-sink'
     | '/join/$eventId/badge'
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/event'
     | '/dev/kitchen-sink'
     | '/join/$eventId/badge'
     | '/join/$eventId/icebreaker'
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/event'
     | '/join/$eventId'
     | '/dev/kitchen-sink'
     | '/join/$eventId/badge'
@@ -171,6 +183,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EventRoute: typeof EventRoute
   JoinEventIdRouteRoute: typeof JoinEventIdRouteRouteWithChildren
   DevKitchenSinkRoute: typeof DevKitchenSinkRoute
 }
@@ -182,6 +195,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/event': {
+      id: '/event'
+      path: '/event'
+      fullPath: '/event'
+      preLoaderRoute: typeof EventRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dev/kitchen-sink': {
@@ -293,6 +313,7 @@ const JoinEventIdRouteRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EventRoute: EventRoute,
   JoinEventIdRouteRoute: JoinEventIdRouteRouteWithChildren,
   DevKitchenSinkRoute: DevKitchenSinkRoute,
 }
