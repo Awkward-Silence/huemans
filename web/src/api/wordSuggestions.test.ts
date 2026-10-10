@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "./errors.ts";
 import { fallbackSuggestions, suggestionsOrFallback } from "./wordSuggestions.ts";
 
-const sentence = ["I", "secretly"];
+const sentence = ["I", "loudly"];
 
 describe("suggestionsOrFallback", () => {
   afterEach(() => vi.useRealTimers());
@@ -32,8 +32,22 @@ describe("suggestionsOrFallback", () => {
 });
 
 describe("fallbackSuggestions", () => {
-  it("has 3 fresh words for every pick", () => {
-    const sentences = [["I"], ["I", "secretly"], ["I", "secretly", "lick"], ["I", "a", "b", "c"]];
+  it("follows the sentence tree", () => {
+    expect(fallbackSuggestions(["I"]).words).toEqual(["loudly", "suspiciously", "happily"]);
+    expect(fallbackSuggestions(["I", "loudly", "apologise to"]).words).toEqual([
+      "every",
+      "three",
+      "seventeen",
+    ]);
+  });
+
+  it("has 3 fresh words for every pick, even off the tree", () => {
+    const sentences = [
+      ["I"],
+      ["I", "secretly"],
+      ["I", "loudly", "lick"],
+      ["I", "a", "b", "c", "d"],
+    ];
     for (const words of sentences) {
       const { words: next } = fallbackSuggestions(words);
       expect(next).toHaveLength(3);

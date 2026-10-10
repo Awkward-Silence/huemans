@@ -1,6 +1,7 @@
 import { z } from "zod";
+import { sentenceTree } from "../../content/index.ts";
 import { GROUP_COLORS, GroupColorSchema } from "../../domain/groupColor.ts";
-import { pickWords } from "../../domain/sentence.ts";
+import { nextWords } from "../../domain/sentence.ts";
 import { readJson, writeJson } from "../../lib/storage.ts";
 import type { ApiClient } from "../client.ts";
 import { ApiError, parseResponse } from "../errors.ts";
@@ -15,7 +16,7 @@ import {
 } from "../schemas.ts";
 import { CROWD_WEIGHTS, GROUP_PROFILES, ICEBREAKER } from "./fixtures/groups.ts";
 import questionBank from "./fixtures/questions.json";
-import { MOCK_WORD_POOLS, SENTENCE_QUESTION } from "./fixtures/words.ts";
+import { SENTENCE_QUESTION } from "./fixtures/words.ts";
 import { distribute, leanFromTraits, pickGroup, type Counts } from "./grouping.ts";
 
 /**
@@ -266,10 +267,9 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
         ) {
           throw new ApiError("http", "Invalid sentence", { status: 400 });
         }
-        const pool = MOCK_WORD_POOLS[sentence.length - 1] ?? [];
         return parseResponse(
           WordSuggestionsSchema,
-          { words: pickWords(pool, sentence), source: "ai" },
+          { words: nextWords(sentenceTree, sentence), source: "ai" },
           "word suggestions",
         );
       }, options.suggestLatencyMs),

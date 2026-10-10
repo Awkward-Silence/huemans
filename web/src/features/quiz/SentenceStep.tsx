@@ -53,12 +53,13 @@ function SentenceStep({
 
   useEffect(() => {
     if (!words || left <= 1) return;
-    const base = sentenceKey.split(" ");
     for (const word of words) {
       void queryClient.prefetchQuery(
-        wordSuggestionsQuery(eventId, question, attendeeId, [...base, word]),
+        wordSuggestionsQuery(eventId, question, attendeeId, [...sentence, word]),
       );
     }
+    // `sentence` is rebuilt every render; `sentenceKey` tracks its content.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [words, left, sentenceKey, eventId, question, attendeeId, queryClient]);
 
   const pick = (word: string, event: MouseEvent<HTMLButtonElement>) => {

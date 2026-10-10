@@ -1,5 +1,5 @@
-import { sentenceFallbackWords } from "../content/index.ts";
-import { pickWords } from "../domain/sentence.ts";
+import { sentenceTree } from "../content/index.ts";
+import { nextWords } from "../domain/sentence.ts";
 import type { WordSuggestions } from "./schemas.ts";
 
 /** Past this, the sentence step stops waiting and shows its own words. */
@@ -7,9 +7,7 @@ const SUGGESTION_TIMEOUT_MS = 1_500;
 
 /** 3 local words for the next pick of `sentence` (starter included). */
 function fallbackSuggestions(sentence: readonly string[]): WordSuggestions {
-  const lists = sentenceFallbackWords;
-  const pool = lists[Math.min(Math.max(sentence.length - 1, 0), lists.length - 1)] ?? [];
-  return { words: pickWords(pool, sentence), source: "fallback" };
+  return { words: nextWords(sentenceTree, sentence), source: "fallback" };
 }
 
 /**

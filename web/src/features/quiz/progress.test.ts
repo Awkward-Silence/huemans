@@ -61,7 +61,7 @@ describe("labels", () => {
 });
 
 describe("sentenceStatus", () => {
-  const sentence = { id: "sentence-i", starter: "I", picks: 4 };
+  const sentence = { id: "sentence-i", starter: "I", picks: 5 };
 
   it("is none when the quiz has no sentence question", () => {
     expect(sentenceStatus(undefined, [], false)).toBe("none");
@@ -71,7 +71,9 @@ describe("sentenceStatus", () => {
     expect(sentenceStatus(sentence, [], false)).toBe("building");
     expect(sentenceStatus(sentence, ["secretly", "lick"], false)).toBe("building");
     expect(sentenceStatus(sentence, ["secretly", "lick"], true)).toBe("skipped");
-    expect(sentenceStatus(sentence, ["secretly", "lick", "haunted", "spoons"], false)).toBe("done");
+    expect(sentenceStatus(sentence, ["loudly", "sing to", "every", "sleepy", "goat"], false)).toBe(
+      "done",
+    );
   });
 });
 
