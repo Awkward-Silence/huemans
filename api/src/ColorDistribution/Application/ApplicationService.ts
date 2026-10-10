@@ -57,8 +57,13 @@ export class ApplicationService {
     return this.distributions.byEvent(new EventId(eventId));
   }
 
+  /** Null while the attendee is not assigned yet; throws for an unknown event. */
   async assignmentOf(eventId: string, attendeeId: string): Promise<AssignmentDTO | null> {
-    const assignment = await this.distributions.assignmentOf(new EventId(eventId), new AttendeeId(attendeeId));
+    const id = new EventId(eventId);
+    if (!(await this.distributions.exists(id))) {
+      throw new EventDistributionNotFound(id);
+    }
+    const assignment = await this.distributions.assignmentOf(id, new AttendeeId(attendeeId));
     return assignment?.toDTO() ?? null;
   }
 }

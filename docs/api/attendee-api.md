@@ -327,8 +327,8 @@ The night's one icebreaker and the gathering countdown. Polled every 2 s until `
 
 The web contract was written before the domain model. These conflict with `docs/domain/color-distribution/model.md` and the open OpenSpec changes and need a decision before `api/` serves the web:
 
-1. **Color names.** Web: `amber | coral | teal | violet`. Domain: `RED | YELLOW | GREEN | BLUE` (also the tie order). One side must map, or both agree on one set.
-2. **Assignment "not yet".** `color-distribution` design.md plans `404` with a "not assigned" body. The web treats any 404 as final and stops polling. Use `200 { status: "pending" }`, or have the web read the 404 body.
+1. ~~**Color names.**~~ Resolved: both sides use `amber | coral | teal | violet` (also the tie order), defined with hex values in `api/src/Types/Color.ts`.
+2. ~~**Assignment "not yet".**~~ Resolved: `api/` answers `200 {status:"pending"}` until the attendee is grouped, `200 {status:"assigned", eventId, attendeeId, color, personalityType}` after, and 404 only for an unknown event. The assigned fields the web also needs (`nickname`, `blurb`, `traits`, `mates`, `reason`) are gap 3.
 3. **Personality type is missing; `lean` contradicts the model.** The domain assigns a `personalityType` (`explorer | connector | planner | dreamer`) and builds groups for **diversity**. The web's `reason.lean` ("your answers pointed to this color") describes the old similarity model. Suggest adding `personalityType` and recasting `nickname`, `blurb`, `traits` and `reason` as type-based, so `lean` lists personality types, not colors.
 4. **Room vs distribution.** The web wants `GET /events/:eventId/room` (`answered`, `total`, per-color `count`). The backend plans `GET /events/:eventId/distribution` (per-color members and personality types, no `answered`/`total`). `total`/`answered` need Participation data, so `/room` is a read model that spans Participation and Color Distribution.
 5. **Id format.** The backend validates UUIDv7 and answers `400` for anything else. The web dev entry point is `/join/demo`, so the demo event needs a UUIDv7 id (or a slug lookup) when running against `api/`.

@@ -13,7 +13,7 @@
 - [x] 2.3 Implement `TraitTypeMapping` (every trait mapped to exactly one type) and verify unit tests reject a missing or doubly mapped trait
 - [x] 2.4 Implement `EventDistribution.open` with `Assignment` and `AssignmentCollection`, and verify a unit test shows four empty groups
 - [x] 2.5 Implement `EventDistribution.assign` with candidate types from the majority of traits, and verify the "clear majority" and "repeated trait" scenarios pass as unit tests
-- [x] 2.6 Add smallest-group selection, fewest-of-type selection and the RED, YELLOW, GREEN, BLUE tie order, and verify the "color order", "smallest groups", "lacking type", "tied attendee" and "13 attendees" scenarios pass as unit tests
+- [x] 2.6 Add smallest-group selection, fewest-of-type selection and the amber, coral, teal, violet tie order, and verify the "color order", "smallest groups", "lacking type", "tied attendee" and "13 attendees" scenarios pass as unit tests
 - [x] 2.7 Reject a second assignment for the same attendee without emitting anything, and record `AttendeeGrouped` on success, and verify both with unit tests
 
 ## 3. Persistence
@@ -32,5 +32,5 @@
 ## 5. HTTP and functional coverage
 
 - [x] 5.1 Add `GET /events/:eventId/distribution` with UUIDv7 validation at the boundary, and verify functional tests for an empty distribution, a populated one, an unknown event (404) and an invalid id (400)
-- [x] 5.2 Add `GET /events/:eventId/attendees/:attendeeId/assignment`, and verify functional tests for an assigned attendee and a not-assigned attendee (404 with a "not assigned" body)
+- [x] 5.2 Add `GET /events/:eventId/attendees/:attendeeId/assignment`, and verify functional tests for an assigned attendee and a not-assigned attendee (200 with status pending) and an unknown event (404)
 - [x] 5.3 Verify the end-to-end flow with a functional test: create an event, complete questionnaires for 5 attendees (including a duplicate completion and one after the icebreaker reveal), then check every assignment, the distribution counts and that `AttendeeGrouped` was published once per attendee

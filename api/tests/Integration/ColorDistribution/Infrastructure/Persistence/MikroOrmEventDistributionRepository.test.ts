@@ -91,10 +91,10 @@ describe('MikroOrmEventDistributionRepository', () => {
     expect(await repository.byEvent(eventId)).toEqual({
       eventId: eventId.value,
       groups: [
-        { color: 'RED', members: 1, personalityTypes: ['explorer'] },
-        { color: 'YELLOW', members: 1, personalityTypes: ['explorer'] },
-        { color: 'GREEN', members: 0, personalityTypes: [] },
-        { color: 'BLUE', members: 0, personalityTypes: [] },
+        { color: 'amber', members: 1, personalityTypes: ['explorer'] },
+        { color: 'coral', members: 1, personalityTypes: ['explorer'] },
+        { color: 'teal', members: 0, personalityTypes: [] },
+        { color: 'violet', members: 0, personalityTypes: [] },
       ],
     });
   });
@@ -125,7 +125,7 @@ describe('MikroOrmEventDistributionRepository', () => {
     expect(assignment?.toDTO()).toEqual({
       eventId: eventId.value,
       attendeeId: attendeeId.value,
-      color: 'RED',
+      color: 'amber',
       personalityType: 'explorer',
     });
   });

@@ -1,11 +1,8 @@
 import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 import { z } from 'zod';
-import type {
-  AttendeeAssignment,
-  AttendeeNotAssigned,
-  EventDistributionView,
-} from '../../../../../contracts/colorDistribution';
+import type { AttendeeAssignmentResponse, EventDistributionView } from '../../../../../contracts/colorDistribution';
 import { ApplicationService } from '@Huemans/ColorDistribution/Application/ApplicationService';
+import { EventDistributionNotFound } from '@Huemans/ColorDistribution/Domain/EventDistributionNotFound';
 import { ZodValidationPipe } from '@Huemans/Shared/Infrastructure/Http/ZodValidationPipe';
 
 const UuidV7Param = new ZodValidationPipe(z.uuidv7());
@@ -27,15 +24,16 @@ export class ColorDistributionController {
   async assignment(
     @Param('eventId', UuidV7Param) eventId: string,
     @Param('attendeeId', UuidV7Param) attendeeId: string,
-  ): Promise<AttendeeAssignment> {
-    const assignment = await this.service.assignmentOf(eventId, attendeeId);
-    if (assignment === null) {
-      throw new NotFoundException({
-        statusCode: 404,
-        error: 'not_assigned',
-        message: `Attendee <${attendeeId}> is not assigned in event <${eventId}>`,
-      } satisfies AttendeeNotAssigned);
+  ): Promise<AttendeeAssignmentResponse> {
+    try {
+      const assignment = await this.service.assignmentOf(eventId, attendeeId);
+      // Not assigned yet is a 200, never a 404: the web treats 404 as final and stops polling.
+      return assignment === null ? { status: 'pending' } : { status: 'assigned', ...assignment };
+    } catch (error) {
+      if (error instanceof EventDistributionNotFound) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
     }
-    return assignment;
   }
 }

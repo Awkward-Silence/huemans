@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import type { AttendeeAssignment, AttendeeNotAssigned } from '../../../../contracts/colorDistribution';
+import type { AttendeeAssignment, AttendeePending } from '../../../../contracts/colorDistribution';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { EventCreated } from '@Huemans/Shared/Domain/Event/EventCreated';
@@ -33,9 +33,10 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
+      status: 'assigned',
       eventId,
       attendeeId,
-      color: 'RED',
+      color: 'amber',
       personalityType: 'dreamer',
     } satisfies AttendeeAssignment);
   });
@@ -43,12 +44,14 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
   it('testAttendeeNotAssignedYet', async () => {
     const response = await getJson(app, `/events/${eventId}/attendees/${attendeeId}/assignment`);
 
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ status: 'pending' } satisfies AttendeePending);
+  });
+
+  it('testUnknownEventIsNotFound', async () => {
+    const response = await getJson(app, `/events/${EventId.random().value}/attendees/${attendeeId}/assignment`);
+
     expect(response.status).toBe(404);
-    expect(response.body).toEqual({
-      statusCode: 404,
-      error: 'not_assigned',
-      message: expect.any(String) as string,
-    } satisfies AttendeeNotAssigned);
   });
 
   it('testInvalidAttendeeIdIsBadRequest', async () => {

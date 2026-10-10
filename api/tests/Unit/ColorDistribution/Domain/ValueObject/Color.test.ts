@@ -3,7 +3,7 @@ import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentErro
 
 describe('Color', () => {
   it('testAcceptsTheFourGroupColors', () => {
-    expect(COLORS.map((color) => new Color(color).value)).toEqual(['RED', 'YELLOW', 'GREEN', 'BLUE']);
+    expect(COLORS.map((color) => new Color(color).value)).toEqual(['amber', 'coral', 'teal', 'violet']);
   });
 
   it('testRejectsAnUnknownColor', () => {

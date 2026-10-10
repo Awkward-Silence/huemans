@@ -1,9 +1,8 @@
 import { EnumValueObject } from '@Huemans/Shared/Domain/ValueObject/EnumValueObject';
+import { PERSONALITY_TYPES, type PersonalityTypeValue } from '@Huemans/Types/PersonalityType';
 
-// Provisional codes until the catalog names the types.
-export const PERSONALITY_TYPES = ['explorer', 'connector', 'planner', 'dreamer'] as const;
-
-export type PersonalityTypeValue = (typeof PERSONALITY_TYPES)[number];
+export { PERSONALITY_TYPES };
+export type { PersonalityTypeValue };
 
 export class PersonalityType extends EnumValueObject<PersonalityTypeValue> {
   constructor(value: string) {

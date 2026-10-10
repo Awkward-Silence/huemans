@@ -6,9 +6,9 @@ Splitting attendees into color groups is the core of huemans: it is what turns a
 
 ## What Changes
 
-- Open a distribution for every new event, with all four color groups (RED, YELLOW, GREEN, BLUE) present and empty, so the live distribution screen works before anyone answers.
+- Open a distribution for every new event, with all four color groups (amber, coral, teal, violet) present and empty, so the live distribution screen works before anyone answers.
 - Derive each attendee's **personality type** (one of 4) from the trait profile Participation hands over: the type most of their traits map to, using the catalog's trait-type mapping.
-- Assign each attendee once, finally, to a group built for diversity: among the smallest groups, the one with the fewest members of the attendee's type. An attendee tied between types takes the type their group lacks. Remaining ties go in the order RED, YELLOW, GREEN, BLUE.
+- Assign each attendee once, finally, to a group built for diversity: among the smallest groups, the one with the fewest members of the attendee's type. An attendee tied between types takes the type their group lacks. Remaining ties go in the order amber, coral, teal, violet.
 - Publish `AttendeeGrouped { eventId, attendeeId, color, personalityType }` after each assignment, for realtime delivery to the phone and host screen.
 - Expose the live distribution of an event: per color, the member count and the personality types present.
 - Expose an attendee's own assignment (color and personality type) for the reveal screen, so it survives a reload or a missed push.

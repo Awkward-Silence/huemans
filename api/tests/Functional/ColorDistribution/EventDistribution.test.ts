@@ -31,10 +31,10 @@ describe('GET /events/:eventId/distribution', () => {
     expect(response.body).toEqual({
       eventId,
       groups: [
-        { color: 'RED', members: 0, personalityTypes: [] },
-        { color: 'YELLOW', members: 0, personalityTypes: [] },
-        { color: 'GREEN', members: 0, personalityTypes: [] },
-        { color: 'BLUE', members: 0, personalityTypes: [] },
+        { color: 'amber', members: 0, personalityTypes: [] },
+        { color: 'coral', members: 0, personalityTypes: [] },
+        { color: 'teal', members: 0, personalityTypes: [] },
+        { color: 'violet', members: 0, personalityTypes: [] },
       ],
     } satisfies EventDistributionView);
   });
@@ -51,10 +51,10 @@ describe('GET /events/:eventId/distribution', () => {
 
     expect(response.status).toBe(200);
     expect((response.body as EventDistributionView).groups).toEqual([
-      { color: 'RED', members: 1, personalityTypes: ['explorer'] },
-      { color: 'YELLOW', members: 1, personalityTypes: ['connector'] },
-      { color: 'GREEN', members: 1, personalityTypes: ['planner'] },
-      { color: 'BLUE', members: 0, personalityTypes: [] },
+      { color: 'amber', members: 1, personalityTypes: ['explorer'] },
+      { color: 'coral', members: 1, personalityTypes: ['connector'] },
+      { color: 'teal', members: 1, personalityTypes: ['planner'] },
+      { color: 'violet', members: 0, personalityTypes: [] },
     ]);
   });
 

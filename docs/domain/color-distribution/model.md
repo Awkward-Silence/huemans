@@ -55,7 +55,7 @@ The trait-type mapping is passed in by the caller: the catalog owns the table's 
 2. Candidate groups = the colors with the fewest members.
 3. For each (group, type) pair, score = members of that group who already have that type.
 4. Pick the pair with the lowest score. This places the attendee where they add the most diversity, and resolves ties between types in favor of the type the group lacks.
-5. Remaining ties are broken by the fixed color order RED, YELLOW, GREEN, BLUE, the same for every event, so assignment is deterministic and repeatable.
+5. Remaining ties are broken by the fixed color order amber, coral, teal, violet, the same for every event, so assignment is deterministic and repeatable.
 6. Record the Assignment and emit AttendeeGrouped.
 
 ---
@@ -83,7 +83,7 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 
 | Name | Kind | Base / Components | Construction Rule | Invalid States | Scope |
 |---|---|---|---|---|---|
-| Color | basic | string | One of RED, YELLOW, GREEN, BLUE | any other value | Local |
+| Color | basic | string | One of amber, coral, teal, violet | any other value | Local |
 | PersonalityType | basic | string | One of exactly 4 personality types | any value outside the 4 types | Local |
 | TraitProfile | collection | SK::Trait | At least 1 trait; no maximum; duplicates allowed, each occurrence counts as a vote | empty | Local |
 | TraitTypeMapping | collection | SK::Trait to PersonalityType pairs | Every one of the 33 traits is mapped to exactly one personality type | a trait missing or mapped twice | Local |
@@ -127,7 +127,7 @@ The live distribution is always read for one event, so no SK::Criteria is needed
 | Term | Definition |
 |---|---|
 | Trait profile | The traits an attendee's answers point to, built by Participation and handed to this context; at least one trait |
-| Color | One of the four groups an attendee can belong to (RED, YELLOW, GREEN, BLUE). A group label, not a personality type |
+| Color | One of the four groups an attendee can belong to (amber, coral, teal, violet). A group label, not a personality type |
 | Diversity | How different the personalities inside one group are; assignment maximizes it |
 | Personality type | One of 4 types derived from an attendee's trait profile; shown at the reveal and used to balance groups |
 | Trait-type mapping | The table placing each of the 33 traits in exactly one personality type |

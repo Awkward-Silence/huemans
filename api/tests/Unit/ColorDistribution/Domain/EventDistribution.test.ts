@@ -58,10 +58,10 @@ describe('EventDistribution', () => {
     expect(distribution.toDTO()).toEqual({
       eventId: eventId.value,
       groups: [
-        { color: 'RED', members: 0, personalityTypes: [] },
-        { color: 'YELLOW', members: 0, personalityTypes: [] },
-        { color: 'GREEN', members: 0, personalityTypes: [] },
-        { color: 'BLUE', members: 0, personalityTypes: [] },
+        { color: 'amber', members: 0, personalityTypes: [] },
+        { color: 'coral', members: 0, personalityTypes: [] },
+        { color: 'teal', members: 0, personalityTypes: [] },
+        { color: 'violet', members: 0, personalityTypes: [] },
       ],
     });
     expect(distribution.pullDomainEvents()).toEqual([]);
@@ -86,7 +86,7 @@ describe('EventDistribution', () => {
   it('testFirstAttendeesFillGroupsInColorOrder', () => {
     const attendees = assignTypes('explorer', 'explorer', 'explorer', 'explorer');
 
-    expect(attendees.map(colorAssignedTo)).toEqual(['RED', 'YELLOW', 'GREEN', 'BLUE']);
+    expect(attendees.map(colorAssignedTo)).toEqual(['amber', 'coral', 'teal', 'violet']);
   });
 
   it('testSmallestGroupsComeFirst', () => {
@@ -95,7 +95,7 @@ describe('EventDistribution', () => {
 
     const [planner] = assignTypes('planner');
 
-    expect(colorAssignedTo(planner)).toBe('BLUE');
+    expect(colorAssignedTo(planner)).toBe('violet');
   });
 
   it('testAttendeeJoinsTheGroupLackingTheirType', () => {
@@ -103,7 +103,7 @@ describe('EventDistribution', () => {
 
     const [explorer] = assignTypes('explorer');
 
-    expect(colorAssignedTo(explorer)).toBe('GREEN');
+    expect(colorAssignedTo(explorer)).toBe('teal');
   });
 
   it('testTiedAttendeeTakesTheTypeTheGroupLacks', () => {
@@ -118,7 +118,7 @@ describe('EventDistribution', () => {
 
     distribution.assign(attendeeId, profile('curious', 'organized'), mapping);
 
-    expect(colorAssignedTo(attendeeId)).toBe('GREEN');
+    expect(colorAssignedTo(attendeeId)).toBe('teal');
     expect(typeAssignedTo(attendeeId)).toBe('planner');
   });
 
@@ -147,7 +147,7 @@ describe('EventDistribution', () => {
     expect(events[0].toPrimitives()).toEqual({
       eventId: eventId.value,
       attendeeId: attendeeId.value,
-      color: 'YELLOW',
+      color: 'coral',
       personalityType: 'connector',
     });
   });
@@ -160,7 +160,7 @@ describe('EventDistribution', () => {
 
     expect(distribution.pullDomainEvents()).toEqual([]);
     expect(distribution.assignments()).toHaveLength(1);
-    expect(colorAssignedTo(attendeeId)).toBe('RED');
+    expect(colorAssignedTo(attendeeId)).toBe('amber');
     expect(typeAssignedTo(attendeeId)).toBe('explorer');
   });
 });
