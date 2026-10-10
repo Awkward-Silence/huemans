@@ -1,6 +1,6 @@
 import { Collection } from '@Huemans/Shared/Domain/Collection';
 import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentError';
-import { Answer } from './Answer';
+import { Answer } from '../Answer';
 
 /** The 4 answers of one question, in authored order, with ids unique within the question. */
 export class AnswerCollection extends Collection<Answer> {

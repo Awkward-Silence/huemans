@@ -2,9 +2,9 @@
 
 ## 1. Value objects and entities (unit tests first)
 
-- [ ] 1.1 Add `QuestionText`, `AnswerText` (not empty, at most 80), `IcebreakerText`, `Blurb` (not empty, at most 200) and `Nickname` (trimmed, then not empty, at most 80), and verify unit tests at each limit (80/81, 200/201), for empty text, and for a nickname stored trimmed and a blank one rejected
-- [ ] 1.2 Turn `Answer` into an entity (`AnswerId`, `AnswerText`, `SK::Trait`) and keep `AnswerCollection` (exactly 4, unique AnswerIds), and verify the existing collection unit tests pass with `AnswerText`
-- [ ] 1.3 Add `TraitType` (composite `SK::Trait` + `SK::PersonalityType`), `TraitTypeMapping` as a collection of `TraitType` (every trait exactly once), `PersonalityTypeProfile` entity (`SK::PersonalityType`, `Nickname`, `Blurb`, `ProfileTraitCollection`) and `PersonalityTypeProfileCollection` (exactly one per type), and verify unit tests for a missing and a repeated trait, and a missing and a duplicated profile
+- [x] 1.1 Add `QuestionText`, `AnswerText` (not empty, at most 80), `IcebreakerText`, `Blurb` (not empty, at most 200) and `Nickname` (trimmed, then not empty, at most 80), and verify unit tests at each limit (80/81, 200/201), for empty text, and for a nickname stored trimmed and a blank one rejected
+- [x] 1.2 Turn `Answer` into an entity (`AnswerId`, `AnswerText`, `SK::Trait`) and keep `AnswerCollection` (exactly 4, unique AnswerIds), and verify the existing collection unit tests pass with `AnswerText`
+- [x] 1.3 Add `TraitType` (composite `SK::Trait` + `SK::PersonalityType`), `TraitTypeMapping` as a collection of `TraitType` (every trait exactly once), `PersonalityTypeProfile` entity (`SK::PersonalityType`, `Nickname`, `Blurb`, `ProfileTraitCollection`) and `PersonalityTypeProfileCollection` (exactly one per type), and verify unit tests for a missing and a repeated trait, and a missing and a duplicated profile
 
 ## 2. Aggregates and events (unit tests first)
 

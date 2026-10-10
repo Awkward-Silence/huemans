@@ -1,6 +1,7 @@
-import { Answer } from '@Huemans/Catalog/Domain/ValueObject/Answer';
+import { Answer } from '@Huemans/Catalog/Domain/Answer';
 import { AnswerCollection } from '@Huemans/Catalog/Domain/ValueObject/AnswerCollection';
 import { AnswerId } from '@Huemans/Catalog/Domain/ValueObject/AnswerId';
+import { AnswerText } from '@Huemans/Catalog/Domain/ValueObject/AnswerText';
 import { IcebreakerId } from '@Huemans/Catalog/Domain/ValueObject/IcebreakerId';
 import { IcebreakerTraitCollection } from '@Huemans/Catalog/Domain/ValueObject/IcebreakerTraitCollection';
 import { ProfileTraitCollection } from '@Huemans/Catalog/Domain/ValueObject/ProfileTraitCollection';
@@ -8,7 +9,8 @@ import { QuestionId } from '@Huemans/Catalog/Domain/ValueObject/QuestionId';
 import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentError';
 import { Trait } from '@Huemans/Shared/Domain/ValueObject/Trait';
 
-const answer = (id: string, trait = 'curious') => new Answer(new AnswerId(id), `Answer ${id}`, new Trait(trait));
+const answer = (id: string, trait = 'curious') =>
+  new Answer(new AnswerId(id), new AnswerText(`Answer ${id}`), new Trait(trait));
 const traits = (...values: string[]) => values.map((value) => new Trait(value));
 
 describe('Catalog value objects', () => {
@@ -17,10 +19,6 @@ describe('Catalog value objects', () => {
     expect(() => new AnswerId('  ')).toThrow(InvalidArgumentError);
     expect(() => new IcebreakerId('')).toThrow(InvalidArgumentError);
     expect(new QuestionId('q0001').value).toBe('q0001');
-  });
-
-  it('testAnswerNeedsAText', () => {
-    expect(() => new Answer(new AnswerId('q0001-a'), '', new Trait('curious'))).toThrow(InvalidArgumentError);
   });
 
   it('testAnswerCollectionHoldsExactlyFourAnswersInOrder', () => {

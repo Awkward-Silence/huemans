@@ -24,7 +24,9 @@ export class Question {
       id: this.id.value,
       theme: this.theme.value,
       text: this.text,
-      answers: this.answers.all().map(({ id, text, trait }) => ({ id: id.value, text, trait: trait.value })),
+      answers: this.answers
+        .all()
+        .map(({ id, text, trait }) => ({ id: id.value, text: text.value, trait: trait.value })),
     };
   }
 }

@@ -6,7 +6,10 @@ import { PersonalityTypeProfileNotFound } from '@Huemans/Catalog/Domain/Personal
 import { CatalogRepository } from '@Huemans/Catalog/Domain/Port/CatalogRepository';
 import { Question } from '@Huemans/Catalog/Domain/Question';
 import { TraitTypeMapping } from '@Huemans/Catalog/Domain/TraitTypeMapping';
-import { Answer } from '@Huemans/Catalog/Domain/ValueObject/Answer';
+import { Answer } from '@Huemans/Catalog/Domain/Answer';
+import { AnswerText } from '@Huemans/Catalog/Domain/ValueObject/AnswerText';
+import { Blurb } from '@Huemans/Catalog/Domain/ValueObject/Blurb';
+import { Nickname } from '@Huemans/Catalog/Domain/ValueObject/Nickname';
 import { AnswerCollection } from '@Huemans/Catalog/Domain/ValueObject/AnswerCollection';
 import { AnswerId } from '@Huemans/Catalog/Domain/ValueObject/AnswerId';
 import { IcebreakerId } from '@Huemans/Catalog/Domain/ValueObject/IcebreakerId';
@@ -48,7 +51,9 @@ export class MikroOrmCatalogRepository implements CatalogRepository {
           new AnswerCollection(
             answers
               .filter((answer) => answer.questionId === question.id)
-              .map((answer) => new Answer(new AnswerId(answer.id), answer.text, new Trait(answer.trait))),
+              .map(
+                (answer) => new Answer(new AnswerId(answer.id), new AnswerText(answer.text), new Trait(answer.trait)),
+              ),
           ),
         ),
     );
@@ -78,8 +83,8 @@ export class MikroOrmCatalogRepository implements CatalogRepository {
     }
     return new PersonalityTypeProfile(
       type,
-      row.nickname,
-      row.blurb,
+      new Nickname(row.nickname),
+      new Blurb(row.blurb),
       new ProfileTraitCollection(row.traits.map((trait) => new Trait(trait))),
     );
   }
