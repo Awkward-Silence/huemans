@@ -46,7 +46,7 @@ describe('pnpm catalog:seed and catalog:validate', () => {
 
     expect(first.stderr).toBe('');
     expect(first.status).toBe(0);
-    expect(first.stdout).toContain('Seeded 50 questions, 51 icebreakers, 4 profiles and 33 mapped traits.');
+    expect(first.stdout).toContain('Seeded 53 questions, 51 icebreakers, 4 profiles and 33 mapped traits.');
     expect(second.status).toBe(0);
     expect(second.stdout).toMatch(/Catalog already seeded at \d{4}-\d{2}-\d{2}T.*; nothing written\./);
   });
@@ -57,7 +57,7 @@ describe('pnpm catalog:seed and catalog:validate', () => {
 
     expect(result.stderr).toBe('');
     expect(result.status).toBe(0);
-    expect(result.stdout).toContain('Valid: 50 questions, 51 icebreakers, 4 profiles and 33 mapped traits.');
+    expect(result.stdout).toContain('Valid: 53 questions, 51 icebreakers, 4 profiles and 33 mapped traits.');
   });
 
   it('testValidateNamesTheInvalidEntryWithoutAnyDatabase', () => {

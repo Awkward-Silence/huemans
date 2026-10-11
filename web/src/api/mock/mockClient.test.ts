@@ -23,6 +23,8 @@ describe("mock client", () => {
     expect(quiz.questions).toHaveLength(event.questionCount);
 
     const { attendeeId } = await api.join("demo", { name: "Ana" });
+    // api/ only accepts UUIDv7 attendee ids.
+    expect(attendeeId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
     expect(await api.getAssignment("demo", attendeeId)).toEqual({ status: "pending" });
 
     await api.submitAnswers("demo", attendeeId, {
@@ -31,6 +33,7 @@ describe("mock client", () => {
         answerId: question.answers[0]!.id,
       })),
       elapsedMs: 12_000,
+      sentence: null,
     });
     expect(await api.getIcebreaker("demo", attendeeId)).toEqual({ status: "locked" });
 

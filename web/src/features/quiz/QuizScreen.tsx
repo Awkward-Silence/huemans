@@ -27,6 +27,7 @@ import {
   sentenceStatus,
   themeLabel,
   toAnswerList,
+  toSentenceAnswer,
 } from "./progress.ts";
 import styles from "./QuizScreen.module.css";
 import { SENTENCE_DONE_HOLD_MS, SentenceDone } from "./SentenceDone.tsx";
@@ -37,7 +38,7 @@ import { SentenceStep } from "./SentenceStep.tsx";
  * out nothing closes; the timer is a nudge, not a gate. After the multiple
  * choice comes the "I ..." sentence (when the quiz has one), for fun only.
  * Finishing or skipping it submits by itself (also after a refresh), then
- * the attendee is "sorted". The sentence is never sent.
+ * the attendee is "sorted". The sentence goes with the answers.
  */
 function QuizScreen({ eventId }: { eventId: string }) {
   const { data: quiz } = useSuspenseQuery(quizQuery(eventId));
@@ -88,6 +89,7 @@ function QuizScreen({ eventId }: { eventId: string }) {
       {
         answers: toAnswerList(questions, session.answers),
         elapsedMs: Math.max(0, finishedAt - (session.quizStartedAt ?? finishedAt)),
+        sentence: toSentenceAnswer(sentenceQuestion, session.sentence),
       },
       {
         onSuccess: () => {

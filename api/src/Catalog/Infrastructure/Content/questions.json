@@ -1348,5 +1348,86 @@
         "trait": "optimistic"
       }
     ]
+  },
+  {
+    "id": "q0051",
+    "theme": "music-and-movies",
+    "text": "Julio Iglesias. Be honest.",
+    "answers": [
+      {
+        "id": "q0051-a",
+        "text": "Unironically yes",
+        "trait": "romantic"
+      },
+      {
+        "id": "q0051-b",
+        "text": "Only after 2am",
+        "trait": "spontaneous"
+      },
+      {
+        "id": "q0051-c",
+        "text": "Who?",
+        "trait": "independent"
+      },
+      {
+        "id": "q0051-d",
+        "text": "I would leave the room",
+        "trait": "stubborn"
+      }
+    ]
+  },
+  {
+    "id": "q0052",
+    "theme": "food",
+    "text": "The buffet opens. You are…",
+    "answers": [
+      {
+        "id": "q0052-a",
+        "text": "First in the queue",
+        "trait": "competitive"
+      },
+      {
+        "id": "q0052-b",
+        "text": "Waiting politely",
+        "trait": "patient"
+      },
+      {
+        "id": "q0052-c",
+        "text": "Already ate at home",
+        "trait": "practical"
+      },
+      {
+        "id": "q0052-d",
+        "text": "Only here for the wine",
+        "trait": "easygoing"
+      }
+    ]
+  },
+  {
+    "id": "q0053",
+    "theme": "celebrations",
+    "text": "It is 23:40. The after-party?",
+    "answers": [
+      {
+        "id": "q0053-a",
+        "text": "Leading the way there",
+        "trait": "sociable"
+      },
+      {
+        "id": "q0053-b",
+        "text": "If someone drags me",
+        "trait": "introverted"
+      },
+      {
+        "id": "q0053-c",
+        "text": "Taxi already booked",
+        "trait": "organized"
+      },
+      {
+        "id": "q0053-d",
+        "text": "Still at dinner, finishing the debate",
+        "trait": "analytical"
+      }
+    ]
   }
 ]
