@@ -6,6 +6,7 @@ import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
 import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
+import { wholeAnswers } from '../../Support/traits';
 import { publish, recordPublished } from '../../Support/events';
 import { seedCatalogFiles } from '../../Support/catalog';
 import { bootFunctional, getJson } from '../../Support/functional';
@@ -41,15 +42,15 @@ describe('Color distribution flow', () => {
     await publish(app, new EventCreated(eventId));
     await publish(
       app,
-      new QuestionnaireCompleted(ana, eventId, ['curious', 'adventurous']),
-      new QuestionnaireCompleted(bea, eventId, ['spontaneous']),
-      new QuestionnaireCompleted(carla, eventId, ['organized', 'practical', 'curious']),
-      new QuestionnaireCompleted(dani, eventId, ['sociable']),
+      new QuestionnaireCompleted(ana, eventId, wholeAnswers('curious', 'adventurous')),
+      new QuestionnaireCompleted(bea, eventId, wholeAnswers('spontaneous')),
+      new QuestionnaireCompleted(carla, eventId, wholeAnswers('organized', 'practical', 'curious')),
+      new QuestionnaireCompleted(dani, eventId, wholeAnswers('sociable')),
       // Ana submits again with different answers: her first assignment stands.
-      new QuestionnaireCompleted(ana, eventId, ['romantic']),
+      new QuestionnaireCompleted(ana, eventId, wholeAnswers('romantic')),
     );
     // Color Distribution has no notion of the icebreaker reveal: a late completion is grouped like any other.
-    await publish(app, new QuestionnaireCompleted(eva, eventId, ['independent']));
+    await publish(app, new QuestionnaireCompleted(eva, eventId, wholeAnswers('independent')));
     // A repeated EventCreated must not reset the distribution.
     await publish(app, new EventCreated(eventId));
 

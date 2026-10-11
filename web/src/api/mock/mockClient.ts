@@ -3,6 +3,7 @@ import { sentenceTree } from "../../content/index.ts";
 import { GROUP_COLORS, GroupColorSchema } from "../../domain/groupColor.ts";
 import { nextWords } from "../../domain/sentence.ts";
 import { readJson, writeJson } from "../../lib/storage.ts";
+import { uuidv7 } from "../../lib/uuid.ts";
 import type { ApiClient } from "../client.ts";
 import { ApiError, parseResponse } from "../errors.ts";
 import {
@@ -146,7 +147,7 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
     join: (eventId, body) =>
       respond(() => {
         const state = load(eventId);
-        const attendeeId = crypto.randomUUID();
+        const attendeeId = uuidv7();
         state.attendees[attendeeId] = { name: body.name };
         save(eventId, state);
         return parseResponse(JoinResponseSchema, { attendeeId }, "join");

@@ -6,6 +6,7 @@ import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/Questionnai
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { publish } from '../../Support/events';
+import { wholeAnswers } from '../../Support/traits';
 import { bootFunctional, getJson, postJson } from '../../Support/functional';
 
 describe('GET /events/:eventId/room', () => {
@@ -26,7 +27,7 @@ describe('GET /events/:eventId/room', () => {
   });
 
   function completeQuestionnaire(event: string, traits: string[]): QuestionnaireCompleted {
-    return new QuestionnaireCompleted(AttendeeId.random().value, event, traits);
+    return new QuestionnaireCompleted(AttendeeId.random().value, event, wholeAnswers(...traits));
   }
 
   it('testNewEventHasAnEmptyRoom', async () => {

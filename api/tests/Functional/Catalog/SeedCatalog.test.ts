@@ -72,9 +72,9 @@ describe('Seeding the catalog once per database', () => {
 
     expect(result).toEqual({
       seeded: true,
-      counts: { questions: 50, icebreakers: 51, profiles: 4, mappedTraits: 33 },
+      counts: { questions: 53, icebreakers: 51, profiles: 4, mappedTraits: 33 },
     });
-    expect(events.filter((name) => name === QuestionAuthored.EVENT_NAME)).toHaveLength(50);
+    expect(events.filter((name) => name === QuestionAuthored.EVENT_NAME)).toHaveLength(53);
     expect(events.filter((name) => name === IcebreakerAuthored.EVENT_NAME)).toHaveLength(51);
     expect(events.filter((name) => name === PersonalityTypesDefined.EVENT_NAME)).toHaveLength(1);
 

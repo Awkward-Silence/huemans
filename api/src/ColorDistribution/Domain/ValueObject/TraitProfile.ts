@@ -1,30 +1,30 @@
 import { Collection } from '@Huemans/Shared/Domain/Collection';
-import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentError';
-import { Trait } from '@Huemans/Shared/Domain/ValueObject/Trait';
 import { PERSONALITY_TYPES, PersonalityType } from '@Huemans/Shared/Domain/ValueObject/PersonalityType';
+import { WeightedTrait } from '@Huemans/Shared/Domain/ValueObject/WeightedTrait';
 import { TraitTypeMapping } from './TraitTypeMapping';
 
-export class TraitProfile extends Collection<Trait> {
-  constructor(traits: readonly Trait[]) {
-    super(traits);
-    if (this.count() === 0) {
-      throw new InvalidArgumentError('<TraitProfile> requires at least one trait');
-    }
+/** Sums closer than this are a tie: weights from the AI are floats. */
+const TIE_TOLERANCE = 1e-9;
+
+export class TraitProfile extends Collection<WeightedTrait> {
+  protected type(): typeof WeightedTrait {
+    return WeightedTrait;
   }
 
-  protected type(): typeof Trait {
-    return Trait;
-  }
-
-  /** The types most of the traits map to: one normally, several when tied, in PERSONALITY_TYPES order. */
+  /**
+   * The types with the highest summed weight: one normally, several when tied, in PERSONALITY_TYPES order.
+   * An empty profile ties all four types, so every attendee still gets a group.
+   */
   candidateTypes(mapping: TraitTypeMapping): PersonalityType[] {
-    const votes = new Map<string, number>();
-    for (const trait of this) {
+    const scores = new Map<string, number>(PERSONALITY_TYPES.map((type) => [type, 0]));
+    for (const { trait, weight } of this) {
       const type = mapping.typeOf(trait).value;
-      votes.set(type, (votes.get(type) ?? 0) + 1);
+      scores.set(type, scores.get(type)! + weight.value);
     }
-    const most = Math.max(...votes.values());
+    const best = Math.max(...scores.values());
 
-    return PERSONALITY_TYPES.filter((type) => votes.get(type) === most).map((type) => new PersonalityType(type));
+    return PERSONALITY_TYPES.filter((type) => best - scores.get(type)! < TIE_TOLERANCE).map(
+      (type) => new PersonalityType(type),
+    );
   }
 }
