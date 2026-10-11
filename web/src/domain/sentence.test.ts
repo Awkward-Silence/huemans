@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { isLongSentence, nextWords, pickWords, treeOptions, treeWordsAt } from "./sentence.ts";
+import { sentenceTree as bundledTree } from "../content/index.ts";
+import {
+  isCompleteTree,
+  isLongSentence,
+  nextWords,
+  pickWords,
+  treeOptions,
+  treeWordsAt,
+  type SentenceTree,
+} from "./sentence.ts";
 
 describe("pickWords", () => {
   it("picks distinct words that are not already in the sentence", () => {
@@ -54,5 +63,50 @@ describe("sentence tree", () => {
     const words = nextWords(tree, ["I", "dance"]);
     expect(words).toHaveLength(3);
     for (const word of words) expect(treeWordsAt(tree, 1)).toContain(word);
+  });
+});
+
+describe("isCompleteTree", () => {
+  it("accepts the bundled tree", () => {
+    expect(isCompleteTree(bundledTree)).toBe(true);
+  });
+
+  it("rejects a pick with fewer or more than 3 options", () => {
+    const [first, second, third] = bundledTree.options;
+    expect(isCompleteTree({ ...bundledTree, options: [first!, second!] })).toBe(false);
+    expect(isCompleteTree({ ...bundledTree, options: [first!, second!, third!, first!] })).toBe(
+      false,
+    );
+  });
+
+  it("rejects a tree shallower or deeper than its picks", () => {
+    expect(isCompleteTree({ ...bundledTree, picks: 6 })).toBe(false);
+    expect(isCompleteTree({ ...bundledTree, picks: 4 })).toBe(false);
+  });
+});
+
+describe("nextWords on the bundled tree", () => {
+  const tree: SentenceTree = bundledTree;
+
+  it("follows the tree", () => {
+    expect(nextWords(tree, ["I"])).toEqual(["loudly", "suspiciously", "happily"]);
+    expect(nextWords(tree, ["I", "loudly", "apologise to"])).toEqual([
+      "every",
+      "three",
+      "seventeen",
+    ]);
+  });
+
+  it("has 3 fresh words for every pick, even off the tree", () => {
+    for (const sentence of [
+      ["I"],
+      ["I", "secretly"],
+      ["I", "loudly", "lick"],
+      ["I", "a", "b", "c", "d"],
+    ]) {
+      const next = nextWords(tree, sentence);
+      expect(next).toHaveLength(3);
+      for (const word of next) expect(sentence).not.toContain(word);
+    }
   });
 });

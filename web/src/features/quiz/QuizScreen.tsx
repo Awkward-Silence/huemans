@@ -1,6 +1,6 @@
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useEffectEvent, useRef } from "react";
-import { quizQuery, useSubmitAnswers, wordSuggestionsQuery } from "../../api/queries.ts";
+import { quizQuery, useSubmitAnswers } from "../../api/queries.ts";
 import { copy } from "../../content/index.ts";
 import { useCountdown } from "../../lib/useCountdown.ts";
 import {
@@ -44,7 +44,6 @@ function QuizScreen({ eventId }: { eventId: string }) {
   const session = useJoinedSession(eventId);
   const submit = useSubmitAnswers(eventId, session.attendeeId);
   const goTo = useGoToStep(eventId);
-  const queryClient = useQueryClient();
 
   const { questions, durationSeconds, sentence: sentenceQuestion } = quiz;
   const index = currentQuestionIndex(questions, session.answers);
@@ -64,16 +63,6 @@ function QuizScreen({ eventId }: { eventId: string }) {
   useEffect(() => {
     if (!session.quizStartedAt) updateSession(eventId, { quizStartedAt: Date.now() });
   }, [eventId, session.quizStartedAt]);
-
-  // Warm the sentence's first words while the multiple choice is on screen.
-  useEffect(() => {
-    if (!sentenceQuestion) return;
-    void queryClient.prefetchQuery(
-      wordSuggestionsQuery(eventId, sentenceQuestion, session.attendeeId, [
-        sentenceQuestion.starter,
-      ]),
-    );
-  }, [eventId, sentenceQuestion, session.attendeeId, queryClient]);
 
   // The finished sentence stays up for a moment, however fast the submit is.
   const holdUntil = useRef(0);
@@ -190,8 +179,6 @@ function QuizScreen({ eventId }: { eventId: string }) {
         </Rise>
       ) : onSentence && sentenceQuestion ? (
         <SentenceStep
-          eventId={eventId}
-          attendeeId={session.attendeeId}
           question={sentenceQuestion}
           picks={session.sentence}
           timeUp={timer.isOver}

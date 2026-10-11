@@ -2,99 +2,68 @@
 
 ## Context
 
-The motivation is in `proposal.md` and the requirements are in `specs/word-suggestions/spec.md`. Current state:
+The motivation is in `proposal.md` and the requirements are in `specs/word-suggestions/spec.md`.
 
-- `api/` is a single NestJS app. The bounded contexts so far are `ColorDistribution` and `Event`. The shared kernel has `EventId`, `AttendeeId` and an in-process `InMemoryEventDispatcher`. `EventCreated` belongs to the Event context (`api/src/Event/Domain/EventCreated.ts`), which also exports `ApplicationService.eventOf` for event lookup. There is no `Agents` context and no Mastra yet. The quiz endpoint belongs to `quiz-and-answers`, still only a proposal.
-- `web/` already has the full attendee flow against an in-browser mock. The API layer is `ApiClient` (`web/src/api/client.ts`), with HTTP and mock implementations and zod schemas in `web/src/api/schemas.ts`. React Query lives in `web/src/api/queries.ts`, and the per-event session lives in localStorage (`web/src/features/join/session.ts`). `QuizScreen` auto-submits once every question is answered.
-- The deployment is one API process, serving a demo of 10–15 phones, sometimes on venue wifi.
+This design replaces an earlier one: a `POST .../word-suggestions` call for every pick, with an LRU cache, a rate limit and prefetching. Speed was its hardest problem. One generated tree, loaded once, removes the round trips altogether. `tools/src/sentences/` already models the tree (`SentenceTree.ts`, 3 options per pick, 5 picks), and `web/` already builds sentences from the bundled copy (`web/src/content/sentenceTree.json`).
 
 ## Goals / Non-Goals
 
 **Goals:**
-- From the attendee's point of view, the next words show up instantly, usually with no network wait.
-- The quiz never depends on the AI. With no key, a dead provider or no network, the flow still completes.
-- The prompt can be tuned while the API is running.
+- No network wait between picks: the whole tree is on the phone before the step.
+- The quiz never depends on the AI. With no key, a dead provider or no network, the bundled tree is used.
+- The AI's content is fresh for each run of the API, in the app's tone.
 
 **Non-Goals:**
-- Storing sentences server-side, or showing them on the host screen. The sentence stays on the phone.
-- A trait or any grouping effect from the sentence.
-- Running more than one API instance. The cache and rate limit are per process.
-- Content moderation beyond the prompt plus a small blocklist.
+- A tree per event or per attendee. There is one tree per API process.
+- Persisting trees. A restart generates a new one.
+- Moderation beyond the prompt and the domain's text rules.
 
 ## Decisions
 
-**Agents bounded context.** Create `api/src/Agents/{Domain,Application,Infrastructure}`, the context `ai-enrichment` also plans, so both share one Mastra setup.
-- Domain: `SentencePrefix` value object (starter, at most 3 picks so far, word validation), `SuggestedWord`, and ports `Domain/Port/WordSuggester` and `Domain/Port/EventDirectory`.
-- Application: `ApplicationService.suggestNextWords(eventId, questionId, attendeeId, sentence)`.
-- Infrastructure: `Http/WordSuggestionsController`, `Llm/MastraWordSuggester`, `Fallback/StaticWordSuggester`, `AgentsModule`.
+**Agents bounded context.** `api/src/Agents/{Domain,Application,Infrastructure}`, the context `ai-enrichment` also plans, so both share one Mastra setup.
+- Domain: `SentenceTree` (fixed starter "I", 5 picks), `SentenceOption`, `ValueObject/SentenceText`, `SentenceTreeDraft` (the generator's plain output), `SentenceTreeUnavailable`, and the port `Port/SentenceTreeGenerator`.
+- Application: `ApplicationService.sentenceTree()`.
+- Infrastructure: `Llm/MastraSentenceTreeGenerator`, `Llm/sentenceTreePrompt.ts`, `Http/SentenceTreeController`, `Lifecycle/GrowSentenceTreeOnBoot`, `AgentsModule`.
+- There are no ORM entities and no migration.
 
-There are no ORM entities and no migration.
+**One structured call for the whole tree.**
+- Mastra `Agent` on OpenAI: model `OPENAI_MODEL` (default `gpt-5-mini`; `gpt-4.1-mini` and `gpt-4.1` ignore the 3-option shape of the recursive schema) with `OPENAI_REASONING_EFFORT` (default `low`), up to 16k output tokens, a 180 s deadline. No temperature: reasoning models don't take one.
+- Structured output with a recursive zod schema `{ text, trait, next }`. Mastra turns it into `$ref` definitions, which OpenAI strict mode supports. Spelling out the 5 levels would need 11 nesting levels, and strict mode allows 10.
+- Mastra turns array bounds into hints, so the counts are not enforced by the schema. The prompt asks for 3 options per pick, and the domain checks.
+- The model returns no ids. The domain derives them from each option's path, so they always match the tree. A round trip of `sentences.test.json` with its ids removed gives back the same file.
 
-**Sentence question as a shared-kernel constant.** `SentenceQuestion { id: "sentence-i", starter: "I", picks: 4 }` lives in `api/src/Shared/Domain/`, so the quiz endpoint (Participation) and `Agents` agree on it without importing each other. Every event has the same sentence question. Alternative: per-event sentence questions picked from the catalog. Rejected because there is no content for it and it adds nothing to the demo.
+**The domain prunes, it does not repair.** `SentenceTree.grow(draft)` keeps the first 3 usable options of each pick. An option is unusable when its text or trait is invalid, its text repeats a sibling's, or its own next picks can't be grown. It throws `InvalidArgumentError` when a pick has fewer than 3 usable options. One bad branch then costs only that branch.
 
-**Event existence through a port.** `EventDirectory.exists(eventId)` returns the 404. The adapter calls the Event context's exported `ApplicationService.eventOf` and maps `EventNotFound` to missing. `attendeeId` is used only as the rate-limit key and is not checked against Participation. A fake id gains nothing but fallback words.
+**Generated once per process.**
+- The application service memoizes the generation promise, so concurrent requests await the same call.
+- Up to 2 attempts per generation. `SentenceTreeUnavailable` (no key) is not retried.
+- A failure clears the memo, so a later request tries again.
+- `GrowSentenceTreeOnBoot` starts the generation at boot unless the key is missing or `SENTENCE_TREE_ON_BOOT=false`.
 
-**Mastra agent with structured output.**
-- `MastraWordSuggester` runs a Mastra `Agent` on the OpenAI provider, with the model taken from `OPENAI_MODEL`.
-- The output schema is `{ words: string[] }`, with `maxTokens` around 40 and a high temperature. It asks for **6 candidates** per call, not 3.
-- The model must be a small, **non-reasoning** model. Reasoning models add seconds before the first token.
+**HTTP.** `GET /sentence-tree` returns the tree (`contracts/sentenceTree.d.ts`), or `503` when it is unavailable. A request made while the generation is running waits for it. CORS (`CORS_ORIGIN`, already on main) lets `web/` call it from another origin.
 
-Alternative: the plain OpenAI SDK or `generateObject` without Mastra. That is slightly leaner, but CLAUDE.md puts agents behind ports in Mastra, and `ai-enrichment` needs Mastra anyway. If Mastra measurably adds latency, the adapter can drop to `generateObject` behind the same port without changing anything else.
+**Prompt in the source.** `sentenceTreePrompt.ts` holds the instructions:
+- the app's vibe;
+- an explicit not-offensive list, which also checks combinations, not only single words;
+- the grammar of the 5 slots (adverb, verb phrase, determiner, adjective, noun agreeing with its determiner);
+- option rules and trait use, with the 33 traits interpolated from `Trait.ts`;
+- the shape.
 
-**A cached pool of candidates, served 3 at random.** The application service keys an in-memory LRU (about 5,000 entries, no TTL) by `promptHash | eventId | questionId | lowercased sentence`. The cached value is the validated candidate pool. Each response takes 3 random words from the pool, minus any word already in the sentence. People at the same step therefore get varied words, and the AI is called once per prefix, not once per request.
-- If fewer than 3 valid candidates remain, the static fallback fills the gap. `source` is `"ai"` when at least one word came from the AI.
-- Requests for a prefix that is already in flight await the same promise, so two phones prefetching the same prefix trigger one call.
-
-Alternative: one AI call per request. That gives the most variety, but every step costs a full round trip, and identical prefetches multiply the cost.
-
-**Timeout without wasting the call.**
-- The service races the AI call against a **1 s** timer. If the timer wins, the response uses fallback words.
-- The AI call keeps running up to a hard 5 s abort, and its result still fills the cache, so the next request for that prefix gets AI words.
-- Fallback results are never cached.
-
-**Warm the top of the tree.** On `EventCreated`, a subscriber asks for `["I"]` in the background, then for each `["I", w]` of its candidates (up to 7 calls per event). This also opens the TLS connection to the provider before the demo. Warming failures are logged and ignored.
-
-**Prompt file, hot-reloaded.**
-- `WORD_SUGGESTER_PROMPT_PATH` (default `api/prompts/word-suggester.md`) holds the system prompt: be funny and family-friendly, give single words that continue the sentence grammatically, and return 6 of them. It includes a few examples.
-- The adapter `stat`s the file on each call and re-reads it when its mtime changes. The prompt's hash is part of the cache key, so an edit stops old entries from being served.
-- The request message carries only the sentence so far.
-
-**Output validation in the domain.** Each candidate is trimmed. A candidate is rejected if it has spaces, has characters other than letters, `'` or `-`, is longer than 20 characters, is a case-insensitive duplicate, is already in the sentence, or is on a small blocklist. This runs on both AI and fallback words.
-
-**Static fallback.** `StaticWordSuggester` keeps one list of about 20 words per step. Step 1 is mostly adverbs and verbs ("secretly", "once", "never"), step 2 verbs, step 3 determiners and adjectives, step 4 nouns. It picks at random. After AI picks, the result is not always grammatical, which is acceptable and often funnier.
-
-**Rate limit returns fallback words, not 429.** A fixed one-minute window per `attendeeId` allows 30 requests. One full sentence with prefetching costs 10: 1 for step 1, then 3 prefetches at each of steps 1–3. The web treats every error as "show fallback", so a 429 would only add a code path. Answering `200` with fallback words keeps the spec's "never fails because of the AI" rule simple.
-
-**HTTP.** The body is validated with zod in the controller, and domain `InvalidArgumentError` maps to `400`, the same as in existing controllers. The response is `{ words: string[3], source: "ai" | "fallback" }`.
-
-**Web: prefetch through React Query.**
-- `ApiClient.suggestWords(eventId, questionId, { attendeeId, sentence })` goes into `client.ts`, `httpClient.ts` and `mockClient.ts`. The mock picks from local word lists after its usual latency.
-- `wordSuggestionsQuery` keys on the sentence, with `staleTime: Infinity` and `retry: false`. Words never reshuffle on screen.
-- While 3 words are shown, the step calls `queryClient.prefetchQuery` for each of the 3 extended prefixes. It skips prefetching at the last pick.
-- The query function races the request against **1.5 s** and resolves to client fallback words from `web/src/content/` on timeout or error.
-
-**Web: quiz flow and session.**
-- `QuizScreen` shows the sentence step after the last multiple-choice question when `quiz.sentence` is present.
-- The session gains `sentence: string[]` (the picks) and `sentenceSkipped: boolean`, so a reload resumes mid-sentence.
-- Auto-submit fires once the multiple-choice questions are answered **and** the sentence is complete or skipped. The submit body is unchanged.
-- `RevealScreen` reads `session.sentence` and renders it when it is complete.
+**Web: one load at bootstrap, then a latched choice.** `web/src/api/sentenceTree.ts`:
+- `createSentenceTreeLoader(fetchTree, fallback)` with `load()`, `current()` and `choose()`, plus the hook `useSentenceTree()`.
+- `main.tsx` calls `load()`, which runs 1 attempt and 3 retries (1 s, 2 s, 4 s).
+- `choose()` waits at most 400 ms for a load still running, then aborts the request (an `AbortController` shared with the retries) and uses the bundled tree. Its result is latched for the whole session.
+- `ApiClient.suggestWords` is replaced by `getSentenceTree(signal)`. `SentenceTreeSchema` rejects incomplete trees, so a bad tree counts as a failed load.
+- `SentenceStep` derives its words with `nextWords(tree, sentence)` and no longer prefetches.
 
 ## Risks / Trade-offs
 
-- [Provider latency spikes or outage on stage] → 1 s server timeout, the 1.5 s client timeout, warmed cache and fallbacks at both ends. Rehearse once with the key removed.
-- [Someone sets a reasoning model in `OPENAI_MODEL`] → Document "non-reasoning only" in `.env.example`, and measure p50 latency at setup (see tasks).
-- [The model suggests something offensive in front of the room] → Family-friendly prompt plus a blocklist in validation. Each word stays harmless on its own.
-- [Users can't send arbitrary text into the prompt] → Words are validated as single, short tokens and the starter is fixed, so prompt injection has no surface worth defending further.
-- [Fallback sentences can be ungrammatical] → Accepted: they are still funny, and `source` lets us see how often it happens.
-- [The cache and rate limit live in one process] → Fine for one instance. Moving to more instances would need a shared store, which is out of scope.
-- [The quiz field depends on `quiz-and-answers`] → An optional `sentence` field and the web mock let both sides ship first. Event lookup is already available from `create-event`.
+- [Generation takes about a minute] → It starts at boot. The client waits at most 400 ms on the step and otherwise plays the bundled tree.
+- [The model miscounts deep in the tree] → Branch-level pruning plus 1 retry. If that still fails, the API answers 503 and the client uses the bundled tree.
+- [Something offensive slips through] → The prompt's explicit list and short options. The tree can be reviewed with `curl /sentence-tree | tools generate:sentences`.
+- [One tree for the whole night] → Accepted: two attendees rarely pick the same 5 options (243 sentences).
 
 ## Migration Plan
 
-- No database changes. New environment variables (`OPENAI_API_KEY`, `OPENAI_MODEL`, `WORD_SUGGESTER_PROMPT_PATH`) go into `.env.example`. Without a key the endpoint serves fallback words, so deploying without one is safe.
-- Rollback: stop sending `quiz.sentence`, and the web skips the step. The endpoint can stay.
-
-## Open Questions
-
-- Which OpenAI model to use: pick the fastest non-reasoning mini/nano model by measured p50 latency at setup time. This is configuration only.
-- The final content of the fallback word lists and the prompt's few-shot examples. This is copywriting and can be tuned until demo time.
+- New environment variables in `api/.env.example`: `OPENAI_API_KEY` (from the GitHub secret where the API is deployed), `OPENAI_MODEL`, `OPENAI_REASONING_EFFORT` and `SENTENCE_TREE_ON_BOOT`. Without a key the API answers 503 and the web uses its bundled tree, so deploying without one is safe.
+- Rollback: remove `AgentsModule` from `AppModule`. The web keeps working on its bundled tree.
