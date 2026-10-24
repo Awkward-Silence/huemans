@@ -17,6 +17,19 @@ function setup(overrides: Partial<Parameters<typeof createMockClient>[0]> = {}) 
 }
 
 describe("mock client", () => {
+  it("creates each event under a new UUIDv7 with its own name", async () => {
+    const { api } = setup();
+    const first = await api.createEvent({ name: "Friday Meetup" });
+    const second = await api.createEvent({ name: "Friday Meetup" });
+
+    expect(first.id).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+    );
+    expect(second.id).not.toBe(first.id);
+    expect(await api.getEvent(first.id)).toEqual(first);
+    expect(first.name).toBe("Friday Meetup");
+  });
+
   it("runs the attendee flow end to end", async () => {
     const { api, advance } = setup();
     const event = await api.getEvent("demo");
@@ -25,7 +38,9 @@ describe("mock client", () => {
 
     const { attendeeId } = await api.join("demo", { name: "Ana" });
     // api/ only accepts UUIDv7 attendee ids.
-    expect(attendeeId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+    expect(attendeeId).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+    );
     expect(await api.getAssignment("demo", attendeeId)).toEqual({ status: "pending" });
 
     await api.submitAnswers("demo", attendeeId, {

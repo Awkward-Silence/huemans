@@ -71,6 +71,8 @@ const AttendeeStateSchema = z.object({
 });
 
 const EventStateSchema = z.object({
+  /** Set by createEvent; events opened by id alone are the demo night. */
+  name: z.string().optional(),
   attendees: z.record(z.string(), AttendeeStateSchema),
   firstSubmitAt: z.number().optional(),
 });
@@ -129,20 +131,27 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
   const unlockAt = (state: EventState) =>
     state.firstSubmitAt === undefined ? undefined : state.firstSubmitAt + options.crowdFinishMs;
 
+  const eventOf = (eventId: string) =>
+    parseResponse(
+      EventSchema,
+      {
+        id: eventId,
+        name: load(eventId).name ?? "Demo night",
+        quizDurationSeconds: options.quizDurationSeconds,
+        questionCount: options.questionCount,
+      },
+      "event",
+    );
+
   return {
-    getEvent: (eventId) =>
-      respond(() =>
-        parseResponse(
-          EventSchema,
-          {
-            id: eventId,
-            name: "Demo night",
-            quizDurationSeconds: options.quizDurationSeconds,
-            questionCount: options.questionCount,
-          },
-          "event",
-        ),
-      ),
+    createEvent: (body) =>
+      respond(() => {
+        const eventId = uuidv7();
+        save(eventId, { name: body.name, attendees: {} });
+        return eventOf(eventId);
+      }),
+
+    getEvent: (eventId) => respond(() => eventOf(eventId)),
 
     join: (eventId, body) =>
       respond(() => {
