@@ -25,6 +25,56 @@ Built in a 24h hackathon.
 
 Each app installs its own dependencies.
 
+## Running it locally
+
+You need Node 24 (see `.nvmrc`), [pnpm](https://pnpm.io) for `api/`, npm for `web/`, and Docker for the database.
+
+### Frontend only (mock backend)
+
+The web app ships with an in-browser mock of the API, so you can run the whole attendee flow without `api/`:
+
+```bash
+cd web
+npm install
+npm run dev          # http://localhost:5173
+```
+
+Open `/join/demo` for the attendee flow (any event id works) or `/event` to create an event and show its QR code.
+
+### Frontend with the real API
+
+**1. Database and API** (in `api/`):
+
+```bash
+pnpm install
+cp .env.example .env               # first time only
+docker compose up -d               # Postgres 17 on localhost:5432
+pnpm migration:up                  # create the tables
+pnpm catalog:seed                  # load questions and icebreakers, once per database
+pnpm seed:demo                     # optional: the demo event 0199c0de-0000-7000-8000-000000000001
+pnpm start:dev                     # http://localhost:3000, restarts on changes
+```
+
+`curl localhost:3000/health` tells you it is up. After the first time, `docker compose up -d` and `pnpm start:dev` are enough. `JEV_API_KEY` in `.env` is optional: without it the AI step is skipped.
+
+**2. Web app** (in `web/`):
+
+```bash
+cp .env.example .env               # then set VITE_API_MODE=http
+npm run dev
+```
+
+Vite reads `.env` only at startup, so restart `npm run dev` after changing it. To open the seeded demo event from the home page, also set `VITE_DEMO_EVENT_ID=0199c0de-0000-7000-8000-000000000001`. The API only accepts UUIDv7 ids, so `/join/demo` works in mock mode only.
+
+### Tests
+
+```bash
+cd api && pnpm test                # needs Postgres up and the test database set up, see CLAUDE.md
+cd web && npm test
+```
+
+More commands: [`web/README.md`](web/README.md) and [`CLAUDE.md`](CLAUDE.md).
+
 ## Team
 
 | Name | Role | Owns |
