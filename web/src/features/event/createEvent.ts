@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { api } from "../../api/index.ts";
 import { eventCopy } from "../../content/event.ts";
 
 const EVENT_NAME_MAX_LENGTH = 60;
@@ -25,19 +26,16 @@ type CreatedEvent = CreateEventInput & {
   joinUrl: string;
 };
 
-/** The event every phone joins until `POST /events` is wired in. */
-const DEMO_EVENT_ID = "demo";
-
 const joinUrlFor = (eventId: string, origin = window.location.origin) =>
   `${origin}/join/${encodeURIComponent(eventId)}`;
 
 /**
- * Creates the event. Provisional: the backend's `POST /events` is not ready yet,
- * so every event points at the demo event that is already running.
- * When it is, post `{ name }` there and use the returned id.
+ * Creates the event and the link its QR code encodes. api/ does not store the
+ * info URL yet, so it is not sent: only the host's ready screen shows it.
  */
-function createEvent(input: CreateEventInput): Promise<CreatedEvent> {
-  return Promise.resolve({ ...input, eventId: DEMO_EVENT_ID, joinUrl: joinUrlFor(DEMO_EVENT_ID) });
+async function createEvent({ name, infoUrl }: CreateEventInput): Promise<CreatedEvent> {
+  const event = await api.createEvent({ name });
+  return { name: event.name, infoUrl, eventId: event.id, joinUrl: joinUrlFor(event.id) };
 }
 
 export { createEvent, EVENT_NAME_MAX_LENGTH, EventNameSchema, InfoUrlSchema, joinUrlFor };

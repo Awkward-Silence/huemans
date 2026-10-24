@@ -44,6 +44,7 @@ function createHttpClient(baseUrl: string): ApiClient {
     `${event(eventId)}/attendees/${encodeURIComponent(attendeeId)}`;
 
   return {
+    createEvent: (body) => request("/events", EventSchema, { method: "POST", body }),
     getEvent: (eventId) => request(event(eventId), EventSchema),
     join: (eventId, body) =>
       request(`${event(eventId)}/attendees`, JoinResponseSchema, { method: "POST", body }),
