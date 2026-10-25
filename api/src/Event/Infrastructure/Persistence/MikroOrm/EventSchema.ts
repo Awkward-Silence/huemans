@@ -11,6 +11,7 @@ export const EventSchema = new EntitySchema<Event>({
   properties: {
     id: { type: VO.uuid(EventId), primary: true },
     name: { type: VO.string(EventName) },
-    status: { type: VO.enum(EventStatus) },
+    // Private in the domain, so only reveal() changes it; the ORM still reads and writes it by name.
+    ...({ status: { type: VO.enum(EventStatus) } } as object),
   },
 });

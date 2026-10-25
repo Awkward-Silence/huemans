@@ -22,7 +22,7 @@ The host screen (`/host/:eventId`) does not exist in `web/` yet, so no host endp
 | Auth | None. Join is anonymous; the client keeps `attendeeId` (in local storage) and sends it in the path. |
 | Extra fields | Allowed. Zod strips unknown keys, so the backend may add fields without breaking the web. Missing or mistyped fields fail. |
 | CORS | The web runs on the Vite origin and calls `api/` cross-origin, so `api/` must enable CORS for it. |
-| Live data | Polled for now (`VITE_LIVE_POLL_MS`, default 2000 ms). A realtime gateway may later push the same shapes into the cache. |
+| Live data | Polled for now (`VITE_LIVE_POLL_MS`, default 2000 ms). Server-Sent Events (not WebSockets) may later push the same shapes into the cache. |
 
 ### Errors
 
@@ -330,15 +330,28 @@ The night's one icebreaker and the gathering countdown. Polled every 2 s until `
 }
 ```
 
-**Behaviour**
+**Behaviour** (`contracts/nightIcebreaker.d.ts`, `AttendeeIcebreakerResponse`)
 
-- `locked` until the event is `REVEALED` (host close). Also `locked` if the attendee has no group yet.
-- Once `ready`, every value is fixed: `question` and `why` are stored on the event at reveal, and `gatherEndsAt` is computed once (mock: reveal time + 120 s), so every phone shows the same countdown.
-- `why` is the `IcebreakerExplainer` slot, with a static fallback.
-- `meetingSpot` depends on the attendee's color (that's why the endpoint is per attendee). Meeting spots are nice-to-have, so a fixed string per color is enough.
-- Late joiners still get `ready` once they have a group.
+- `locked` until the host reveals the event (`POST /events/:eventId/reveal`). Also `locked` while the attendee has no group (join doesn't exist yet, so an attendee who never submitted is `locked`, not `404`).
+- The reveal picks the icebreaker in the same request: the seeded catalog icebreaker whose traits have the highest summed weight over the traits of everyone who answered before the reveal (ties, and an empty room, go to the lowest id). Night Icebreaker stores it in its own aggregate, not on the event.
+- Once `ready`, every value is fixed: `question`, `why` and `gatherEndsAt` (pick time + 120 s) are stored at the reveal, so every phone shows the same countdown. Answers submitted after the reveal still get a group but don't change the icebreaker.
+- `why` is the `IcebreakerExplainer` slot. For now it's a static sentence naming the room's strongest traits among the icebreaker's, e.g. "Picked for a room that leans adventurous and humorous." No AI call on the reveal or the read.
+- `meetingSpot` depends on the attendee's color: amber "the bar", coral "the entrance", teal "the stage", violet "the back corner".
+- Late joiners get `ready` once they have a group.
 
-**Errors:** `404` unknown event or attendee.
+**Errors:** `404` unknown event; `400` if an id is not a UUIDv7.
+
+## Host endpoints
+
+The host screen doesn't exist in `web/` yet; these are ready for it (and for `curl` during the demo).
+
+### Reveal event
+
+`POST /events/:eventId/reveal` (no body) → `200` with the `GET /events/:eventId` body, `status: "revealed"`. Moves the event from `open` to `revealed` once and picks the night's icebreaker. A second call returns the same body and changes nothing. `404` unknown event; `400` malformed id.
+
+### Get the night's icebreaker (host)
+
+`GET /events/:eventId/icebreaker` → `200 { "status": "locked" }` before the reveal, then `200 { "status": "ready", question, why, gatherEndsAt }`, the same values attendees get (no `meetingSpot`: the host has no color). Type: `HostIcebreakerResponse` in `contracts/nightIcebreaker.d.ts`. `404` unknown event; `400` malformed id.
 
 ## Gaps between the web contract and the backend plan
 
@@ -356,6 +369,6 @@ The web contract was written before the domain model. These conflict with `docs/
 Needed by the product flow but not in `ApiClient` yet. The backend should define these and add them to `contracts/`:
 
 - ~~**Create event**~~ Defined: `POST /events` with `{ name }` (trimmed, 1-255 characters) → `201` with the same body as `GET /events/:eventId`; `400` for an invalid name. Types in `contracts/event.d.ts`.
-- **Close event / reveal icebreaker** (host), e.g. `POST /events/:eventId/close`, `OPEN` → `REVEALED`, once only.
-- **Host big-screen data**: the distribution and the revealed icebreaker without an `attendeeId`. `GET /events/:eventId/room` covers the distribution; an event-level icebreaker read is still needed.
-- **Realtime**: the web is ready to swap polling for pushed `AttendeeGrouped` / icebreaker-revealed events carrying the same shapes as endpoints 5–7.
+- ~~**Close event / reveal icebreaker**~~ Defined: `POST /events/:eventId/reveal`, see [Host endpoints](#host-endpoints).
+- ~~**Host big-screen data**~~ Defined: `GET /events/:eventId/room` for the distribution and `GET /events/:eventId/icebreaker` for the revealed icebreaker.
+- **Realtime**: over Server-Sent Events (not WebSockets). The web is ready to swap polling for pushed `AttendeeGrouped` / icebreaker-revealed events carrying the same shapes as endpoints 5–7.
