@@ -14,12 +14,13 @@ import { ColorDistributionGroupDirectory } from './ColorDistribution/ColorDistri
 import { EventContextDirectory } from './Event/EventContextDirectory';
 import { AnswersController } from './Http/AnswersController';
 import { AttendeesController } from './Http/AttendeesController';
+import { QuizController } from './Http/QuizController';
 import { JevSentenceTraitWeigher } from './Jev/JevSentenceTraitWeigher';
 import { MikroOrmAttendeeRepository } from './Persistence/MikroOrm/MikroOrmAttendeeRepository';
 
 @Module({
   imports: [CatalogModule, EventModule, ColorDistributionModule],
-  controllers: [AttendeesController, AnswersController],
+  controllers: [AttendeesController, QuizController, AnswersController],
   providers: [
     ApplicationService,
     { provide: EVENT_DIRECTORY, useClass: EventContextDirectory },

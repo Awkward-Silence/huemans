@@ -8,9 +8,12 @@ import { GROUP_DIRECTORY, GroupDirectory } from '@Huemans/Participation/Domain/P
 import { QUESTION_CATALOG, QuestionCatalog } from '@Huemans/Participation/Domain/Port/QuestionCatalog';
 import { SENTENCE_TRAIT_WEIGHER, SentenceTraitWeigher } from '@Huemans/Participation/Domain/Port/SentenceTraitWeigher';
 import { Questionnaire } from '@Huemans/Participation/Domain/Questionnaire';
+import { Quiz } from '@Huemans/Participation/Domain/Quiz';
+import { QuizView } from '@Huemans/Participation/Domain/QuizView';
 import { UnknownEvent } from '@Huemans/Participation/Domain/UnknownEvent';
 import { AnswerChoice } from '@Huemans/Participation/Domain/ValueObject/AnswerChoice';
 import { AttendeeName } from '@Huemans/Participation/Domain/ValueObject/AttendeeName';
+import { QuizSettings } from '@Huemans/Participation/Domain/ValueObject/QuizSettings';
 import { SentenceAnswer } from '@Huemans/Participation/Domain/ValueObject/SentenceAnswer';
 import { SentenceTraits } from '@Huemans/Participation/Domain/ValueObject/SentenceTraits';
 import { EVENT_DISPATCHER, EventDispatcher } from '@Huemans/Shared/Domain/Port/EventDispatcher';
@@ -39,6 +42,13 @@ export class ApplicationService {
     await this.dispatcher.dispatchAll(attendee.pullDomainEvents());
 
     return { attendeeId: attendee.id.value };
+  }
+
+  async quizOf(eventId: string): Promise<QuizView> {
+    const event = new EventId(eventId);
+    await this.ensureExists(event);
+
+    return Quiz.for(event, await this.catalog.allQuestions(), QuizSettings.standard()).toDTO();
   }
 
   /** Scores the answers and returns the attendee's group; a repeated submission returns the first group. */
