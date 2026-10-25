@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import type { EventResponse } from '../../../../contracts/event';
+import type { EventResponse } from '../../../contracts/event';
 import { SENTENCE_TRAIT_WEIGHER } from '@Huemans/Participation/Domain/Port/SentenceTraitWeigher';
 import { SentenceTraits } from '@Huemans/Participation/Domain/ValueObject/SentenceTraits';
 import { seedCatalogFiles } from '../../Support/catalog';

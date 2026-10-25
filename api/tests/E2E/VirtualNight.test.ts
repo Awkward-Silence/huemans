@@ -1,8 +1,8 @@
-import type { EventResponse } from '../../../contracts/event';
-import type { AttendeeAssignmentResponse, EventDistributionView } from '../../../contracts/colorDistribution';
-import type { JoinResponse, QuizResponse, SubmitAnswersResponse } from '../../../contracts/participation';
-import type { AttendeeIcebreakerResponse, HostIcebreakerResponse } from '../../../contracts/nightIcebreaker';
-import type { RoomResponse } from '../../../contracts/room';
+import type { EventResponse } from '../../contracts/event';
+import type { AttendeeAssignmentResponse, EventDistributionView } from '../../contracts/colorDistribution';
+import type { JoinResponse, QuizResponse, SubmitAnswersResponse } from '../../contracts/participation';
+import type { AttendeeIcebreakerResponse, HostIcebreakerResponse } from '../../contracts/nightIcebreaker';
+import type { RoomResponse } from '../../contracts/room';
 import { Choice } from '../Support/room';
 
 // Runs against a live API (E2E_API_URL, default http://localhost:3000) with migrations and the catalog seed applied.

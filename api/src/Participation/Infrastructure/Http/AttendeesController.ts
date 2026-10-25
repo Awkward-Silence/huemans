@@ -1,6 +1,6 @@
 import { Body, Controller, Param, Post } from '@nestjs/common';
 import { z } from 'zod';
-import type { JoinRequest, JoinResponse } from '../../../../../contracts/participation';
+import type { JoinRequest, JoinResponse } from '../../../../contracts/participation';
 import { ApplicationService } from '@Huemans/Participation/Application/ApplicationService';
 import { UuidV7Param } from '@Huemans/Shared/Infrastructure/Http/UuidV7Param';
 import { ZodValidationPipe } from '@Huemans/Shared/Infrastructure/Http/ZodValidationPipe';

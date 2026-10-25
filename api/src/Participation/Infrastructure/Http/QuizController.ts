@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import type { QuizResponse } from '../../../../../contracts/participation';
+import type { QuizResponse } from '../../../../contracts/participation';
 import { ApplicationService } from '@Huemans/Participation/Application/ApplicationService';
 import { UuidV7Param } from '@Huemans/Shared/Infrastructure/Http/UuidV7Param';
 

@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
-import type { EventDistributionView } from '../../../../contracts/colorDistribution';
-import type { EventResponse } from '../../../../contracts/event';
+import type { EventDistributionView } from '../../../contracts/colorDistribution';
+import type { EventResponse } from '../../../contracts/event';
 import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
 import { DomainEvent } from '@Huemans/Shared/Domain/DomainEvent';
 import { recordPublished } from '../../Support/events';

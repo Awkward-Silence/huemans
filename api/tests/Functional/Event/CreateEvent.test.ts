@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import type { EventResponse } from '../../../../contracts/event';
+import type { EventResponse } from '../../../contracts/event';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { bootFunctional, postJson } from '../../Support/functional';
 

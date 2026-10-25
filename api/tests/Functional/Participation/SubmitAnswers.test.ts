@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
-import type { EventResponse } from '../../../../contracts/event';
-import type { SubmitAnswersResponse } from '../../../../contracts/participation';
-import type { EventDistributionView } from '../../../../contracts/colorDistribution';
+import type { EventResponse } from '../../../contracts/event';
+import type { SubmitAnswersResponse } from '../../../contracts/participation';
+import type { EventDistributionView } from '../../../contracts/colorDistribution';
 import { SENTENCE_TRAIT_WEIGHER } from '@Huemans/Participation/Domain/Port/SentenceTraitWeigher';
 import { SentenceAnswer } from '@Huemans/Participation/Domain/ValueObject/SentenceAnswer';
 import { SentenceTraits } from '@Huemans/Participation/Domain/ValueObject/SentenceTraits';

@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import type { AttendeeIcebreakerResponse, HostIcebreakerResponse } from '../../../../../contracts/nightIcebreaker';
+import type { AttendeeIcebreakerResponse, HostIcebreakerResponse } from '../../../../contracts/nightIcebreaker';
 import { ApplicationService } from '@Huemans/NightIcebreaker/Application/ApplicationService';
 import { UuidV7Param } from '@Huemans/Shared/Infrastructure/Http/UuidV7Param';
 

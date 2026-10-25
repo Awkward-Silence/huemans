@@ -4,9 +4,8 @@ import { GroupColorSchema } from "../domain/groupColor.ts";
 /**
  * Wire format between web/ and api/, validated on every response.
  *
- * TODO(contracts): these shapes are the web side's proposal. When contracts/
- * exists, move the plain types there and check these schemas against them with
- * `import type` + `satisfies z.ZodType<Contract>` (no runtime import).
+ * The API's wire types are in api/contracts/. Podium builds each app from its
+ * own folder, so web/ can't import them: keep these schemas in step by hand.
  */
 
 const IdSchema = z.string().min(1);

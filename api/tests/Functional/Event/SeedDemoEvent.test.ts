@@ -1,7 +1,7 @@
 import { MikroORM } from '@mikro-orm/postgresql';
 import { INestApplication } from '@nestjs/common';
-import type { EventResponse } from '../../../../contracts/event';
-import type { RoomResponse } from '../../../../contracts/room';
+import type { EventResponse } from '../../../contracts/event';
+import type { RoomResponse } from '../../../contracts/room';
 import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
 import { DEMO_EVENT_ID, DemoEventSeeder } from '@Huemans/Event/Infrastructure/Seed/DemoEventSeeder';
 import { DomainEvent } from '@Huemans/Shared/Domain/DomainEvent';

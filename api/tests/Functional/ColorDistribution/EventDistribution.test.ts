@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import type { EventDistributionView } from '../../../../contracts/colorDistribution';
+import type { EventDistributionView } from '../../../contracts/colorDistribution';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { EventCreated } from '@Huemans/Event/Domain/EventCreated';

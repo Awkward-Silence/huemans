@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { z } from 'zod';
-import type { CreateEventRequest, EventResponse } from '../../../../../contracts/event';
+import type { CreateEventRequest, EventResponse } from '../../../../contracts/event';
 import { ApplicationService } from '@Huemans/Event/Application/ApplicationService';
 import { EventView } from '@Huemans/Event/Domain/EventView';
 import { QuizSettings } from '@Huemans/Participation/Domain/ValueObject/QuizSettings';

@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import type { AttendeeGrouped as AttendeeGroupedPayload } from '../../../../contracts/colorDistribution';
+import type { AttendeeGrouped as AttendeeGroupedPayload } from '../../../contracts/colorDistribution';
 import { AttendeeGrouped } from '@Huemans/ColorDistribution/Domain/AttendeeGrouped';
 import { DomainEvent } from '@Huemans/Shared/Domain/DomainEvent';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';

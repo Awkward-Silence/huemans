@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
-import type { EventResponse } from '../../../../contracts/event';
-import type { RoomResponse } from '../../../../contracts/room';
+import type { EventResponse } from '../../../contracts/event';
+import type { RoomResponse } from '../../../contracts/room';
 import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
 import { QuestionnaireCompleted } from '@Huemans/Participation/Domain/QuestionnaireCompleted';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';

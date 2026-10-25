@@ -1,5 +1,5 @@
 import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
-import type { AttendeeAssignmentResponse, EventDistributionView } from '../../../../../contracts/colorDistribution';
+import type { AttendeeAssignmentResponse, EventDistributionView } from '../../../../contracts/colorDistribution';
 import { ApplicationService } from '@Huemans/ColorDistribution/Application/ApplicationService';
 import { UuidV7Param } from '@Huemans/Shared/Infrastructure/Http/UuidV7Param';
 
