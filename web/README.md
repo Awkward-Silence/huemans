@@ -85,7 +85,7 @@ Rules of thumb:
 
 **Switch from the mock to the real backend.** Set `VITE_API_MODE=http` and `VITE_API_URL`. Endpoints are in `src/api/httpClient.ts`, shapes in `src/api/schemas.ts`. When `contracts/` exists, check these schemas against it with `import type` (see the note at the top of `schemas.ts`).
 
-**Replace polling with realtime.** Keep the hooks in `src/api/queries.ts`. Subscribe to socket events once (e.g. in the join layout route) and write them into the cache with `queryClient.setQueryData(queryKeys.room(eventId), …)`, then drop the `refetchInterval`s.
+**Replace polling with realtime.** Keep the hooks in `src/api/queries.ts`. Open one `EventSource` (Server-Sent Events, not WebSockets) once (e.g. in the join layout route) and write them into the cache with `queryClient.setQueryData(queryKeys.room(eventId), …)`, then drop the `refetchInterval`s.
 
 ## The mock backend
 

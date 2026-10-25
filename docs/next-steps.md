@@ -22,7 +22,7 @@ The plan for the 24h hackathon, based on the updated `initial-raw-specs.md` and 
 | Trait-to-color weights | hand-written table / AI-proposed and reviewed / tuned by Jev | Four-color personality model (bold / social / warm / analytical) as the starting table |
 | Capacity slack for balancing | strict quarter / quarter + 1-2 | Quarter + small slack, tune with bots |
 | Persistence | in-memory / Postgres | Postgres, so a redeploy during the demo doesn't lose groups |
-| Hosting | any platform that serves the React app + one Node process with WebSockets | Decide at kickoff, deploy the skeleton early |
+| Hosting | any platform that serves the React app + one Node process holding Server-Sent Events connections | Decide at kickoff, deploy the skeleton early |
 
 ## Demo we build towards (2-3 minutes, 10-15 people)
 
@@ -91,7 +91,7 @@ Frontend and host changes (`attendee-flow`, `event-and-host`) are still to be pr
 3. From H12, `ai-enrichment` with Adrián.
 
 ### Miguel (fullstack)
-1. **Spike realtime first** (NestJS WebSocket gateway -> React) in H2-H4.
+1. **Spike realtime first** (NestJS `@Sse()` endpoint -> React `EventSource`; SSE, not WebSockets) in H2-H4.
 2. Propose and apply `event-and-host`: create event + QR, live distribution on the big screen, "reveal icebreaker" button.
 
 ### Daniel (frontend)

@@ -22,7 +22,7 @@ The host screen (`/host/:eventId`) does not exist in `web/` yet, so no host endp
 | Auth | None. Join is anonymous; the client keeps `attendeeId` (in local storage) and sends it in the path. |
 | Extra fields | Allowed. Zod strips unknown keys, so the backend may add fields without breaking the web. Missing or mistyped fields fail. |
 | CORS | The web runs on the Vite origin and calls `api/` cross-origin, so `api/` must enable CORS for it. |
-| Live data | Polled for now (`VITE_LIVE_POLL_MS`, default 2000 ms). A realtime gateway may later push the same shapes into the cache. |
+| Live data | Polled for now (`VITE_LIVE_POLL_MS`, default 2000 ms). Server-Sent Events (not WebSockets) may later push the same shapes into the cache. |
 
 ### Errors
 
@@ -358,4 +358,4 @@ Needed by the product flow but not in `ApiClient` yet. The backend should define
 - ~~**Create event**~~ Defined: `POST /events` with `{ name }` (trimmed, 1-255 characters) → `201` with the same body as `GET /events/:eventId`; `400` for an invalid name. Types in `contracts/event.d.ts`.
 - **Close event / reveal icebreaker** (host), e.g. `POST /events/:eventId/close`, `OPEN` → `REVEALED`, once only.
 - **Host big-screen data**: the distribution and the revealed icebreaker without an `attendeeId`. `GET /events/:eventId/room` covers the distribution; an event-level icebreaker read is still needed.
-- **Realtime**: the web is ready to swap polling for pushed `AttendeeGrouped` / icebreaker-revealed events carrying the same shapes as endpoints 5–7.
+- **Realtime**: over Server-Sent Events (not WebSockets). The web is ready to swap polling for pushed `AttendeeGrouped` / icebreaker-revealed events carrying the same shapes as endpoints 5–7.
