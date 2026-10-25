@@ -13,9 +13,9 @@
 
 ## 3. Night Icebreaker persistence
 
-- [ ] 3.1 Add the migration for `room_traits` and `night_icebreakers`; verify `pnpm migration:up && pnpm migration:up:test` apply cleanly
-- [ ] 3.2 Add the MikroORM `RoomTraitsRepository` (idempotent insert per attendee, `profileOf` sums every row of the event), test-first in `tests/Integration/NightIcebreaker/Infrastructure/Persistence/MikroOrmRoomTraitsRepository.test.ts` (`testAddingTheSameAttendeeTwiceCountsOnce`, `testProfileSumsOnlyThatEvent`); verify with `pnpm jest tests/Integration/NightIcebreaker`
-- [ ] 3.3 Add `NightIcebreakerSchema` and the MikroORM `NightIcebreakerRepository` (`save`, `search(eventId)`), test-first in `tests/Integration/NightIcebreaker/Infrastructure/Persistence/MikroOrmNightIcebreakerRepository.test.ts`; verify with `pnpm jest tests/Integration/NightIcebreaker`
+- [x] 3.1 Add the migration for `room_traits` and `night_icebreakers`; verify `pnpm migration:up && pnpm migration:up:test` apply cleanly
+- [x] 3.2 Add the MikroORM `RoomTraitsRepository` (idempotent insert per attendee, `profileOf` sums every row of the event), test-first in `tests/Integration/NightIcebreaker/Infrastructure/Persistence/MikroOrmRoomTraitsRepository.test.ts` (`testAddingTheSameAttendeeTwiceCountsOnce`, `testProfileSumsOnlyThatEvent`); verify with `pnpm jest tests/Integration/NightIcebreaker`
+- [x] 3.3 Add `NightIcebreakerSchema` and the MikroORM `NightIcebreakerRepository` (`save`, `search(eventId)`), test-first in `tests/Integration/NightIcebreaker/Infrastructure/Persistence/MikroOrmNightIcebreakerRepository.test.ts`; verify with `pnpm jest tests/Integration/NightIcebreaker`
 
 ## 4. Application, adapters and subscribers
 
