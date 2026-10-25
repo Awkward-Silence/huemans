@@ -23,6 +23,7 @@ pnpm lint && pnpm build
 
 pnpm test                            # all suites (Integration/Functional need Postgres up)
 pnpm test:unit | test:integration | test:functional
+pnpm test:e2e                        # on demand, not part of `pnpm test`: 10 virtual people play a new event on a running API (E2E_API_URL, default localhost:3000)
 pnpm jest tests/Unit/Shared/Domain/ValueObject/Uuid.test.ts   # one file
 pnpm jest -t "testRejectsVersion4"                            # one test by name
 pnpm migration:create                # new migration in api/migrations
