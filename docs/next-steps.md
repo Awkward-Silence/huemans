@@ -73,7 +73,7 @@ Frontend and host changes (`attendee-flow`, `event-and-host`) are still to be pr
                    on a deployed URL  (H18)
 ```
 
-- **H0-H2, contract kickoff (everyone):** agree on `contracts/` (REST DTOs, `QuestionnaireCompleted`, `AttendeeGrouped`, the icebreaker broadcast) and resolve the open decisions.
+- **H0-H2, contract kickoff (everyone):** agree on the wire contracts, now in `api/contracts/` (REST DTOs, `QuestionnaireCompleted`, `AttendeeGrouped`, the icebreaker broadcast) and resolve the open decisions.
 - **About H10, walking skeleton:** join -> answer -> color reveal works end to end on a deployed URL.
 - **H18, feature freeze:** polish, bot seed script, rehearsal.
 
@@ -83,7 +83,7 @@ Frontend and host changes (`attendee-flow`, `event-and-host`) are still to be pr
 1. Done: color distribution modeled and applied, `api-skeleton` archived, Catalog modeled.
 2. Propose and apply `create-event`, so `quiz-and-answers` and color distribution get real events.
 3. Propose and apply `web-live-distribution` to close the walking skeleton.
-4. Lead the contract kickoff and write `contracts/`, then `night-icebreaker`.
+4. Lead the contract kickoff and write the contracts (now `api/contracts/`), then `night-icebreaker`.
 
 ### Diego (backend)
 1. Apply the catalog part of `backend-skeleton-and-catalog`: seed from the catalog content JSON and the colors with trait weights.

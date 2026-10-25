@@ -54,7 +54,7 @@ Rules:
 - **`ui/` components are dumb and replaceable.** They take props, have no knowledge of routes or the API and own their own `*.module.css`. Each one should be swappable without touching the screens that use it.
 - **One way to do each thing.** One button component (with variants), one screen layout, one heading scale, one countdown hook. If you are about to copy markup or styles a second time, extract it.
 - **No hardcoded values in components:** colours, spacing, radii, font sizes, durations and easings come from theme tokens. Durations such as the quiz length and the gather countdown come from `config.ts`. Copy comes from `content/`.
-- **Contracts:** if `contracts/` exists, check API schemas against it with `import type` and `satisfies` (never a runtime import, see `CLAUDE.md`). If it doesn't exist yet, put the schemas in `web/src/api/schemas.ts` and mark the types the team should move into `contracts/`.
+- **Contracts:** the API's wire types are in `api/contracts/`. Don't import them: Podium builds each app from its own folder, so `web/` can't reach `api/` (see `CLAUDE.md`). Keep the schemas in `web/src/api/schemas.ts` and keep them in step with `api/contracts/` by hand.
 
 ## Theme (central and swappable)
 
@@ -96,7 +96,7 @@ The type scale uses display font weight 700–800 with tight negative tracking (
 - "Live" data such as room counts and icebreaker unlock uses `refetchInterval` for now. Put it behind the hook so a WebSocket adapter can replace polling later without changing screens.
 - Mock fixtures: reuse question text from `api/src/Catalog/Infrastructure/Content/questions.json` (copy it, don't import across apps). Questions have the shape `{ id, theme, text, answers[4]: { id, text } }`. The client doesn't need `trait`.
 
-Suggested resources (adjust to `contracts/` if it exists):
+Suggested resources (the served shapes are in `api/contracts/` and `docs/api/attendee-api.md`):
 
 - `POST /events/:eventId/attendees { name }` → `{ attendeeId }`
 - `GET /events/:eventId/quiz` → `{ questions[], durationSeconds }`
