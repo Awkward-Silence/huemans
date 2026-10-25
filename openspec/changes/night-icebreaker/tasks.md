@@ -19,8 +19,8 @@
 
 ## 4. Application, adapters and subscribers
 
-- [ ] 4.1 Add the adapters `CatalogIcebreakerCatalog` (Catalog `allIcebreakers`), `StaticIcebreakerExplainer`, `EventContextDirectory` (Event `eventOf`) and `ColorDistributionGroupDirectory` (`assignmentOf`), plus `ApplicationService` (`collect`, `pick`, `forAttendee`, `forHost`) and `NightIcebreakerModule` registered in `AppModule`; verify with `pnpm build`
-- [ ] 4.2 Add the subscribers `CollectOnQuestionnaireCompleted` and `PickOnEventRevealed` (ignores a unique violation from a concurrent pick), covered by `tests/Functional/NightIcebreaker/RevealPicksIcebreaker.test.ts`: submit answers with known traits → reveal → the picked icebreaker matches the room; a second reveal and a late submit leave it unchanged; verify with `pnpm jest tests/Functional/NightIcebreaker`
+- [x] 4.1 Add the adapters `CatalogIcebreakerCatalog` (Catalog `allIcebreakers`), `StaticIcebreakerExplainer`, `EventContextDirectory` (Event `eventOf`) and `ColorDistributionGroupDirectory` (`assignmentOf`), plus `ApplicationService` (`collect`, `pick`, `forAttendee`, `forHost`) and `NightIcebreakerModule` registered in `AppModule`; verify with `pnpm build`
+- [x] 4.2 Add the subscribers `CollectOnQuestionnaireCompleted` and `PickOnEventRevealed` (ignores a unique violation from a concurrent pick), covered by `tests/Functional/NightIcebreaker/RevealPicksIcebreaker.test.ts`: submit answers with known traits → reveal → the picked icebreaker matches the room; a second reveal and a late submit leave it unchanged; verify with `pnpm jest tests/Functional/NightIcebreaker`
 
 ## 5. HTTP and contracts
 
