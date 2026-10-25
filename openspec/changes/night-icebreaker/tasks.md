@@ -24,8 +24,8 @@
 
 ## 5. HTTP and contracts
 
-- [ ] 5.1 Add `contracts/nightIcebreaker.d.ts` (`AttendeeIcebreakerResponse`, `HostIcebreakerResponse`) and `NightIcebreakerController` with both GET endpoints, test-first in `tests/Functional/NightIcebreaker/GetIcebreaker.test.ts` covering locked before the reveal, locked without a group, ready with the meeting spot per color, the same question/why/gatherEndsAt for two attendees, a late joiner, host locked/ready, 404 and 400; verify with `pnpm jest tests/Functional/NightIcebreaker`
-- [ ] 5.2 Run the full suite and the checks; verify `pnpm lint && pnpm build && pnpm test` pass
+- [x] 5.1 Add `contracts/nightIcebreaker.d.ts` (`AttendeeIcebreakerResponse`, `HostIcebreakerResponse`) and `NightIcebreakerController` with both GET endpoints, test-first in `tests/Functional/NightIcebreaker/GetIcebreaker.test.ts` covering locked before the reveal, locked without a group, ready with the meeting spot per color, the same question/why/gatherEndsAt for two attendees, a late joiner, host locked/ready, 404 and 400; verify with `pnpm jest tests/Functional/NightIcebreaker`
+- [x] 5.2 Run the full suite and the checks; verify `pnpm lint && pnpm build && pnpm test` pass
 
 ## 6. Docs and web wiring
 
