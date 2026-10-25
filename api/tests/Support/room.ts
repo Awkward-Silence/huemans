@@ -1,5 +1,8 @@
 import { realContent } from './catalog';
 
+/** Where each color gathers after the reveal, written out so tests check the spec rather than echo MeetingSpot. */
+export const MEETING_SPOTS = { amber: 'the bar', coral: 'the entrance', teal: 'the stage', violet: 'the back corner' };
+
 export type Choice = { questionId: string; answerId: string };
 
 /** One seeded answer pointing to `trait`, from the first question that has one. */
