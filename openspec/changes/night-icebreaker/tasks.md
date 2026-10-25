@@ -29,5 +29,5 @@
 
 ## 6. Docs and web wiring
 
-- [ ] 6.1 Update `docs/api/attendee-api.md` (endpoint 7 behaviour, new reveal and host icebreaker endpoints, remove them from "Missing") and `CLAUDE.md` (change status); verify the docs mention `POST /events/:eventId/reveal`
-- [ ] 6.2 Drop the `getIcebreaker` mock override in `web/src/api/index.ts`; verify `npm run typecheck && npm test` in `web/`, and manually: with `VITE_API_MODE=http` and the demo event, submit, `curl -X POST localhost:3000/events/0199c0de-0000-7000-8000-000000000001/reveal`, and the phone shows the icebreaker
+- [x] 6.1 Update `docs/api/attendee-api.md` (endpoint 7 behaviour, new reveal and host icebreaker endpoints, remove them from "Missing") and `CLAUDE.md` (change status); verify the docs mention `POST /events/:eventId/reveal`
+- [x] 6.2 Drop the `getIcebreaker` mock override in `web/src/api/index.ts`; verify `npm run typecheck && npm test` in `web/`, and manually: with `VITE_API_MODE=http` and the demo event, submit, `curl -X POST localhost:3000/events/0199c0de-0000-7000-8000-000000000001/reveal`, and the phone shows the icebreaker

@@ -4,9 +4,9 @@ import { createHttpClient } from "./httpClient.ts";
 import { createMockClient } from "./mock/mockClient.ts";
 
 /**
- * The client the app uses, picked by VITE_API_MODE. api/ has no join, quiz,
- * word-suggestion or icebreaker endpoints yet, so http mode keeps the mock for
- * those: the quiz's fixed questions are also in api/'s catalog, so it scores them.
+ * The client the app uses, picked by VITE_API_MODE. api/ has no join, quiz or
+ * word-suggestion endpoints yet, so http mode keeps the mock for those: the
+ * quiz's fixed questions are also in api/'s catalog, so it scores them.
  */
 function createClient(): ApiClient {
   const mock = createMockClient();
@@ -17,7 +17,6 @@ function createClient(): ApiClient {
     join: mock.join,
     getQuiz: mock.getQuiz,
     suggestWords: mock.suggestWords,
-    getIcebreaker: mock.getIcebreaker,
   };
 }
 
