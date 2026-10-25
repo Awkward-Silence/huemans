@@ -5,6 +5,7 @@ import { EventView } from '@Huemans/Event/Domain/EventView';
 import { EVENT_REPOSITORY, EventRepository } from '@Huemans/Event/Domain/Port/EventRepository';
 import { EventName } from '@Huemans/Event/Domain/ValueObject/EventName';
 import { EVENT_DISPATCHER, EventDispatcher } from '@Huemans/Shared/Domain/Port/EventDispatcher';
+import { TRANSACTION_MANAGER, TransactionManager } from '@Huemans/Shared/Domain/Port/TransactionManager';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class ApplicationService {
   constructor(
     @Inject(EVENT_REPOSITORY) private readonly events: EventRepository,
     @Inject(EVENT_DISPATCHER) private readonly dispatcher: EventDispatcher,
+    @Inject(TRANSACTION_MANAGER) private readonly transaction: TransactionManager,
   ) {}
 
   create(name: string): Promise<EventView> {
@@ -41,13 +43,20 @@ export class ApplicationService {
     return (await this.find(new EventId(eventId))).toDTO();
   }
 
-  async reveal(eventId: string): Promise<EventView> {
-    const event = await this.find(new EventId(eventId));
-    event.reveal();
-    await this.events.save(event);
-    await this.dispatcher.dispatchAll(event.pullDomainEvents());
+  // Subscribers run inside the transaction, so a failed icebreaker pick rolls the event back to open and the host can tap again.
+  reveal(eventId: string): Promise<EventView> {
+    const id = new EventId(eventId);
+    return this.transaction.run(async () => {
+      const event = await this.events.searchForUpdate(id);
+      if (event === null) {
+        throw new EventNotFound(id);
+      }
+      event.reveal();
+      await this.events.save(event);
+      await this.dispatcher.dispatchAll(event.pullDomainEvents());
 
-    return event.toDTO();
+      return event.toDTO();
+    });
   }
 
   private async find(id: EventId): Promise<Event> {

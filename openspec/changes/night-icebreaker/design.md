@@ -73,8 +73,8 @@ The subscribers follow `AssignOnQuestionnaireCompleted` (they `subscribe` in `on
 
 ## Risks / Trade-offs
 
-- [The reveal saves the event, then the pick subscriber throws (for example, the catalog isn't seeded)] → the request returns 500, and the event is `revealed` with no icebreaker. A second tap is a no-op on Event, so it never re-picks. Mitigation: reads stay `locked` instead of breaking. `pick` is idempotent and public, so a retry path is a single call (the CLI from the open question). The catalog is seeded by every deploy step, so this shouldn't happen in the demo.
-- [Two simultaneous reveals both see `open`] → both dispatch `EventRevealed`. Mitigation: `event_id` is the primary key of `night_icebreakers`; the second `pick` finds the row or hits the unique violation, which the subscriber ignores. Both picks would read the same data anyway.
+- [The pick subscriber throws during the reveal (for example, the catalog isn't seeded)] → the reveal runs in one transaction (`TransactionManager`) and dispatches `EventRevealed` inside it. MikroORM resolves the subscribers' EntityManager to that transaction, so the pick's writes join it. A failed pick rolls the event back to `open`: the request returns 500, and the host's next tap retries the whole reveal. This is a deliberate exception to "dispatch after a successful save" (ADR-004), limited to this subscriber, which only writes Night Icebreaker's own table.
+- [Two simultaneous reveals] → the reveal loads the event with `SELECT ... FOR UPDATE`, so the second waits for the first to commit, then sees `revealed` and does nothing. `event_id` is still the primary key of `night_icebreakers` as a backstop.
 - [Answers submitted while the reveal is running] → they may or may not count. Acceptable: the spec only promises answers completed before the reveal.
 - [Traits stored twice (in the event payload and in Night Icebreaker)] → accepted. Each context keeps what its own rule needs, and the payload is small.
 

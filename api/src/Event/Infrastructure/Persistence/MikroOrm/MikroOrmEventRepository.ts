@@ -1,4 +1,4 @@
-import { EntityManager, EntitySchema } from '@mikro-orm/postgresql';
+import { EntityManager, EntitySchema, LockMode } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { Event } from '@Huemans/Event/Domain/Event';
 import { EventRepository } from '@Huemans/Event/Domain/Port/EventRepository';
@@ -18,5 +18,9 @@ export class MikroOrmEventRepository extends MikroOrmRepository<Event> implement
 
   search(id: EventId): Promise<Event | null> {
     return this.repository().findOne({ id });
+  }
+
+  searchForUpdate(id: EventId): Promise<Event | null> {
+    return this.repository().findOne({ id }, { lockMode: LockMode.PESSIMISTIC_WRITE });
   }
 }

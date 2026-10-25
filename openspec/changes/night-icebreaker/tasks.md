@@ -20,7 +20,7 @@
 ## 4. Application, adapters and subscribers
 
 - [x] 4.1 Add the adapters `CatalogIcebreakerCatalog` (Catalog `allIcebreakers`), `StaticIcebreakerExplainer`, `EventContextDirectory` (Event `eventOf`) and `ColorDistributionGroupDirectory` (`assignmentOf`), plus `ApplicationService` (`collect`, `pick`, `forAttendee`, `forHost`) and `NightIcebreakerModule` registered in `AppModule`; verify with `pnpm build`
-- [x] 4.2 Add the subscribers `CollectOnQuestionnaireCompleted` and `PickOnEventRevealed` (ignores a unique violation from a concurrent pick), covered by `tests/Functional/NightIcebreaker/RevealPicksIcebreaker.test.ts`: submit answers with known traits → reveal → the picked icebreaker matches the room; a second reveal and a late submit leave it unchanged; verify with `pnpm jest tests/Functional/NightIcebreaker`
+- [x] 4.2 Add the subscribers `CollectOnQuestionnaireCompleted` and `PickOnEventRevealed`, covered by `tests/Functional/NightIcebreaker/RevealPicksIcebreaker.test.ts`: submit answers with known traits → reveal → the picked icebreaker matches the room; a second reveal and a late submit leave it unchanged; verify with `pnpm jest tests/Functional/NightIcebreaker`
 
 ## 5. HTTP and contracts
 
@@ -30,4 +30,8 @@
 ## 6. Docs and web wiring
 
 - [x] 6.1 Update `docs/api/attendee-api.md` (endpoint 7 behaviour, new reveal and host icebreaker endpoints, remove them from "Missing") and `CLAUDE.md` (change status); verify the docs mention `POST /events/:eventId/reveal`
-- [x] 6.2 Drop the `getIcebreaker` mock override in `web/src/api/index.ts`; verify `npm run typecheck && npm test` in `web/`, and manually: with `VITE_API_MODE=http` and the demo event, submit, `curl -X POST localhost:3000/events/0199c0de-0000-7000-8000-000000000001/reveal`, and the phone shows the icebreaker
+- [x] 6.2 Drop the `getIcebreaker` mock override in `web/src/api/index.ts`; verify `npm run typecheck && npm test` in `web/`, and manually: with `VITE_API_MODE=http` and a newly created event (never the seeded demo event: nothing can reopen it), submit, `curl -X POST localhost:3000/events/<new event id>/reveal`, and the phone shows the icebreaker
+
+## 7. Review follow-up
+
+- [x] 7.1 Run the reveal and its subscribers in one transaction with the event row locked, so a failed pick rolls the event back to `open` and a second tap retries it, and concurrent reveals run one after the other; verify with `pnpm jest tests/Functional/NightIcebreaker/RevealRetry.test.ts` and `tests/Integration/Event`

@@ -22,3 +22,4 @@ Aggregates are complete from construction, and ids sort by creation time. A subs
 - `EventId`/`AttendeeId` extend `Uuid`, which only accepts UUIDv7.
 - `Event/Application/ApplicationService.create`: save, then `dispatchAll(event.pullDomainEvents())`.
 - **Known deviation:** `Event.create` receives `EventId.random()` from the application service instead of generating it itself.
+- **Known deviation:** `Event/Application/ApplicationService.reveal` saves and dispatches `EventRevealed` inside one transaction, with the event row locked. Night Icebreaker's pick joins that transaction, so a failed pick rolls the reveal back and the host can tap again; otherwise the event would stay revealed with no icebreaker and no way to retry (`openspec/changes/night-icebreaker/design.md`).
