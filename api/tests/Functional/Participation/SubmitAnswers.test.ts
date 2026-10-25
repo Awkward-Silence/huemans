@@ -1,6 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import type { EventResponse } from '../../../../contracts/event';
 import type { SubmitAnswersResponse } from '../../../../contracts/participation';
+import type { EventDistributionView } from '../../../../contracts/colorDistribution';
 import { SENTENCE_TRAIT_WEIGHER } from '@Huemans/Participation/Domain/Port/SentenceTraitWeigher';
 import { SentenceAnswer } from '@Huemans/Participation/Domain/ValueObject/SentenceAnswer';
 import { SentenceTraits } from '@Huemans/Participation/Domain/ValueObject/SentenceTraits';
@@ -9,7 +10,7 @@ import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { Trait, TraitValue } from '@Huemans/Shared/Domain/ValueObject/Trait';
 import { realContent, seedCatalogFiles } from '../../Support/catalog';
-import { bootFunctional, getJson, postJson } from '../../Support/functional';
+import { bootFunctional, getJson, joinAttendee, postJson } from '../../Support/functional';
 
 const SENTENCE = { question: 'Finish the sentence: I ...', answer: 'I secretly write love letters to my toaster' };
 
@@ -50,7 +51,7 @@ describe('POST /events/:eventId/attendees/:attendeeId/answers', () => {
   beforeEach(async () => {
     weigh.mockReset().mockResolvedValue(SentenceTraits.none());
     eventId = ((await postJson(app, '/events', { name: 'Demo night' })).body as EventResponse).id;
-    attendeeId = AttendeeId.random().value;
+    attendeeId = await joinAttendee(app, eventId);
   });
 
   function submit(body: object, attendee = attendeeId, event = eventId) {
@@ -103,6 +104,22 @@ describe('POST /events/:eventId/attendees/:attendeeId/answers', () => {
 
   it('testUnknownEventIsNotFound', async () => {
     const response = await submit({ answers: [] }, attendeeId, EventId.random().value);
+
+    expect(response.status).toBe(404);
+  });
+
+  it('testAnAttendeeWhoNeverJoinedIsNotFoundAndNotGrouped', async () => {
+    const response = await submit({ answers: answersOfType('planner', 1) }, AttendeeId.random().value);
+
+    expect(response.status).toBe(404);
+    const distribution = (await getJson(app, `/events/${eventId}/distribution`)).body as EventDistributionView;
+    expect(distribution.groups.reduce((sum, group) => sum + group.members, 0)).toBe(0);
+  });
+
+  it('testAnAttendeeOfAnotherEventIsNotFound', async () => {
+    const otherEvent = ((await postJson(app, '/events', { name: 'Other night' })).body as EventResponse).id;
+
+    const response = await submit({ answers: [] }, attendeeId, otherEvent);
 
     expect(response.status).toBe(404);
   });

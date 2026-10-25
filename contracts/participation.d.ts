@@ -22,3 +22,28 @@ export type SubmitAnswersResponse = {
   color: GroupColor;
   personalityType: PersonalityType;
 };
+
+/** POST /events/:eventId/attendees — the name is trimmed; 1-40 characters after trimming. */
+export type JoinRequest = {
+  name: string;
+};
+
+/** 201: a new attendee on every call, even with a name already used in the event. */
+export type JoinResponse = {
+  attendeeId: string;
+};
+
+/**
+ * GET /events/:eventId/quiz — the same questions in the same order on every phone of the event.
+ * Fits the web's QuizSchema (web/src/api/schemas.ts); answers carry no trait.
+ */
+export type QuizResponse = {
+  questions: {
+    id: string;
+    theme: string;
+    text: string;
+    answers: { id: string; text: string }[];
+  }[];
+  /** The soft timer for the whole quiz; late answers are still accepted. */
+  durationSeconds: number;
+};
