@@ -23,6 +23,7 @@ pnpm lint && pnpm build
 
 pnpm test                            # all suites (Integration/Functional need Postgres up)
 pnpm test:unit | test:integration | test:functional
+pnpm test:e2e                        # on demand, not part of `pnpm test`: 10 virtual people play a new event on a running API (E2E_API_URL, default localhost:3000)
 pnpm jest tests/Unit/Shared/Domain/ValueObject/Uuid.test.ts   # one file
 pnpm jest -t "testRejectsVersion4"                            # one test by name
 pnpm migration:create                # new migration in api/migrations
@@ -105,4 +106,4 @@ npx vitest run -t "redirectFor"               # by test name
 ## Workflow
 
 - **DDD:** `/ddd-bc` (discovery) then `/ddd-model` write to `docs/domain/<bc>/` (config in `ddd-config.yml`). Color Distribution is modeled; its `model.md` is the contract for `/opsx:propose color-distribution`.
-- **OpenSpec** (`schema: spec-driven`): `/opsx:explore` -> `/opsx:propose` -> `/opsx:apply` -> `/opsx:sync` -> `/opsx:archive`. Backend changes: `catalog-aggregates`, `create-event`, `quiz-and-answers`, `color-distribution`, `web-live-distribution`, `night-icebreaker`, `ai-enrichment`, `word-suggestions` (`catalog-aggregates`, `color-distribution`, `create-event`, `night-icebreaker` and `web-live-distribution` are applied, `word-suggestions` has specs and tasks, the rest are proposals only; `api-skeleton` and `backend-skeleton-and-catalog` are archived). `attendee-flow` and `event-and-host` are still to be proposed.
+- **OpenSpec** (`schema: spec-driven`): `/opsx:explore` -> `/opsx:propose` -> `/opsx:apply` -> `/opsx:sync` -> `/opsx:archive`. Backend changes: `catalog-aggregates`, `create-event`, `quiz-and-answers`, `color-distribution`, `web-live-distribution`, `night-icebreaker`, `ai-enrichment`, `word-suggestions` (`catalog-aggregates`, `color-distribution`, `create-event`, `night-icebreaker`, `quiz-and-answers` and `web-live-distribution` are applied, `word-suggestions` has specs and tasks, the rest are proposals only; `api-skeleton` and `backend-skeleton-and-catalog` are archived). `attendee-flow` and `event-and-host` are still to be proposed.

@@ -3,12 +3,9 @@ import { z } from 'zod';
 import type { CreateEventRequest, EventResponse } from '../../../../../contracts/event';
 import { ApplicationService } from '@Huemans/Event/Application/ApplicationService';
 import { EventView } from '@Huemans/Event/Domain/EventView';
+import { QuizSettings } from '@Huemans/Participation/Domain/ValueObject/QuizSettings';
 import { UuidV7Param } from '@Huemans/Shared/Infrastructure/Http/UuidV7Param';
 import { ZodValidationPipe } from '@Huemans/Shared/Infrastructure/Http/ZodValidationPipe';
-
-// Placeholder for Participation's quiz settings, which Event does not own; quiz-and-answers reads them from there.
-const QUESTION_COUNT = 5;
-const QUIZ_DURATION_SECONDS = 20;
 
 const CreateEventPayload = new ZodValidationPipe<CreateEventRequest>(z.object({ name: z.string() }));
 
@@ -32,7 +29,10 @@ export class EventController {
     return this.withQuizSettings(await this.service.reveal(eventId));
   }
 
+  // The quiz settings are Participation's and fixed, so they are read as a value instead of through its module,
+  // which already imports EventModule.
   private withQuizSettings(view: EventView): EventResponse {
-    return { ...view, questionCount: QUESTION_COUNT, quizDurationSeconds: QUIZ_DURATION_SECONDS };
+    const { questionCount, durationSeconds } = QuizSettings.standard().toPrimitives();
+    return { ...view, questionCount, quizDurationSeconds: durationSeconds };
   }
 }

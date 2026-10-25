@@ -29,3 +29,12 @@ export function postJson(app: INestApplication, path: string, body: object): req
     .set('Accept', 'application/json')
     .send(body);
 }
+
+/** Joins the event through the API, as a phone does before answering, and returns the new attendee id. */
+export async function joinAttendee(app: INestApplication, eventId: string, name = 'Ana'): Promise<string> {
+  const response = await postJson(app, `/events/${eventId}/attendees`, { name });
+  if (response.status !== 201) {
+    throw new Error(`Joining event <${eventId}> answered ${response.status}`);
+  }
+  return (response.body as { attendeeId: string }).attendeeId;
+}

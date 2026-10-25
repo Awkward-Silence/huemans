@@ -1,5 +1,5 @@
-import { DomainEvent } from '../DomainEvent';
-import { WeightedTraitPrimitives } from '../ValueObject/WeightedTrait';
+import { DomainEvent } from '@Huemans/Shared/Domain/DomainEvent';
+import { WeightedTraitPrimitives } from '@Huemans/Shared/Domain/ValueObject/WeightedTrait';
 
 // Published by Participation with the attendee's weighted trait profile (one entry per piece of evidence, repeats kept).
 // The attendee is the aggregate; the event id travels as forEventId because DomainEvent.eventId is this message's id.
