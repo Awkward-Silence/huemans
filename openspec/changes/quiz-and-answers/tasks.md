@@ -8,8 +8,8 @@
 
 ## 2. Persistence
 
-- [ ] 2.1 Add the migration for `attendees` (`id` PK, `event_id` indexed, `name`, `joined_at`); verify `pnpm migration:up && pnpm migration:up:test` apply cleanly
-- [ ] 2.2 Add `AttendeeSchema` and `MikroOrmAttendeeRepository`, test-first in `tests/Integration/Participation/Infrastructure/Persistence/MikroOrmAttendeeRepository.test.ts` (saves and finds an attendee, finds nothing for another event, counts only that event's attendees); verify with `pnpm jest tests/Integration/Participation`
+- [x] 2.1 Add the migration for `attendees` (`id` PK, `event_id` indexed, `name`, `joined_at`); verify `pnpm migration:up && pnpm migration:up:test` apply cleanly
+- [x] 2.2 Add `AttendeeSchema` and `MikroOrmAttendeeRepository`, test-first in `tests/Integration/Participation/Infrastructure/Persistence/MikroOrmAttendeeRepository.test.ts` (saves and finds an attendee, finds nothing for another event, counts only that event's attendees); verify with `pnpm jest tests/Integration/Participation`
 
 ## 3. Use cases and HTTP
 
