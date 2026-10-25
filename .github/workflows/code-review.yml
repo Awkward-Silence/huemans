@@ -1,0 +1,41 @@
+# AI code review of pull requests with reviewer-workflow (https://github.com/Apperture-Dev/reviewer-workflow).
+name: code-review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  # GITHUB_TOKEN can only resolve review threads with contents: write. With read the reviewer still
+  # replies in its threads but leaves them open. The token never reaches the AI agents either way.
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: code-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  code-review:
+    # Pull requests from forks get no secrets and a read-only token; drafts wait until ready.
+    if: ${{ !github.event.pull_request.draft && github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    # The review informs; it never blocks a pull request.
+    continue-on-error: true
+    timeout-minutes: 30
+    steps:
+      # Without persist-credentials: false the token stays in .git/config, readable by the agents.
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: Apperture-Dev/reviewer-workflow@v1
+        with:
+          provider: claude
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reviewer-output
+          path: reviewer-output/
+          retention-days: 7
