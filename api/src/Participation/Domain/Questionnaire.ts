@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@Huemans/Shared/Domain/AggregateRoot';
-import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
+import { QuestionnaireCompleted } from './QuestionnaireCompleted';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { Trait } from '@Huemans/Shared/Domain/ValueObject/Trait';
@@ -8,7 +8,7 @@ import { WeightedTrait } from '@Huemans/Shared/Domain/ValueObject/WeightedTrait'
 import { QuestionnaireView } from './QuestionnaireView';
 import { SentenceTraits } from './ValueObject/SentenceTraits';
 
-/** An attendee's submitted quiz. Not stored yet: quiz-and-answers adds the repository (and join). */
+/** An attendee's submitted quiz. Not stored: Color Distribution's final assignment is what makes it count once. */
 export class Questionnaire extends AggregateRoot {
   private constructor(
     readonly attendeeId: AttendeeId,

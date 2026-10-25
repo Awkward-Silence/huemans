@@ -2,9 +2,8 @@ import { INestApplication } from '@nestjs/common';
 import type { EventResponse } from '../../../../contracts/event';
 import { SENTENCE_TRAIT_WEIGHER } from '@Huemans/Participation/Domain/Port/SentenceTraitWeigher';
 import { SentenceTraits } from '@Huemans/Participation/Domain/ValueObject/SentenceTraits';
-import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { seedCatalogFiles } from '../../Support/catalog';
-import { bootFunctional, getJson, postJson } from '../../Support/functional';
+import { bootFunctional, getJson, joinAttendee, postJson } from '../../Support/functional';
 import { anAnswerOf, expectedIcebreakerFor } from '../../Support/room';
 
 // Catalog suites briefly add icebreaker fixtures suiting humorous and curious, so these rooms avoid both traits.
@@ -31,7 +30,8 @@ describe('Revealing an event picks the night icebreaker', () => {
     eventId = ((await postJson(app, '/events', { name: 'Demo night' })).body as EventResponse).id;
   });
 
-  async function submit(trait: string, attendeeId = AttendeeId.random().value) {
+  async function submit(trait: string, attendee?: string) {
+    const attendeeId = attendee ?? (await joinAttendee(app, eventId));
     const response = await postJson(app, `/events/${eventId}/attendees/${attendeeId}/answers`, {
       answers: [anAnswerOf(trait)],
       sentence: null,
@@ -59,7 +59,7 @@ describe('Revealing an event picks the night icebreaker', () => {
   });
 
   it('testRepeatedSubmitCountsOnce', async () => {
-    const attendee = AttendeeId.random().value;
+    const attendee = await joinAttendee(app, eventId);
     await submit('analytical', attendee);
     await submit('analytical', attendee);
     await submit('adventurous');

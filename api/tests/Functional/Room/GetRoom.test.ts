@@ -2,12 +2,12 @@ import { INestApplication } from '@nestjs/common';
 import type { EventResponse } from '../../../../contracts/event';
 import type { RoomResponse } from '../../../../contracts/room';
 import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
-import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
+import { QuestionnaireCompleted } from '@Huemans/Participation/Domain/QuestionnaireCompleted';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { publish } from '../../Support/events';
 import { wholeAnswers } from '../../Support/traits';
-import { bootFunctional, getJson, postJson } from '../../Support/functional';
+import { bootFunctional, getJson, joinAttendee, postJson } from '../../Support/functional';
 
 describe('GET /events/:eventId/room', () => {
   let app: INestApplication;
@@ -77,12 +77,17 @@ describe('GET /events/:eventId/room', () => {
     expect((response.body as RoomResponse).answered).toBe(0);
   });
 
-  it('testTotalEqualsAnsweredUntilParticipationRecordsJoins', async () => {
-    await publish(app, completeQuestionnaire(eventId, ['sociable']), completeQuestionnaire(eventId, ['curious']));
+  it('testTotalCountsWhoJoinedAndAnsweredWhoHasAGroup', async () => {
+    const [ana] = await Promise.all([
+      joinAttendee(app, eventId, 'Ana'),
+      joinAttendee(app, eventId, 'Luis'),
+      joinAttendee(app, eventId, 'Marta'),
+    ]);
+    await postJson(app, `/events/${eventId}/attendees/${ana}/answers`, { answers: [] });
 
     const response = await getJson(app, `/events/${eventId}/room`);
 
-    expect(response.body).toMatchObject({ total: 2, answered: 2 });
+    expect(response.body).toMatchObject({ total: 3, answered: 1 });
   });
 
   it('testUnknownEventIsNotFound', async () => {

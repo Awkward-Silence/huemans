@@ -1,20 +1,17 @@
 import type { EventResponse } from '../../../contracts/event';
 import type { AttendeeAssignmentResponse, EventDistributionView } from '../../../contracts/colorDistribution';
-import type { SubmitAnswersResponse } from '../../../contracts/participation';
+import type { JoinResponse, QuizResponse, SubmitAnswersResponse } from '../../../contracts/participation';
 import type { AttendeeIcebreakerResponse, HostIcebreakerResponse } from '../../../contracts/nightIcebreaker';
 import type { RoomResponse } from '../../../contracts/room';
-import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
-import { realContent } from '../Support/catalog';
 import { Choice } from '../Support/room';
 
 // Runs against a live API (E2E_API_URL, default http://localhost:3000) with migrations and the catalog seed applied.
 // Every run creates its own event, so it never touches the seeded demo event.
 const API_URL = (process.env.E2E_API_URL ?? 'http://localhost:3000').replace(/\/$/, '');
 const PEOPLE = 10;
-const QUESTIONS_PER_PERSON = 5;
 const MEETING_SPOTS = { amber: 'the bar', coral: 'the entrance', teal: 'the stage', violet: 'the back corner' };
 
-type Person = { name: string; attendeeId: string; answers: Choice[] };
+type Person = { name: string; attendeeId: string };
 
 async function call<T>(method: 'GET' | 'POST', path: string, body?: object): Promise<{ status: number; body: T }> {
   const response = await fetch(`${API_URL}${path}`, {
@@ -29,21 +26,18 @@ function pickRandom<T>(items: T[], count: number): T[] {
   return [...items].sort(() => Math.random() - 0.5).slice(0, count);
 }
 
-function aVirtualPerson(index: number): Person {
-  const questions = pickRandom(realContent().questions, QUESTIONS_PER_PERSON);
-  return {
-    name: `Virtual person ${index + 1}`,
-    attendeeId: AttendeeId.random().value,
-    answers: questions.map((question) => ({
-      questionId: question.id,
-      answerId: pickRandom(question.answers, 1)[0].id,
-    })),
-  };
+/** One random answer per quiz question, as a person tapping through the quiz would. */
+function randomAnswersTo(quiz: QuizResponse): Choice[] {
+  return quiz.questions.map((question) => ({
+    questionId: question.id,
+    answerId: pickRandom(question.answers, 1)[0].id,
+  }));
 }
 
 describe('A night with 10 virtual people (live API)', () => {
   let eventId: string;
-  let people: Person[];
+  let quiz: QuizResponse;
+  const people: Person[] = [];
   const submitted = new Map<string, SubmitAnswersResponse>();
 
   beforeAll(async () => {
@@ -51,7 +45,6 @@ describe('A night with 10 virtual people (live API)', () => {
     if (health?.status !== 200) {
       throw new Error(`No API at ${API_URL}: start it with \`pnpm start:dev\` or set E2E_API_URL`);
     }
-    people = Array.from({ length: PEOPLE }, (_, index) => aVirtualPerson(index));
   });
 
   it('testTheHostCreatesAnOpenEvent', async () => {
@@ -62,11 +55,32 @@ describe('A night with 10 virtual people (live API)', () => {
     eventId = created.body.id;
   });
 
+  it('testTenPeopleJoinAtOnceAndAllSeeTheSameQuiz', async () => {
+    const names = Array.from({ length: PEOPLE }, (_, index) => `Virtual person ${index + 1}`);
+    const joins = await Promise.all(
+      names.map((name) => call<JoinResponse>('POST', `/events/${eventId}/attendees`, { name })),
+    );
+    joins.forEach((join, index) => {
+      expect(join.status).toBe(201);
+      people.push({ name: names[index], attendeeId: join.body.attendeeId });
+    });
+
+    const quizzes = await Promise.all(people.map(() => call<QuizResponse>('GET', `/events/${eventId}/quiz`)));
+    quiz = quizzes[0].body;
+    expect(quiz.questions).toHaveLength(5);
+    for (const other of quizzes) {
+      expect(other.body).toEqual(quiz);
+    }
+
+    const room = await call<RoomResponse>('GET', `/events/${eventId}/room`);
+    expect(room.body).toMatchObject({ total: PEOPLE, answered: 0 });
+  });
+
   it('testEveryoneAnswersAtOnceAndGetsAGroup', async () => {
     const responses = await Promise.all(
       people.map((person) =>
         call<SubmitAnswersResponse>('POST', `/events/${eventId}/attendees/${person.attendeeId}/answers`, {
-          answers: person.answers,
+          answers: randomAnswersTo(quiz),
           elapsedMs: 15_000,
           sentence: null,
         }),

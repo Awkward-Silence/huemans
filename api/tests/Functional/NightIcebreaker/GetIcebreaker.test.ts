@@ -4,10 +4,9 @@ import type { SubmitAnswersResponse } from '../../../../contracts/participation'
 import type { AttendeeIcebreakerResponse, HostIcebreakerResponse } from '../../../../contracts/nightIcebreaker';
 import { SENTENCE_TRAIT_WEIGHER } from '@Huemans/Participation/Domain/Port/SentenceTraitWeigher';
 import { SentenceTraits } from '@Huemans/Participation/Domain/ValueObject/SentenceTraits';
-import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { seedCatalogFiles } from '../../Support/catalog';
-import { bootFunctional, getJson, postJson } from '../../Support/functional';
+import { bootFunctional, getJson, joinAttendee, postJson } from '../../Support/functional';
 import { anAnswerOf } from '../../Support/room';
 
 const MEETING_SPOTS = { amber: 'the bar', coral: 'the entrance', teal: 'the stage', violet: 'the back corner' };
@@ -32,7 +31,7 @@ describe('GET icebreaker', () => {
 
   beforeEach(async () => {
     eventId = ((await postJson(app, '/events', { name: 'Demo night' })).body as EventResponse).id;
-    attendeeId = AttendeeId.random().value;
+    attendeeId = await joinAttendee(app, eventId);
   });
 
   async function submit(attendee = attendeeId): Promise<SubmitAnswersResponse> {
@@ -82,7 +81,7 @@ describe('GET icebreaker', () => {
     });
 
     it('testEveryAttendeeGetsTheSameIcebreakerAndTheirOwnSpot', async () => {
-      const other = AttendeeId.random().value;
+      const other = await joinAttendee(app, eventId);
       const mine = await submit();
       const theirs = await submit(other);
       await reveal();
@@ -106,7 +105,7 @@ describe('GET icebreaker', () => {
     });
 
     it('testLateJoinerGetsItOnceGrouped', async () => {
-      await submit(AttendeeId.random().value);
+      await submit(await joinAttendee(app, eventId));
       await reveal();
       const host = (await getJson(app, `/events/${eventId}/icebreaker`)).body as HostIcebreakerResponse;
 
