@@ -25,8 +25,8 @@
 
 ## 5. Contracts, docs and web
 
-- [ ] 5.1 Add `JoinRequest`, `JoinResponse` and `QuizResponse` to `contracts/participation.d.ts` and use them in the controllers; verify `pnpm build`
-- [ ] 5.2 Update `docs/api/attendee-api.md` (endpoints 2-4: name rules, 201, deterministic quiz, 404 for an attendee who never joined; endpoint 6: `total` from joins) and `CLAUDE.md` (change status); verify the docs no longer say join comes later or that `total` equals `answered`
-- [ ] 5.3 In `web/src/api/index.ts`, use the HTTP client for `join` and `getQuiz`, adding the mock's sentence question to the HTTP quiz while the API serves none; verify `npm run typecheck && npm test` in `web/`
-- [ ] 5.4 If `api/tests/E2E/VirtualNight.test.ts` is on the branch, make each virtual person join and answer the event's quiz instead of random catalog questions; verify with `pnpm test:e2e` against a running API
+- [x] 5.1 Add `JoinRequest`, `JoinResponse` and `QuizResponse` to `contracts/participation.d.ts` and use them in the controllers; verify `pnpm build`
+- [x] 5.2 Update `docs/api/attendee-api.md` (endpoints 2-4: name rules, 201, deterministic quiz, 404 for an attendee who never joined; endpoint 6: `total` from joins) and `CLAUDE.md` (change status); verify the docs no longer say join comes later or that `total` equals `answered`
+- [x] 5.3 In `web/src/api/index.ts`, use the HTTP client for `join` and `getQuiz`, adding the mock's sentence question to the HTTP quiz while the API serves none; verify `npm run typecheck && npm test` in `web/`
+- [x] 5.4 If `api/tests/E2E/VirtualNight.test.ts` is on the branch, make each virtual person join and answer the event's quiz instead of random catalog questions; verify with `pnpm test:e2e` against a running API
 - [ ] 5.5 Run the full checks; verify `pnpm lint && pnpm build && pnpm test` pass in `api/`, and manually with `VITE_API_MODE=http` and a newly created event: join on two phones, both see the same quiz, submit, the room shows the joined count, reveal shows the icebreaker

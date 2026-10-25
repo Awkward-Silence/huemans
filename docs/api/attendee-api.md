@@ -92,24 +92,26 @@ Loaded first, on the intro screen. Gives the event name and the quiz size and du
 
 Creates an anonymous attendee from a name. The web stores the returned id so a reload resumes the flow.
 
-**Request**
+**Request** (`JoinRequest` in `contracts/participation.d.ts`)
 
 ```ts
 { name: string }
 ```
 
-**Response `201` or `200`**
+**Response `201`** (`JoinResponse`)
 
 ```ts
-{ attendeeId: Id }
+{ attendeeId: Id }   // UUIDv7
 ```
 
 **Behaviour**
 
+- The name is trimmed and must be 1-40 characters.
 - Every call creates a new attendee (no dedupe by name).
 - Joining stays open after answers start and after the icebreaker reveal.
+- The attendee counts in the room's `total` from now on.
 
-**Errors:** `404` unknown event. Name validation (empty, too long) is up to the backend; any non-404 4xx surfaces as a generic error.
+**Errors:** `404` unknown event; `400` for a missing, empty or too long name, or an event id that is not a UUIDv7.
 
 ---
 
@@ -155,12 +157,15 @@ The questions for this event. Every phone in the event must get **the same quest
 }
 ```
 
-**Behaviour**
+**Behaviour** (`QuizResponse` in `contracts/participation.d.ts`)
 
-- Do **not** send each answer's `trait`. The web ignores it, and it would give the grouping away. Traits are resolved server-side from `answerId`.
+- 5 questions and `durationSeconds` 20, Participation's quiz settings (the same values `GET /events/:eventId` reports).
+- The questions are picked from the event id with a seeded shuffle: the same event always gets the same questions in the same order, with nothing stored, and different events get different mixes. They come from 5 different themes.
+- Answers are served without their `trait`, so the quiz can't give the grouping away. Traits are resolved server-side from `answerId`.
 - Content comes from the catalog (`api/src/Catalog/Infrastructure/Content/questions.json`, seeded into Postgres).
+- No `sentence` field yet: `word-suggestions` adds it. Until then `web/` in `http` mode adds its own sentence question.
 
-**Errors:** `404` unknown event.
+**Errors:** `404` unknown event; `400` if the id is not a UUIDv7.
 
 ---
 
@@ -203,7 +208,7 @@ Sends all answers at once when the quiz ends (all answered or timer done), and r
 - Every attendee always gets one of the 4 colors, even when no answer points to a trait.
 - A second submit by the same attendee returns the first color unchanged, and does not call Jev again.
 
-**Errors:** `404` unknown event. `400` for a malformed body, ids that are not UUIDv7, or a sentence question or answer that is empty or longer than 300 characters. The attendee id is not checked against a join yet, because join comes with `quiz-and-answers`.
+**Errors:** `404` unknown event, or an attendee who never joined this event (also one who joined another event). `400` for a malformed body, ids that are not UUIDv7, or a sentence question or answer that is empty or longer than 300 characters.
 
 ---
 
@@ -295,7 +300,7 @@ Live progress and color distribution for the "waiting for the room" screen. Poll
 
 - Served by the read-only Room context (`docs/domain/room/model.md`): `answered` and `groups` come from Color Distribution, `total` from Participation. The response also carries `eventId` (extra). Type: `RoomResponse` in `contracts/room.d.ts`.
 - `answered` is the sum of the group counts and never exceeds `total`.
-- Until Participation exists (`quiz-and-answers`), `total` equals `answered`.
+- `total` counts everyone who joined, including people still on the quiz.
 
 **Errors:** `404` unknown event; `400` if the id is not a UUIDv7.
 
@@ -360,7 +365,7 @@ The web contract was written before the domain model. These conflict with `docs/
 1. ~~**Color names.**~~ Resolved: both sides use `amber | coral | teal | violet` (also the tie order), defined in `api/src/Shared/Domain/ValueObject/Color.ts` (shared kernel).
 2. ~~**Assignment "not yet".**~~ Resolved: `api/` answers `200 {status:"pending"}` until the attendee is grouped, `200 {status:"assigned", eventId, attendeeId, color, personalityType}` after, and 404 only for an unknown event. The assigned fields the web also needs (`nickname`, `blurb`, `traits`, `mates`, `reason`) are gap 3.
 3. ~~**Personality type is missing; `lean` contradicts the model.**~~ Resolved in `api/` only, without changing `web/`: the assigned response adds `personalityType`; `nickname`, `blurb` and `traits` describe the personality type (the catalog's personality type profiles, seeded from `api/src/Catalog/Infrastructure/Content/profiles.json`), not the color; `mates` is the live group size minus one; `reason.lean` is always `[]` (answers decide the type, not the color) and `reason.text` explains the mixed placement. The web schema accepts this shape as is. If the web wants a type lean later ("60% explorer, 40% planner"), it needs a schema change on its side and the trait profile from Participation.
-4. ~~**Room vs distribution.**~~ Resolved: `api/` serves `GET /events/:eventId/room` in the web's shape (see endpoint 6), from the Room context. `GET /events/:eventId/distribution` stays for the host screen. `total` equals `answered` until Participation lands.
+4. ~~**Room vs distribution.**~~ Resolved: `api/` serves `GET /events/:eventId/room` in the web's shape (see endpoint 6), from the Room context. `GET /events/:eventId/distribution` stays for the host screen. `total` comes from Participation's joins.
 5. ~~**Id format.**~~ Resolved: `pnpm seed:demo` (in `api/`) creates "Demo night" with the fixed UUIDv7 `0199c0de-0000-7000-8000-000000000001`, and is safe to run again. The web's demo link opens `VITE_DEMO_EVENT_ID` (default `demo` for the mock). The API allows cross-origin calls (`CORS_ORIGIN`, default `*`).
 6. ~~**Event status.**~~ Resolved: `GET /events/:eventId` returns `status` (`open` | `revealed`) as an extra field. The web still infers the reveal from the icebreaker endpoint.
 

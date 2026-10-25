@@ -8,7 +8,7 @@ import { WeightedTrait } from '@Huemans/Shared/Domain/ValueObject/WeightedTrait'
 import { QuestionnaireView } from './QuestionnaireView';
 import { SentenceTraits } from './ValueObject/SentenceTraits';
 
-/** An attendee's submitted quiz. Not stored yet: quiz-and-answers adds the repository (and join). */
+/** An attendee's submitted quiz. Not stored: Color Distribution's final assignment is what makes it count once. */
 export class Questionnaire extends AggregateRoot {
   private constructor(
     readonly attendeeId: AttendeeId,
