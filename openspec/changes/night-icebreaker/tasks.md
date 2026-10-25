@@ -2,8 +2,8 @@
 
 ## 1. Event reveal
 
-- [ ] 1.1 Add `Event.reveal()` and `EventRevealed` (recorded only on open → revealed; `status` no longer readonly), test-first in `tests/Unit/Event/Domain/Event.test.ts` (`testRevealMovesOpenToRevealed`, `testRevealTwiceRecordsOneEvent`); verify with `pnpm jest tests/Unit/Event`
-- [ ] 1.2 Add `ApplicationService.reveal(eventId)` and `POST /events/:eventId/reveal` in `EventController` (returns `EventResponse`), test-first in `tests/Functional/Event/RevealEvent.test.ts` covering reveal, second reveal, 404 and 400; verify with `pnpm jest tests/Functional/Event/RevealEvent.test.ts`
+- [x] 1.1 Add `Event.reveal()` and `EventRevealed` (recorded only on open → revealed; `status` no longer readonly), test-first in `tests/Unit/Event/Domain/Event.test.ts` (`testRevealMovesOpenToRevealed`, `testRevealTwiceRecordsOneEvent`); verify with `pnpm jest tests/Unit/Event`
+- [x] 1.2 Add `ApplicationService.reveal(eventId)` and `POST /events/:eventId/reveal` in `EventController` (returns `EventResponse`), test-first in `tests/Functional/Event/RevealEvent.test.ts` covering reveal, second reveal, 404 and 400; verify with `pnpm jest tests/Functional/Event/RevealEvent.test.ts`
 
 ## 2. Night Icebreaker domain
 

@@ -38,12 +38,24 @@ export class ApplicationService {
   }
 
   async eventOf(eventId: string): Promise<EventView> {
-    const id = new EventId(eventId);
+    return (await this.find(new EventId(eventId))).toDTO();
+  }
+
+  async reveal(eventId: string): Promise<EventView> {
+    const event = await this.find(new EventId(eventId));
+    event.reveal();
+    await this.events.save(event);
+    await this.dispatcher.dispatchAll(event.pullDomainEvents());
+
+    return event.toDTO();
+  }
+
+  private async find(id: EventId): Promise<Event> {
     const event = await this.events.search(id);
     if (event === null) {
       throw new EventNotFound(id);
     }
 
-    return event.toDTO();
+    return event;
   }
 }

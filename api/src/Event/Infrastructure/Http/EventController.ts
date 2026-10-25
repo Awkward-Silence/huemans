@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { z } from 'zod';
 import type { CreateEventRequest, EventResponse } from '../../../../../contracts/event';
 import { ApplicationService } from '@Huemans/Event/Application/ApplicationService';
@@ -24,6 +24,12 @@ export class EventController {
   @Get(':eventId')
   async event(@Param('eventId', UuidV7Param) eventId: string): Promise<EventResponse> {
     return this.withQuizSettings(await this.service.eventOf(eventId));
+  }
+
+  @Post(':eventId/reveal')
+  @HttpCode(200)
+  async reveal(@Param('eventId', UuidV7Param) eventId: string): Promise<EventResponse> {
+    return this.withQuizSettings(await this.service.reveal(eventId));
   }
 
   private withQuizSettings(view: EventView): EventResponse {
