@@ -1,6 +1,6 @@
 import { Questionnaire } from '@Huemans/Participation/Domain/Questionnaire';
 import { SentenceTraits } from '@Huemans/Participation/Domain/ValueObject/SentenceTraits';
-import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
+import { QuestionnaireCompleted } from '@Huemans/Participation/Domain/QuestionnaireCompleted';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { Trait } from '@Huemans/Shared/Domain/ValueObject/Trait';

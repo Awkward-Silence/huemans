@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@Huemans/Shared/Domain/AggregateRoot';
-import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
+import { QuestionnaireCompleted } from './QuestionnaireCompleted';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { Trait } from '@Huemans/Shared/Domain/ValueObject/Trait';

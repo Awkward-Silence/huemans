@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import type { EventResponse } from '../../../../contracts/event';
 import type { RoomResponse } from '../../../../contracts/room';
 import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
-import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
+import { QuestionnaireCompleted } from '@Huemans/Participation/Domain/QuestionnaireCompleted';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { publish } from '../../Support/events';

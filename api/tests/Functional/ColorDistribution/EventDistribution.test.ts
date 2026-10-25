@@ -3,7 +3,7 @@ import type { EventDistributionView } from '../../../../contracts/colorDistribut
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
-import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
+import { QuestionnaireCompleted } from '@Huemans/Participation/Domain/QuestionnaireCompleted';
 import { wholeAnswers } from '../../Support/traits';
 import { publish } from '../../Support/events';
 import { seedCatalogFiles } from '../../Support/catalog';

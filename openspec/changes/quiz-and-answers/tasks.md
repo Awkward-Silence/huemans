@@ -2,9 +2,9 @@
 
 ## 1. Participation domain
 
-- [ ] 1.1 Move `QuestionnaireCompleted` from `src/Shared/Domain/Event/` to `src/Participation/Domain/` and update the imports in `Questionnaire`, Color Distribution and Night Icebreaker; verify `pnpm lint && pnpm build` and `pnpm test:functional` pass
-- [ ] 1.2 Add `AttendeeName` (trimmed, 1-40 characters) and the `Attendee` aggregate (`join` records `AttendeeJoined`, `toDTO()`), with the `AttendeeRepository` port (`save`, `searchIn`, `countIn`) and `AttendeeNotFound`, test-first in `tests/Unit/Participation/Domain/Attendee.test.ts` and `ValueObject/AttendeeName.test.ts`; verify with `pnpm jest tests/Unit/Participation`
-- [ ] 1.3 Add `QuizSettings.standard()` (5 questions, 20 s), `QuizQuestion` (no trait) and `Quiz.for(eventId, questions, settings)` (FNV-1a seed, seeded shuffle, one question per theme first, fill when themes run out, `toDTO()`), test-first in `tests/Unit/Participation/Domain/Quiz.test.ts` covering the same order for the same event, a different order for another event, 5 distinct themes, the fill case with fewer themes than questions, and answers in catalog order; verify with `pnpm jest tests/Unit/Participation`
+- [x] 1.1 Move `QuestionnaireCompleted` from `src/Shared/Domain/Event/` to `src/Participation/Domain/` and update the imports in `Questionnaire`, Color Distribution and Night Icebreaker; verify `pnpm lint && pnpm build` and `pnpm test:functional` pass
+- [x] 1.2 Add `AttendeeName` (trimmed, 1-40 characters) and the `Attendee` aggregate (`join` records `AttendeeJoined`, `toDTO()`), with the `AttendeeRepository` port (`save`, `searchIn`, `countIn`) and `AttendeeNotFound`, test-first in `tests/Unit/Participation/Domain/Attendee.test.ts` and `ValueObject/AttendeeName.test.ts`; verify with `pnpm jest tests/Unit/Participation`
+- [x] 1.3 Add `QuizSettings.standard()` (5 questions, 20 s), `QuizQuestion` (no trait) and `Quiz.for(eventId, questions, settings)` (FNV-1a seed, seeded shuffle, one question per theme first, fill when themes run out, `toDTO()`), test-first in `tests/Unit/Participation/Domain/Quiz.test.ts` covering the same order for the same event, a different order for another event, 5 distinct themes, the fill case with fewer themes than questions, and answers in catalog order; verify with `pnpm jest tests/Unit/Participation`
 
 ## 2. Persistence
 
