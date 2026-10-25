@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import type { AttendeeAssignment, AttendeePending } from '../../../../contracts/colorDistribution';
+import type { AttendeeAssignment, AttendeePending } from '../../../contracts/colorDistribution';
 import { ApplicationService as CatalogService } from '@Huemans/Catalog/Application/ApplicationService';
 import { PersonalityTypesNotDefined } from '@Huemans/Catalog/Domain/PersonalityTypesNotDefined';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';

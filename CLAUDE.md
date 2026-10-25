@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-**huemans** is a mobile-first web app that breaks the ice at events: attendees answer a few funny questions, are split into **diverse color groups**, and share **one icebreaker for the night**. It is being built by a team of 4 (Adrián architect, Diego backend, Miguel fullstack, Daniel frontend) during a **24h hackathon**, for a 2-3 minute live demo to 10-15 people; the hackathon requires AI features. `api/` is scaffolded (skeleton only, no bounded context yet); `web/` and `contracts/` are not — add their commands below when they exist.
+**huemans** is a mobile-first web app that breaks the ice at events: attendees answer a few funny questions, are split into **diverse color groups**, and share **one icebreaker for the night**. It is being built by a team of 4 (Adrián architect, Diego backend, Miguel fullstack, Daniel frontend) during a **24h hackathon**, for a 2-3 minute live demo to 10-15 people; the hackathon requires AI features. Wire types live in `api/contracts/`.
 
 Sources of truth: `initial-raw-specs.md` (product spec, written by the team), `docs/next-steps.md` (plan, owners, open decisions), `docs/domain/` (DDD models), `docs/architecture/adr/` (architecture decisions), `openspec/changes/` (one change per backend lane).
 
@@ -59,13 +59,13 @@ QR (web URL) -> 2-3s intro -> enter name -> 4-5 multiple-choice questions, soft 
 All TypeScript. Each app has **its own `package.json` and `node_modules`** — no workspaces, no shared dependencies.
 
 ```
-contracts/   types only: no package.json, no runtime imports
 web/         React (Vite), mobile first: /join/:eventId (attendee), /host/:eventId (big screen)
 api/         NestJS + Mastra (in-process), Postgres, one Nest module per bounded context
+  contracts/ wire types only (.d.ts): no runtime code, no dependencies
 tools/       sentence-builder content and scripts (not production code); catalog content lives in api/
 ```
 
-- **Contracts:** apps consume `contracts/` only via `import type ... from '../contracts/...'`, so it is erased at compile time. Never add a runtime import or dependency to it.
+- **Contracts:** `api/contracts/` holds the REST wire types, consumed only via `import type`, so they are erased at compile time. Never add a runtime import or dependency to it. It lives inside `api/` because Podium builds each app from its own folder (the Docker context is `api/`), so nothing in `api/` may import from outside it. For the same reason `web/` must not import `api/contracts/`: it keeps its own zod schemas in `web/src/api/schemas.ts`, kept in step by hand.
 - **Bounded contexts in `api/`:** catalog, event, participation, color distribution (core domain, full DDD + tests), room (read-only: the live room read across Event, Color Distribution and Participation), night icebreaker, agents. Each keeps a `domain/` folder free of NestJS decorators.
 - **Domain events belong to the context that publishes them** (Event owns `EventCreated`/`EventRevealed`, Participation owns `QuestionnaireCompleted`); other contexts subscribe. Handlers are synchronous and in-process: no queue or background job.
 - **Key seam:** Participation publishes `QuestionnaireCompleted` with the attendee's trait profile; Color Distribution emits `AttendeeGrouped { eventId, attendeeId, color, personalityType }`, pushed in realtime to the phone and host screen.
@@ -101,7 +101,7 @@ npx vitest run src/features/join/steps.test.ts   # one file
 npx vitest run -t "redirectFor"               # by test name
 ```
 
-`VITE_API_MODE=mock|http` picks the in-browser mock or the real `api/` (`VITE_API_URL`); in `http` mode set `VITE_DEMO_EVENT_ID` to the seeded demo event. Theme tokens live in `web/src/theme/`, copy in `web/src/content/`, API schemas in `web/src/api/schemas.ts` (to move into `contracts/` once it exists).
+`VITE_API_MODE=mock|http` picks the in-browser mock or the real `api/` (`VITE_API_URL`); in `http` mode set `VITE_DEMO_EVENT_ID` to the seeded demo event. Theme tokens live in `web/src/theme/`, copy in `web/src/content/`, API schemas in `web/src/api/schemas.ts` (mirror `api/contracts/` by hand; `web/` can't import across app folders).
 
 ## Workflow
 

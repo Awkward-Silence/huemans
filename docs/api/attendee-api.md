@@ -2,7 +2,7 @@
 
 The REST contract the attendee app (`web/`, route `/join/:eventId`) already codes against, extracted from its in-browser mock. `api/` must serve these endpoints with these shapes for `VITE_API_MODE=http` to work without changes on the web side.
 
-Sources (web side, the source of truth until `contracts/` exists):
+Sources (web side; the API's wire types are in `api/contracts/`):
 
 - `web/src/api/client.ts`: the `ApiClient` interface (7 operations)
 - `web/src/api/httpClient.ts`: HTTP method and path for each operation
@@ -80,7 +80,7 @@ Loaded first, on the intro screen. Gives the event name and the quiz size and du
 { "id": "0199c5a2-…", "name": "Demo night", "quizDurationSeconds": 20, "questionCount": 5, "status": "open" }
 ```
 
-**Behaviour:** `quizDurationSeconds` and `questionCount` are Participation's quiz settings, the same for every event in the MVP (20 and 5). Served by the Event context (`contracts/event.d.ts`).
+**Behaviour:** `quizDurationSeconds` and `questionCount` are Participation's quiz settings, the same for every event in the MVP (20 and 5). Served by the Event context (`api/contracts/event.d.ts`).
 
 **Errors:** `404` if the event does not exist; `400` if the id is not a UUIDv7.
 
@@ -92,7 +92,7 @@ Loaded first, on the intro screen. Gives the event name and the quiz size and du
 
 Creates an anonymous attendee from a name. The web stores the returned id so a reload resumes the flow.
 
-**Request** (`JoinRequest` in `contracts/participation.d.ts`)
+**Request** (`JoinRequest` in `api/contracts/participation.d.ts`)
 
 ```ts
 { name: string }
@@ -157,7 +157,7 @@ The questions for this event. Every phone in the event must get **the same quest
 }
 ```
 
-**Behaviour** (`QuizResponse` in `contracts/participation.d.ts`)
+**Behaviour** (`QuizResponse` in `api/contracts/participation.d.ts`)
 
 - 5 questions and `durationSeconds` 20, Participation's quiz settings (the same values `GET /events/:eventId` reports).
 - The questions are picked from the event id with a seeded shuffle: the same event always gets the same questions in the same order, with nothing stored, and different events get different mixes. They come from 5 different themes.
@@ -175,7 +175,7 @@ The questions for this event. Every phone in the event must get **the same quest
 
 Sends all answers at once when the quiz ends (all answered or timer done), and returns the attendee's color.
 
-**Request** (`contracts/participation.d.ts`)
+**Request** (`api/contracts/participation.d.ts`)
 
 ```ts
 {
@@ -298,7 +298,7 @@ Live progress and color distribution for the "waiting for the room" screen. Poll
 
 **Behaviour**
 
-- Served by the read-only Room context (`docs/domain/room/model.md`): `answered` and `groups` come from Color Distribution, `total` from Participation. The response also carries `eventId` (extra). Type: `RoomResponse` in `contracts/room.d.ts`.
+- Served by the read-only Room context (`docs/domain/room/model.md`): `answered` and `groups` come from Color Distribution, `total` from Participation. The response also carries `eventId` (extra). Type: `RoomResponse` in `api/contracts/room.d.ts`.
 - `answered` is the sum of the group counts and never exceeds `total`.
 - `total` counts everyone who joined, including people still on the quiz.
 
@@ -335,7 +335,7 @@ The night's one icebreaker and the gathering countdown. Polled every 2 s until `
 }
 ```
 
-**Behaviour** (`contracts/nightIcebreaker.d.ts`, `AttendeeIcebreakerResponse`)
+**Behaviour** (`api/contracts/nightIcebreaker.d.ts`, `AttendeeIcebreakerResponse`)
 
 - `locked` until the host reveals the event (`POST /events/:eventId/reveal`). Also `locked` while the attendee has no group (join doesn't exist yet, so an attendee who never submitted is `locked`, not `404`).
 - The reveal picks the icebreaker in the same request: the seeded catalog icebreaker whose traits have the highest summed weight over the traits of everyone who answered before the reveal (ties, and an empty room, go to the lowest id). Night Icebreaker stores it in its own aggregate, not on the event.
@@ -356,7 +356,7 @@ The host screen doesn't exist in `web/` yet; these are ready for it (and for `cu
 
 ### Get the night's icebreaker (host)
 
-`GET /events/:eventId/icebreaker` → `200 { "status": "locked" }` before the reveal, then `200 { "status": "ready", question, why, gatherEndsAt }`, the same values attendees get (no `meetingSpot`: the host has no color). Type: `HostIcebreakerResponse` in `contracts/nightIcebreaker.d.ts`. `404` unknown event; `400` malformed id.
+`GET /events/:eventId/icebreaker` → `200 { "status": "locked" }` before the reveal, then `200 { "status": "ready", question, why, gatherEndsAt }`, the same values attendees get (no `meetingSpot`: the host has no color). Type: `HostIcebreakerResponse` in `api/contracts/nightIcebreaker.d.ts`. `404` unknown event; `400` malformed id.
 
 ## Gaps between the web contract and the backend plan
 
@@ -371,9 +371,9 @@ The web contract was written before the domain model. These conflict with `docs/
 
 ## Missing from the web contract
 
-Needed by the product flow but not in `ApiClient` yet. The backend should define these and add them to `contracts/`:
+Needed by the product flow but not in `ApiClient` yet. The backend should define these and add them to `api/contracts/`:
 
-- ~~**Create event**~~ Defined: `POST /events` with `{ name }` (trimmed, 1-255 characters) → `201` with the same body as `GET /events/:eventId`; `400` for an invalid name. Types in `contracts/event.d.ts`.
+- ~~**Create event**~~ Defined: `POST /events` with `{ name }` (trimmed, 1-255 characters) → `201` with the same body as `GET /events/:eventId`; `400` for an invalid name. Types in `api/contracts/event.d.ts`.
 - ~~**Close event / reveal icebreaker**~~ Defined: `POST /events/:eventId/reveal`, see [Host endpoints](#host-endpoints).
 - ~~**Host big-screen data**~~ Defined: `GET /events/:eventId/room` for the distribution and `GET /events/:eventId/icebreaker` for the revealed icebreaker.
 - **Realtime**: over Server-Sent Events (not WebSockets). The web is ready to swap polling for pushed `AttendeeGrouped` / icebreaker-revealed events carrying the same shapes as endpoints 5–7.

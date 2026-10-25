@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import type { EventResponse } from '../../../../contracts/event';
+import type { EventResponse } from '../../../contracts/event';
 import { ICEBREAKER_CATALOG } from '@Huemans/NightIcebreaker/Domain/Port/IcebreakerCatalog';
 import { IcebreakerCandidate } from '@Huemans/NightIcebreaker/Domain/ValueObject/IcebreakerCandidate';
 import { bootFunctional, getJson, postJson } from '../../Support/functional';

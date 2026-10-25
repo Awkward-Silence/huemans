@@ -13,9 +13,9 @@ Leaking domain objects to controllers, views or other contexts couples them to t
 
 ## Consequences
 
-The domain can change shape without breaking HTTP responses. Wire types are declared once in `contracts/`.
+The domain can change shape without breaking HTTP responses. Wire types are declared once in `api/contracts/`.
 
 ## In this repo
 
 - `AggregateRoot.toDTO()` is abstract; `Event.toDTO()` returns `EventView`, `EventDistribution.toDTO()` returns `EventDistributionView`.
-- Controllers map views onto the `contracts/` types (`import type` only).
+- Controllers map views onto the `api/contracts/` types (`import type` only).

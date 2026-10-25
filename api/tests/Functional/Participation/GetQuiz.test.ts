@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
-import type { EventResponse } from '../../../../contracts/event';
-import type { QuizResponse } from '../../../../contracts/participation';
+import type { EventResponse } from '../../../contracts/event';
+import type { QuizResponse } from '../../../contracts/participation';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { realContent, seedCatalogFiles } from '../../Support/catalog';
 import { bootFunctional, getJson, postJson } from '../../Support/functional';

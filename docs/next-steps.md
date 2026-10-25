@@ -11,7 +11,7 @@ The plan for the 24h hackathon, based on the updated `initial-raw-specs.md` and 
 - **One icebreaker per night, chosen when the host closes the event (option A).** The host taps "reveal", the event goes from `OPEN` to `REVEALED`, and the icebreaker that best matches the room's trait profile is picked and broadcast to everyone.
 - **Anonymous join** with a name only. The client keeps the attendee id so a reload resumes where it left off.
 - **AI is required** by the hackathon. Agents enrich (personalized color explanation, icebreaker rationale) but never decide or block, and every agent call has a fallback.
-- **Stack:** React (`web/`), NestJS + Mastra in-process (`api/`), type-only `contracts/`. Each app has its own `node_modules`.
+- **Stack:** React (`web/`), NestJS + Mastra in-process (`api/`), type-only wire types in `api/contracts/`. Each app has its own `node_modules`.
 - **Content already exists** in `api/src/Catalog/Infrastructure/Content/` (it lived in `tools/` until `catalog-aggregates`): 50 questions (4 trait-tagged answers each, 20 themes, 33 traits) and 51 icebreakers. Its JSON files are the catalog contract.
 - **Nice to have, not core:** % match + per-person icebreaker, meeting at a spot in 2 minutes (with a sketched venue map), leveraging people who already know each other.
 
@@ -73,7 +73,7 @@ Frontend and host changes (`attendee-flow`, `event-and-host`) are still to be pr
                    on a deployed URL  (H18)
 ```
 
-- **H0-H2, contract kickoff (everyone):** agree on `contracts/` (REST DTOs, `QuestionnaireCompleted`, `AttendeeGrouped`, the icebreaker broadcast) and resolve the open decisions.
+- **H0-H2, contract kickoff (everyone):** agree on the wire contracts, now in `api/contracts/` (REST DTOs, `QuestionnaireCompleted`, `AttendeeGrouped`, the icebreaker broadcast) and resolve the open decisions.
 - **About H10, walking skeleton:** join -> answer -> color reveal works end to end on a deployed URL.
 - **H18, feature freeze:** polish, bot seed script, rehearsal.
 
@@ -83,7 +83,7 @@ Frontend and host changes (`attendee-flow`, `event-and-host`) are still to be pr
 1. Done: color distribution modeled and applied, `api-skeleton` archived, Catalog modeled.
 2. Propose and apply `create-event`, so `quiz-and-answers` and color distribution get real events.
 3. Propose and apply `web-live-distribution` to close the walking skeleton.
-4. Lead the contract kickoff and write `contracts/`, then `night-icebreaker`.
+4. Lead the contract kickoff and write the contracts (now `api/contracts/`), then `night-icebreaker`.
 
 ### Diego (backend)
 1. Apply the catalog part of `backend-skeleton-and-catalog`: seed from the catalog content JSON and the colors with trait weights.

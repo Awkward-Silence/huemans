@@ -21,7 +21,7 @@ Built in a 24h hackathon.
 | --- | --- |
 | `web/` | React (attendee app + host big screen) |
 | `api/` | NestJS, with Mastra agents running in-process |
-| `contracts/` | Shared TypeScript types (type-only imports, no dependencies) |
+| `api/contracts/` | REST wire types (type-only, no dependencies); inside `api/` so the API builds from its own folder |
 
 Each app installs its own dependencies.
 

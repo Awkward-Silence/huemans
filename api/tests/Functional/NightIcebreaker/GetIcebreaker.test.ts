@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
-import type { EventResponse } from '../../../../contracts/event';
-import type { SubmitAnswersResponse } from '../../../../contracts/participation';
-import type { AttendeeIcebreakerResponse, HostIcebreakerResponse } from '../../../../contracts/nightIcebreaker';
+import type { EventResponse } from '../../../contracts/event';
+import type { SubmitAnswersResponse } from '../../../contracts/participation';
+import type { AttendeeIcebreakerResponse, HostIcebreakerResponse } from '../../../contracts/nightIcebreaker';
 import { SENTENCE_TRAIT_WEIGHER } from '@Huemans/Participation/Domain/Port/SentenceTraitWeigher';
 import { SentenceTraits } from '@Huemans/Participation/Domain/ValueObject/SentenceTraits';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
