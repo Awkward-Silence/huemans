@@ -29,5 +29,6 @@ import { MikroOrmAttendeeRepository } from './Persistence/MikroOrm/MikroOrmAtten
     { provide: GROUP_DIRECTORY, useClass: ColorDistributionGroupDirectory },
     { provide: ATTENDEE_REPOSITORY, useClass: MikroOrmAttendeeRepository },
   ],
+  exports: [ApplicationService],
 })
 export class ParticipationModule {}

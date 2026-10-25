@@ -44,6 +44,10 @@ export class ApplicationService {
     return { attendeeId: attendee.id.value };
   }
 
+  async joinedCount(eventId: string): Promise<number> {
+    return (await this.attendees.countIn(new EventId(eventId))).value;
+  }
+
   async quizOf(eventId: string): Promise<QuizView> {
     const event = new EventId(eventId);
     await this.ensureExists(event);

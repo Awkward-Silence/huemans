@@ -21,7 +21,7 @@
 
 ## 4. Room
 
-- [ ] 4.1 Add `ApplicationService.joinedCount(eventId)` and `ParticipationJoinedAttendeeCounter`, replacing `AnsweredAsJoinedAttendeeCounter` in `RoomModule`, test-first in `tests/Functional/Room/GetRoom.test.ts` (three joined, one answered → `total` 3, `answered` 1; empty event → 0 and 0) with the existing cases joining first; verify with `pnpm jest tests/Functional/Room`
+- [x] 4.1 Add `ApplicationService.joinedCount(eventId)` and `ParticipationJoinedAttendeeCounter`, replacing `AnsweredAsJoinedAttendeeCounter` in `RoomModule`, test-first in `tests/Functional/Room/GetRoom.test.ts` (three joined, one answered → `total` 3, `answered` 1; empty event → 0 and 0) with the existing cases joining first; verify with `pnpm jest tests/Functional/Room`
 
 ## 5. Contracts, docs and web
 
