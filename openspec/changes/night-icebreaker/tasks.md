@@ -7,9 +7,9 @@
 
 ## 2. Night Icebreaker domain
 
-- [ ] 2.1 Add the `RoomProfile` VO (sums weights per trait from `WeightedTrait[]`) and `bestMatch(candidates)` (highest summed weight, ties and empty room → lowest id), test-first in `tests/Unit/NightIcebreaker/Domain/ValueObject/RoomProfile.test.ts`; verify with `pnpm jest tests/Unit/NightIcebreaker`
-- [ ] 2.2 Add the `IcebreakerCandidate`, `IcebreakerReason` and `MeetingSpot` (closed set per `Color`) VOs, with unit tests for their invariants; verify with `pnpm jest tests/Unit/NightIcebreaker`
-- [ ] 2.3 Add the `NightIcebreaker` aggregate (`pick` records `NightIcebreakerPicked`, `gatherEndsAt()` = pickedAt + 120 s, `meetingSpotFor(color)`, `toDTO()`) and the ports `RoomTraitsRepository`, `NightIcebreakerRepository`, `IcebreakerCatalog`, `IcebreakerExplainer`, `EventDirectory`, `GroupDirectory`, test-first in `tests/Unit/NightIcebreaker/Domain/NightIcebreaker.test.ts`; verify with `pnpm jest tests/Unit/NightIcebreaker` and `pnpm lint` (no Nest/ORM in `Domain/`)
+- [x] 2.1 Add the `RoomProfile` VO (sums weights per trait from `WeightedTrait[]`) and `bestMatch(candidates)` (highest summed weight, ties and empty room → lowest id), test-first in `tests/Unit/NightIcebreaker/Domain/ValueObject/RoomProfile.test.ts`; verify with `pnpm jest tests/Unit/NightIcebreaker`
+- [x] 2.2 Add the `IcebreakerCandidate`, `IcebreakerReason` and `MeetingSpot` (closed set per `Color`) VOs, with unit tests for their invariants; verify with `pnpm jest tests/Unit/NightIcebreaker`
+- [x] 2.3 Add the `NightIcebreaker` aggregate (`pick` records `NightIcebreakerPicked`, `gatherEndsAt()` = pickedAt + 120 s, `meetingSpotFor(color)`, `toDTO()`) and the ports `RoomTraitsRepository`, `NightIcebreakerRepository`, `IcebreakerCatalog`, `IcebreakerExplainer`, `EventDirectory`, `GroupDirectory`, test-first in `tests/Unit/NightIcebreaker/Domain/NightIcebreaker.test.ts`; verify with `pnpm jest tests/Unit/NightIcebreaker` and `pnpm lint` (no Nest/ORM in `Domain/`)
 
 ## 3. Night Icebreaker persistence
 
