@@ -90,4 +90,19 @@ describe('Revealing an event picks the night icebreaker', () => {
 
     expect(await hostIcebreaker()).toEqual({ status: 'locked' });
   });
+
+  it('testSimultaneousRevealsBothSucceedWithOneIcebreaker', async () => {
+    await submit('adventurous');
+
+    const responses = await Promise.all([
+      postJson(app, `/events/${eventId}/reveal`, {}),
+      postJson(app, `/events/${eventId}/reveal`, {}),
+    ]);
+
+    expect(responses.map((response) => response.status)).toEqual([200, 200]);
+    expect(await hostIcebreaker()).toMatchObject({
+      status: 'ready',
+      question: expectedIcebreakerFor(['adventurous']).text,
+    });
+  });
 });

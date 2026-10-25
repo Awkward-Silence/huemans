@@ -6,9 +6,9 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
 
 permissions:
-  # GITHUB_TOKEN can only resolve review threads with contents: write. With read the reviewer still
-  # replies in its threads but leaves them open. The token never reaches the AI agents either way.
-  contents: read
+  # write so the reviewer can resolve its own threads: GITHUB_TOKEN can only resolve review threads with
+  # contents: write. It could also push, but the action removes it from the environment before the agents start.
+  contents: write
   pull-requests: write
 
 concurrency:
