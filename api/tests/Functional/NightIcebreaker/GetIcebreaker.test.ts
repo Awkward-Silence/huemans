@@ -7,9 +7,7 @@ import { SentenceTraits } from '@Huemans/Participation/Domain/ValueObject/Senten
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { seedCatalogFiles } from '../../Support/catalog';
 import { bootFunctional, getJson, joinAttendee, postJson } from '../../Support/functional';
-import { anAnswerOf } from '../../Support/room';
-
-const MEETING_SPOTS = { amber: 'the bar', coral: 'the entrance', teal: 'the stage', violet: 'the back corner' };
+import { anAnswerOf, MEETING_SPOTS } from '../../Support/room';
 
 describe('GET icebreaker', () => {
   let app: INestApplication;

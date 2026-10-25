@@ -3,13 +3,12 @@ import type { AttendeeAssignmentResponse, EventDistributionView } from '../../..
 import type { JoinResponse, QuizResponse, SubmitAnswersResponse } from '../../../contracts/participation';
 import type { AttendeeIcebreakerResponse, HostIcebreakerResponse } from '../../../contracts/nightIcebreaker';
 import type { RoomResponse } from '../../../contracts/room';
-import { Choice } from '../Support/room';
+import { Choice, MEETING_SPOTS } from '../Support/room';
 
 // Runs against a live API (E2E_API_URL, default http://localhost:3000) with migrations and the catalog seed applied.
 // Every run creates its own event, so it never touches the seeded demo event.
 const API_URL = (process.env.E2E_API_URL ?? 'http://localhost:3000').replace(/\/$/, '');
 const PEOPLE = 10;
-const MEETING_SPOTS = { amber: 'the bar', coral: 'the entrance', teal: 'the stage', violet: 'the back corner' };
 
 type Person = { name: string; attendeeId: string };
 
