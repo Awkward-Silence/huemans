@@ -21,7 +21,7 @@ The quiz response SHALL include a `sentence` object with the question `id`, the 
 - **THEN** the response is `200` with 243 sentences, one per path from the root to a leaf
 
 ### Requirement: The tree is generated once with the AI
-The API SHALL generate the tree with one structured LLM call (OpenAI through Mastra, key in `OPENAI_API_KEY`), using a prompt kept in the source code that asks for funny, catchy, family-friendly sentences in the app's tone. It SHALL start the generation at boot, serve the same tree for the life of the process, and let concurrent requests share one generation. A failed generation SHALL NOT be cached.
+The API SHALL generate the tree with one structured LLM call (Claude through Mastra, key in `ANTHROPIC_API_KEY`), using a prompt kept in the source code that asks for funny, catchy, family-friendly sentences in the app's tone. It SHALL start the generation at boot, serve the same tree for the life of the process, and let concurrent requests share one generation. A failed generation SHALL NOT be cached.
 
 #### Scenario: Request during the generation
 - **WHEN** a client requests the tree while the boot generation is still running
@@ -39,10 +39,10 @@ Each option text SHALL be 1 to 30 characters of letters, inner spaces, apostroph
 - **THEN** the tree keeps the first 3 usable ones
 
 ### Requirement: No tree without the AI
-When no tree can be generated (no `OPENAI_API_KEY`, provider error, unusable output after the retry), `GET /sentence-tree` SHALL answer `503`. The attendee app SHALL then use its bundled tree.
+When no tree can be generated (no `ANTHROPIC_API_KEY`, provider error, unusable output after the retry), `GET /sentence-tree` SHALL answer `503`. The attendee app SHALL then use its bundled tree.
 
 #### Scenario: No key configured
-- **WHEN** the API runs without `OPENAI_API_KEY`
+- **WHEN** the API runs without `ANTHROPIC_API_KEY`
 - **THEN** `GET /sentence-tree` answers `503` at once and no model call is made
 
 ### Requirement: The sentence counts as one answer, weighed by Jev

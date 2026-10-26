@@ -11,8 +11,8 @@ export class GrowSentenceTreeOnBoot implements OnApplicationBootstrap {
 
   onApplicationBootstrap(): void {
     if (!config.growSentenceTreeOnBoot) return;
-    if (!config.openAi.apiKey) {
-      this.logger.warn('OPENAI_API_KEY is not set: GET /sentence-tree answers 503 and web/ uses its bundled tree');
+    if (!config.anthropic.apiKey) {
+      this.logger.warn('ANTHROPIC_API_KEY is not set: GET /sentence-tree answers 503 and web/ uses its bundled tree');
       return;
     }
     const startedAt = Date.now();

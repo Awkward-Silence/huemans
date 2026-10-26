@@ -2,7 +2,7 @@
 
 ## 1. Setup
 
-- [x] 1.1 Add `@mastra/core` (1.68.0) to `api/package.json`, and `OPENAI_API_KEY`, `OPENAI_MODEL` (`gpt-5-mini`), `OPENAI_REASONING_EFFORT` (`low`) and `SENTENCE_TREE_ON_BOOT` to `.env.example` and `src/config.ts`; verify `pnpm build` passes and the app starts with no key set
+- [x] 1.1 Add `@mastra/core` (1.68.0) to `api/package.json`, and `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL` (`claude-opus-5-5`) and `SENTENCE_TREE_ON_BOOT` to `.env.example` and `src/config.ts`; verify `pnpm build` passes and the app starts with no key set
 - [x] 1.2 Create `api/src/Agents/{Domain,Application,Infrastructure}` with `AgentsModule` imported in `AppModule`
 
 ## 2. Domain (unit tests first)
@@ -14,9 +14,9 @@
 ## 3. Application and infrastructure
 
 - [x] 3.1 `ApplicationService.sentenceTree()`: a memoized generation shared by concurrent callers, 2 attempts, failures not cached
-- [x] 3.2 `sentenceTreePrompt.ts` (vibe, not-offensive list, the grammar of the 5 slots, traits, shape) and `MastraSentenceTreeGenerator` (recursive structured output); verify a faked OpenAI response of `sentences.test.json` without ids round-trips to the same file
+- [x] 3.2 `sentenceTreePrompt.ts` (vibe, not-offensive list, the grammar of the 5 slots, traits, shape) and `MastraSentenceTreeGenerator` (recursive structured output); verify a faked model response of `sentences.test.json` without ids round-trips to the same file
 - [x] 3.3 `GET /sentence-tree` (200, or 503 when unavailable) and `GrowSentenceTreeOnBoot`; verify `tests/Functional/Agents/SentenceTree.test.ts` with the generator faked
-- [x] 3.4 Integration test against the real model, skipped without `OPENAI_API_KEY` in `.env.test`
+- [x] 3.4 Integration test against the real model, skipped without `ANTHROPIC_API_KEY` in `.env.test`
 - [x] 3.5 `api/contracts/sentenceTree.d.ts`
 - [ ] 3.6 Run the integration test with the real key and check one generated tree by eye (`curl localhost:3000/sentence-tree > t.json && npx tsx src/sentences/generate.ts t.json` in `tools/`); tune the prompt if needed
 
@@ -40,7 +40,7 @@
 ## 8. End-to-end checks
 
 - [ ] 8.1 With `VITE_API_MODE=http` against the local API and a real key, run the full attendee flow and verify the sentence step shows generated words with no visible wait
-- [ ] 8.2 Repeat with `OPENAI_API_KEY` unset, and verify the flow completes on the bundled tree
+- [ ] 8.2 Repeat with `ANTHROPIC_API_KEY` unset, and verify the flow completes on the bundled tree
 
 ## Workflow follow-up
 

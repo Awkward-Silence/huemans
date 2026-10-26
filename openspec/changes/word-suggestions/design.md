@@ -27,8 +27,8 @@ This design replaces an earlier one: a `POST .../word-suggestions` call for ever
 - There are no ORM entities and no migration.
 
 **One structured call for the whole tree.**
-- Mastra `Agent` on OpenAI: model `OPENAI_MODEL` (default `gpt-5-mini`; `gpt-4.1-mini` and `gpt-4.1` ignore the 3-option shape of the recursive schema) with `OPENAI_REASONING_EFFORT` (default `low`), up to 16k output tokens, a 180 s deadline. No temperature: reasoning models don't take one.
-- Structured output with a recursive zod schema `{ text, trait, next }`. Mastra turns it into `$ref` definitions, which OpenAI strict mode supports. Spelling out the 5 levels would need 11 nesting levels, and strict mode allows 10.
+- Mastra `Agent` on Claude: model `ANTHROPIC_MODEL` (default `claude-opus-5-5`, at its default effort), up to 32k output tokens to leave room for thinking, a 180 s deadline. It replaced OpenAI `gpt-5-mini`, which had no working key for the team. Mastra 1.68's model list predates `claude-opus-5-5`, but its router passes the id through.
+- Structured output with a recursive zod schema `{ text, trait, next }`. Mastra turns it into `$ref` definitions, so the schema stays shallow; spelled out, the 5 picks would nest 11 levels deep.
 - Mastra turns array bounds into hints, so the counts are not enforced by the schema. The prompt asks for 3 options per pick, and the domain checks.
 - The model returns no ids. The domain derives them from each option's path, so they always match the tree. A round trip of `sentences.test.json` with its ids removed gives back the same file.
 
@@ -65,5 +65,5 @@ This design replaces an earlier one: a `POST .../word-suggestions` call for ever
 
 ## Migration Plan
 
-- New environment variables in `api/.env.example`: `OPENAI_API_KEY` (from the GitHub secret where the API is deployed), `OPENAI_MODEL`, `OPENAI_REASONING_EFFORT` and `SENTENCE_TREE_ON_BOOT`. Without a key the API answers 503 and the web uses its bundled tree, so deploying without one is safe.
+- New environment variables in `api/.env.example`: `ANTHROPIC_API_KEY` (from the GitHub secret where the API is deployed), `ANTHROPIC_MODEL` and `SENTENCE_TREE_ON_BOOT`. Without a key the API answers 503 and the web uses its bundled tree, so deploying without one is safe.
 - Rollback: remove `AgentsModule` from `AppModule`. The web keeps working on its bundled tree.

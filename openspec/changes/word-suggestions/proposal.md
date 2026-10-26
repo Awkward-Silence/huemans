@@ -8,7 +8,7 @@ The hackathon requires AI features, and the quiz is the moment every attendee is
 
 - Add a sentence-builder question as the **last quiz question**: the sentence starts with "I", and the attendee picks one of 3 options, 5 times. The quiz response announces it with its id, starter and number of picks.
 - Add `GET /sentence-tree`: the whole "I ..." tree (3 options per pick, 243 sentences) in the shape of `tools/src/sentences/sentences.test.json`. **One call**, made by the attendee app at startup. There is no per-word suggestion call.
-- Generate the tree in `api/` with one structured LLM call (OpenAI through Mastra, key in `OPENAI_API_KEY`), using a prompt kept in the source: funny, catchy and family-friendly. It is generated at boot and served from memory. Without a key or on failure, the endpoint answers 503.
+- Generate the tree in `api/` with one structured LLM call (Claude through Mastra, key in `ANTHROPIC_API_KEY`), using a prompt kept in the source: funny, catchy and family-friendly. It is generated at boot and served from memory. Without a key or on failure, the endpoint answers 503.
 - The attendee app retries the load, falls back to its bundled tree when the load failed, and waits at most 400 ms for a load still running before it cancels it and uses the bundled tree.
 - The finished sentence counts as **one answer**: on submit, Jev weighs its traits ([ADR-012](../../../docs/architecture/adr/ADR-012-ai-weighs-answers-on-submit.md)). The tree's own per-option traits don't feed grouping, so the generated (algorithmic) traits and Jev's (probabilistic) weighing can be compared. The finished sentence is kept on the phone and shown back to the attendee. Submitting the quiz never waits on the tree, and the attendee can skip the question.
 
@@ -21,7 +21,7 @@ The hackathon requires AI features, and the quiz is the moment every attendee is
 
 ## Impact
 
-- `api/`: a new `Agents` bounded context (the one `ai-enrichment` also plans) with a `SentenceTreeGenerator` port, a Mastra/OpenAI adapter and the prompt. New dependency: `@mastra/core`. New environment variables: `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_REASONING_EFFORT` and `SENTENCE_TREE_ON_BOOT`.
+- `api/`: a new `Agents` bounded context (the one `ai-enrichment` also plans) with a `SentenceTreeGenerator` port, a Mastra/Claude adapter and the prompt. New dependency: `@mastra/core`. New environment variables: `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL` and `SENTENCE_TREE_ON_BOOT`.
 - Contracts: `api/contracts/sentenceTree.d.ts`.
 - `web/`: `ApiClient.getSentenceTree`, the sentence tree loader, and the sentence-builder step reading from the tree.
 - Depends on `quiz-and-answers` for the quiz response's `sentence` field. The web mock serves it meanwhile.

@@ -68,12 +68,12 @@ describe('GET /sentence-tree', () => {
   });
 
   it('testIsUnavailableWithoutAModelAndDoesNotRetry', async () => {
-    generate.mockRejectedValue(new SentenceTreeUnavailable('OPENAI_API_KEY is not set'));
+    generate.mockRejectedValue(new SentenceTreeUnavailable('ANTHROPIC_API_KEY is not set'));
 
     const response = await getJson(app, '/sentence-tree');
 
     expect(response.status).toBe(503);
-    expect(response.body).toMatchObject({ message: 'OPENAI_API_KEY is not set' });
+    expect(response.body).toMatchObject({ message: 'ANTHROPIC_API_KEY is not set' });
     expect(generate).toHaveBeenCalledTimes(1);
   });
 });
