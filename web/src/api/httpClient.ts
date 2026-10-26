@@ -8,7 +8,7 @@ import {
   JoinResponseSchema,
   QuizSchema,
   RoomSchema,
-  WordSuggestionsSchema,
+  SentenceTreeSchema,
 } from "./schemas.ts";
 
 /** Talks to the NestJS api/ app over REST. */
@@ -16,7 +16,7 @@ function createHttpClient(baseUrl: string): ApiClient {
   async function request<S extends z.ZodType>(
     path: string,
     schema: S | null,
-    init?: { method?: "GET" | "POST"; body?: unknown },
+    init?: { method?: "GET" | "POST"; body?: unknown; signal?: AbortSignal },
   ): Promise<z.infer<S>> {
     let response: Response;
     try {
@@ -24,6 +24,7 @@ function createHttpClient(baseUrl: string): ApiClient {
         method: init?.method ?? "GET",
         headers: init?.body === undefined ? undefined : { "Content-Type": "application/json" },
         body: init?.body === undefined ? undefined : JSON.stringify(init.body),
+        signal: init?.signal,
       });
     } catch (cause) {
       throw new ApiError("network", `Could not reach ${path}`, { cause });
@@ -57,12 +58,7 @@ function createHttpClient(baseUrl: string): ApiClient {
     getRoom: (eventId) => request(`${event(eventId)}/room`, RoomSchema),
     getIcebreaker: (eventId, attendeeId) =>
       request(`${attendee(eventId, attendeeId)}/icebreaker`, IcebreakerSchema),
-    suggestWords: (eventId, questionId, body) =>
-      request(
-        `${event(eventId)}/questions/${encodeURIComponent(questionId)}/word-suggestions`,
-        WordSuggestionsSchema,
-        { method: "POST", body },
-      ),
+    getSentenceTree: (signal) => request("/sentence-tree", SentenceTreeSchema, { signal }),
   };
 }
 

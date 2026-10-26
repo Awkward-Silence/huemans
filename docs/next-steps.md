@@ -56,7 +56,7 @@ backend-skeleton-and-catalog +--> quiz-and-answers --> color-distribution (appli
 | `web-live-distribution` | `/room` read model and a UUIDv7 demo event, so `web/` runs against `api/` | Adrián | H6-H10 |
 | `night-icebreaker` | Host closes the event, room-profile-based icebreaker pick, broadcast | Adrián | H10-H13 |
 | `ai-enrichment` | Mastra in NestJS: personalized color explanation, icebreaker rationale, fallbacks | Diego + Adrián | H12-H18 |
-| `word-suggestions` | The "I ..." sentence-builder question with AI-suggested words and fallbacks | TBD | — |
+| `word-suggestions` | The "I ..." sentence-builder question: one AI-generated sentence tree, bundled tree as fallback | TBD | — |
 
 Frontend and host changes (`attendee-flow`, `event-and-host`) are still to be proposed by Daniel and Miguel.
 

@@ -13,6 +13,7 @@ Sources of truth: `initial-raw-specs.md` (product spec, written by the team), `d
 ```bash
 pnpm install
 cp .env.example .env && sed 's#/huemans$#/huemans_test#' .env.example > .env.test   # first time only
+# secrets (ANTHROPIC_API_KEY, JEV_API_KEY) go in .env.local / .env.test.local: git-ignored, they win over .env / .env.test
 docker compose up -d                 # Postgres 17: databases huemans + huemans_test
 pnpm migration:up && pnpm migration:up:test
 pnpm catalog:seed && pnpm catalog:seed:test   # catalog content, once per database (a second run does nothing); any deploy runs it after migration:up
@@ -69,7 +70,7 @@ tools/       sentence-builder content and scripts (not production code); catalog
 - **Bounded contexts in `api/`:** catalog, event, participation, color distribution (core domain, full DDD + tests), room (read-only: the live room read across Event, Color Distribution and Participation), night icebreaker, agents. Each keeps a `domain/` folder free of NestJS decorators.
 - **Domain events belong to the context that publishes them** (Event owns `EventCreated`/`EventRevealed`, Participation owns `QuestionnaireCompleted`); other contexts subscribe. Handlers are synchronous and in-process: no queue or background job.
 - **Key seam:** Participation publishes `QuestionnaireCompleted` with the attendee's trait profile; Color Distribution emits `AttendeeGrouped { eventId, attendeeId, color, personalityType }`, pushed in realtime to the phone and host screen.
-- **Agents enrich, they never decide or block.** Mastra runs inside NestJS behind ports (`ColorExplainer`, `IcebreakerExplainer`), each with a static fallback. No AI call in the join, distribution or close paths. The one exception is submitting answers ([ADR-012](docs/architecture/adr/ADR-012-ai-weighs-answers-on-submit.md)): Jev weighs the "I ..." sentence's traits, with a 1.5 s timeout, and on any failure the sentence adds no traits.
+- **Agents enrich, they never decide or block.** Mastra runs inside NestJS behind ports (`ColorExplainer`, `IcebreakerExplainer`, `SentenceTreeGenerator`), each with a static fallback. The `Agents` context generates the "I ..." sentence tree once per process (`GET /sentence-tree`, Claude through Mastra, key in `ANTHROPIC_API_KEY`, prompt in `api/src/Agents/Infrastructure/Llm/sentenceTreePrompt.ts`); `web/` loads it at startup and falls back to its bundled tree. No AI call in the join, distribution or close paths. The one exception is submitting answers ([ADR-012](docs/architecture/adr/ADR-012-ai-weighs-answers-on-submit.md)): Jev weighs the "I ..." sentence's traits, with a 1.5 s timeout, and on any failure the sentence adds no traits.
 
 ## Architecture decisions
 
@@ -106,4 +107,4 @@ npx vitest run -t "redirectFor"               # by test name
 ## Workflow
 
 - **DDD:** `/ddd-bc` (discovery) then `/ddd-model` write to `docs/domain/<bc>/` (config in `ddd-config.yml`). Color Distribution is modeled; its `model.md` is the contract for `/opsx:propose color-distribution`.
-- **OpenSpec** (`schema: spec-driven`): `/opsx:explore` -> `/opsx:propose` -> `/opsx:apply` -> `/opsx:sync` -> `/opsx:archive`. Backend changes: `catalog-aggregates`, `create-event`, `quiz-and-answers`, `color-distribution`, `web-live-distribution`, `night-icebreaker`, `ai-enrichment`, `word-suggestions` (`catalog-aggregates`, `color-distribution`, `create-event`, `quiz-and-answers` and `web-live-distribution` are applied, `word-suggestions` has specs and tasks, the rest are proposals only; `api-skeleton`, `backend-skeleton-and-catalog` and `night-icebreaker` are archived). `attendee-flow` and `event-and-host` are still to be proposed.
+- **OpenSpec** (`schema: spec-driven`): `/opsx:explore` -> `/opsx:propose` -> `/opsx:apply` -> `/opsx:sync` -> `/opsx:archive`. Backend changes: `catalog-aggregates`, `create-event`, `quiz-and-answers`, `color-distribution`, `web-live-distribution`, `night-icebreaker`, `ai-enrichment`, `word-suggestions` (`catalog-aggregates`, `color-distribution`, `create-event`, `quiz-and-answers` and `web-live-distribution` are applied, `word-suggestions` is implemented (one sentence-tree call, not per-word suggestions), the rest are proposals only; `api-skeleton`, `backend-skeleton-and-catalog` and `night-icebreaker` are archived). `attendee-flow` and `event-and-host` are still to be proposed.

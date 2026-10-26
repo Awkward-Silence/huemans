@@ -1,7 +1,11 @@
 import { existsSync } from 'node:fs';
 
-if (existsSync('.env')) {
-  process.loadEnvFile('.env');
+// Like Symfony: .env.local (git-ignored, for secrets) wins over .env, and real environment variables win over both,
+// because loadEnvFile never overrides a variable that is already set.
+for (const file of ['.env.local', '.env']) {
+  if (existsSync(file)) {
+    process.loadEnvFile(file);
+  }
 }
 
 import { NestFactory } from '@nestjs/core';

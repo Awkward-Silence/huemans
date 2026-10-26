@@ -75,4 +75,8 @@ describe('Quiz', () => {
   it('testTheQuizCarriesTheDuration', () => {
     expect(Quiz.for(eventId, catalog, settings).toDTO().durationSeconds).toBe(20);
   });
+
+  it('testTheQuizEndsWithTheISentence', () => {
+    expect(Quiz.for(eventId, catalog, settings).toDTO().sentence).toEqual({ id: 'sentence-i', starter: 'I', picks: 5 });
+  });
 });

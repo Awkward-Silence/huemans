@@ -1,9 +1,8 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState, type MouseEvent } from "react";
-import { wordSuggestionsQuery } from "../../api/queries.ts";
+import { useMemo, useState, type MouseEvent } from "react";
 import type { SentenceQuestion } from "../../api/schemas.ts";
+import { useSentenceTree } from "../../api/sentenceTree.ts";
 import { copy } from "../../content/index.ts";
-import { isLongSentence } from "../../domain/sentence.ts";
+import { isLongSentence, nextWords } from "../../domain/sentence.ts";
 import {
   Button,
   GrowingSentence,
@@ -19,8 +18,6 @@ import styles from "./SentenceStep.module.css";
 const SKELETON_WIDTHS = [30, 40, 26];
 
 type SentenceStepProps = {
-  eventId: string;
-  attendeeId: string;
   question: SentenceQuestion;
   /** Words picked so far, starter excluded. */
   picks: readonly string[];
@@ -30,37 +27,21 @@ type SentenceStepProps = {
 };
 
 /**
- * The "I ..." sentence builder: tap one of three suggested words, `picks`
- * times. The follow-up words of every word on screen are prefetched, so the
- * next row is usually there the moment a word is tapped.
+ * The "I ..." sentence builder: tap one of three words, `picks` times. The
+ * words come from the whole sentence tree, loaded once at startup, so the
+ * next row is there the moment a word is tapped. Only the first row can wait,
+ * briefly, for a tree still loading.
  */
-function SentenceStep({
-  eventId,
-  attendeeId,
-  question,
-  picks,
-  timeUp,
-  onPick,
-  onSkip,
-}: SentenceStepProps) {
-  const queryClient = useQueryClient();
+function SentenceStep({ question, picks, timeUp, onPick, onSkip }: SentenceStepProps) {
+  const tree = useSentenceTree();
   const sentence = [question.starter, ...picks];
   const sentenceKey = sentence.join(" ");
-  const suggestions = useQuery(wordSuggestionsQuery(eventId, question, attendeeId, sentence));
-  const words = suggestions.data?.words;
+  // Off-tree picks get random words, so pin them to the sentence: words never reshuffle on screen.
+  // `sentence` is rebuilt every render; `sentenceKey` tracks its content.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const words = useMemo(() => tree && nextWords(tree, sentence), [tree, sentenceKey]);
   const left = question.picks - picks.length;
   const [flyFrom, setFlyFrom] = useState<DOMRect | null>(null);
-
-  useEffect(() => {
-    if (!words || left <= 1) return;
-    for (const word of words) {
-      void queryClient.prefetchQuery(
-        wordSuggestionsQuery(eventId, question, attendeeId, [...sentence, word]),
-      );
-    }
-    // `sentence` is rebuilt every render; `sentenceKey` tracks its content.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [words, left, sentenceKey, eventId, question, attendeeId, queryClient]);
 
   const pick = (word: string, event: MouseEvent<HTMLButtonElement>) => {
     const label = event.currentTarget.firstElementChild ?? event.currentTarget;

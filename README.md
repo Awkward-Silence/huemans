@@ -47,7 +47,7 @@ Open `/join/demo` for the attendee flow (any event id works) or `/event` to crea
 
 ```bash
 pnpm install
-cp .env.example .env               # first time only
+cp .env.example .env               # first time only; API keys go in .env.local (git-ignored)
 docker compose up -d               # Postgres 17 on localhost:5432
 pnpm migration:up                  # create the tables
 pnpm catalog:seed                  # load questions and icebreakers, once per database

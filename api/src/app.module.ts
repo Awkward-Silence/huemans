@@ -1,5 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
+import { AgentsModule } from '@Huemans/Agents/Infrastructure/AgentsModule';
 import { CatalogModule } from '@Huemans/Catalog/Infrastructure/CatalogModule';
 import { ColorDistributionModule } from '@Huemans/ColorDistribution/Infrastructure/ColorDistributionModule';
 import { EventModule } from '@Huemans/Event/Infrastructure/EventModule';
@@ -20,6 +21,7 @@ import { HealthController } from './Health/HealthController';
     ColorDistributionModule,
     ParticipationModule,
     RoomModule,
+    AgentsModule,
     NightIcebreakerModule,
   ],
   controllers: [HealthController],

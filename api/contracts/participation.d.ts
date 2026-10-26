@@ -46,4 +46,6 @@ export type QuizResponse = {
   }[];
   /** The soft timer for the whole quiz; late answers are still accepted. */
   durationSeconds: number;
+  /** The "I ..." sentence asked after the questions; its words come from GET /sentence-tree. */
+  sentence: { id: string; starter: string; picks: number };
 };

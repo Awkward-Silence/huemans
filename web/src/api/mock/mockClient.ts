@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { sentenceTree } from "../../content/index.ts";
 import { GROUP_COLORS, GroupColorSchema } from "../../domain/groupColor.ts";
-import { nextWords } from "../../domain/sentence.ts";
 import { readJson, writeJson } from "../../lib/storage.ts";
 import { uuidv7 } from "../../lib/uuid.ts";
 import type { ApiClient } from "../client.ts";
@@ -13,7 +12,7 @@ import {
   JoinResponseSchema,
   QuizSchema,
   RoomSchema,
-  WordSuggestionsSchema,
+  SentenceTreeSchema,
 } from "../schemas.ts";
 import { CROWD_WEIGHTS, GROUP_PROFILES, ICEBREAKER } from "./fixtures/groups.ts";
 import questionBank from "./fixtures/questions.json";
@@ -29,8 +28,8 @@ import { distribute, type Counts } from "./grouping.ts";
 
 type MockOptions = {
   latencyMs: number;
-  /** Word suggestions stand in for an AI call, so they take a bit longer. */
-  suggestLatencyMs: number;
+  /** The sentence tree stands in for an AI generation, so it takes longer. */
+  sentenceTreeLatencyMs: number;
   quizDurationSeconds: number;
   questionCount: number;
   /** Simulated people besides you. */
@@ -50,7 +49,7 @@ type MockOptions = {
 
 const DEFAULT_OPTIONS: MockOptions = {
   latencyMs: 250,
-  suggestLatencyMs: 600,
+  sentenceTreeLatencyMs: 1_500,
   quizDurationSeconds: 20,
   questionCount: questionBank.length,
   crowdSize: 47,
@@ -257,24 +256,11 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
         );
       }),
 
-    suggestWords: (_eventId, questionId, body) =>
-      respond(() => {
-        if (questionId !== SENTENCE_QUESTION.id) {
-          throw new ApiError("not-found", "Unknown sentence question", { status: 404 });
-        }
-        const { sentence } = body;
-        if (
-          sentence[0] !== SENTENCE_QUESTION.starter ||
-          sentence.length > SENTENCE_QUESTION.picks
-        ) {
-          throw new ApiError("http", "Invalid sentence", { status: 400 });
-        }
-        return parseResponse(
-          WordSuggestionsSchema,
-          { words: nextWords(sentenceTree, sentence), source: "ai" },
-          "word suggestions",
-        );
-      }, options.suggestLatencyMs),
+    getSentenceTree: () =>
+      respond(
+        () => parseResponse(SentenceTreeSchema, sentenceTree, "sentence tree"),
+        options.sentenceTreeLatencyMs,
+      ),
   };
 }
 
