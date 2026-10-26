@@ -1,5 +1,6 @@
 import { SentenceOptionView } from '@Huemans/Agents/Domain/SentenceTreeView';
 import { SentenceTree } from '@Huemans/Agents/Domain/SentenceTree';
+import { SentenceQuestion } from '@Huemans/Participation/Domain/ValueObject/SentenceQuestion';
 import { InvalidArgumentError } from '@Huemans/Shared/Domain/InvalidArgumentError';
 import { completeDraft, textsOf } from './SentenceTreeDraftMother';
 
@@ -12,6 +13,12 @@ describe('SentenceTree', () => {
 
     expect(tree).toMatchObject({ id: 'sentence-i', starter: 'I', picks: 5 });
     expect(textsOf(tree.options)).toEqual(['loudly a', 'happily a', 'secretly a']);
+  });
+
+  it('testMatchesTheSentenceQuestionTheQuizAnnounces', () => {
+    const { id, starter, picks } = SentenceTree.grow(completeDraft()).toDTO();
+
+    expect({ id, starter, picks }).toEqual(SentenceQuestion.standard().toPrimitives());
   });
 
   it('testHolds243Sentences', () => {

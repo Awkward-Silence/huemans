@@ -6,18 +6,25 @@ import { SentenceTreeView } from '@Huemans/Agents/Domain/SentenceTreeView';
 
 /** Generations per request before giving up; each one is a long model call. */
 const ATTEMPTS = 2;
+/** After a failure, requests answer 503 at once for this long: the endpoint is anonymous and every attempt is paid. */
+const FAILURE_COOLDOWN_MS = 60_000;
 
 @Injectable()
 export class ApplicationService {
   // One tree per process: generated once, then served from memory. Concurrent callers share the same generation.
   private sentenceTreeOnce: Promise<SentenceTreeView> | null = null;
+  private failedAt: number | null = null;
 
   constructor(@Inject(SENTENCE_TREE_GENERATOR) private readonly generator: SentenceTreeGenerator) {}
 
   sentenceTree(): Promise<SentenceTreeView> {
-    this.sentenceTreeOnce ??= this.growSentenceTree().catch((error: unknown) => {
-      // A failed generation is not cached: the next request tries again.
+    if (this.failedAt !== null && Date.now() - this.failedAt >= FAILURE_COOLDOWN_MS) {
       this.sentenceTreeOnce = null;
+      this.failedAt = null;
+    }
+    // Until the cooldown ends, a failed generation keeps answering with its error instead of calling the model again.
+    this.sentenceTreeOnce ??= this.growSentenceTree().catch((error: unknown) => {
+      this.failedAt = Date.now();
       throw error;
     });
     return this.sentenceTreeOnce;

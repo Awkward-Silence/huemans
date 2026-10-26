@@ -20,6 +20,7 @@ describe('GET /sentence-tree', () => {
   });
 
   afterEach(async () => {
+    jest.restoreAllMocks();
     await app.close();
   });
 
@@ -59,10 +60,21 @@ describe('GET /sentence-tree', () => {
     expect((await getJson(app, '/sentence-tree')).status).toBe(503);
   });
 
-  it('testTriesAgainAfterAFailedGeneration', async () => {
-    generate.mockRejectedValueOnce(new Error('provider down')).mockRejectedValueOnce(new Error('provider down'));
+  it('testWaitsAMinuteBeforeTryingAgainAfterAFailedGeneration', async () => {
+    generate.mockRejectedValue(new Error('provider down'));
     await getJson(app, '/sentence-tree');
     generate.mockResolvedValue(completeDraft());
+    jest.spyOn(Date, 'now').mockReturnValue(Date.now() + 59_000);
+
+    expect((await getJson(app, '/sentence-tree')).status).toBe(503);
+    expect(generate).toHaveBeenCalledTimes(2);
+  });
+
+  it('testTriesAgainAMinuteAfterAFailedGeneration', async () => {
+    generate.mockRejectedValue(new Error('provider down'));
+    await getJson(app, '/sentence-tree');
+    generate.mockResolvedValue(completeDraft());
+    jest.spyOn(Date, 'now').mockReturnValue(Date.now() + 60_000);
 
     expect((await getJson(app, '/sentence-tree')).status).toBe(200);
   });

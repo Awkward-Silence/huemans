@@ -11,7 +11,7 @@ export type SentenceOptionResponse = {
 
 /**
  * GET /sentence-tree (200): the night's "I ..." sentence tree, generated once per API process.
- * 503 when no tree can be generated (no OPENAI_API_KEY, provider error); clients fall back to a bundled tree.
+ * 503 when no tree can be generated (no ANTHROPIC_API_KEY, provider error); clients fall back to a bundled tree.
  * Same shape as tools/src/sentences/sentences.test.json and the web's SentenceTreeSchema.
  */
 export type SentenceTreeResponse = {

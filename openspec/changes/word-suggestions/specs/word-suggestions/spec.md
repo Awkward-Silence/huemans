@@ -21,14 +21,18 @@ The quiz response SHALL include a `sentence` object with the question `id`, the 
 - **THEN** the response is `200` with 243 sentences, one per path from the root to a leaf
 
 ### Requirement: The tree is generated once with the AI
-The API SHALL generate the tree with one structured LLM call (Claude through Mastra, key in `ANTHROPIC_API_KEY`), using a prompt kept in the source code that asks for funny, catchy, family-friendly sentences in the app's tone. It SHALL start the generation at boot, serve the same tree for the life of the process, and let concurrent requests share one generation. A failed generation SHALL NOT be cached.
+The API SHALL generate the tree with one structured LLM call (Claude through Mastra, key in `ANTHROPIC_API_KEY`), using a prompt kept in the source code that asks for funny, catchy, family-friendly sentences in the app's tone. It SHALL start the generation at boot, serve the same tree for the life of the process, and let concurrent requests share one generation. After a failed generation, requests SHALL answer `503` without a model call for 60 s; the first request after that SHALL try again. The endpoint is anonymous and every attempt is paid, so a failing provider must not turn requests into repeated calls.
 
 #### Scenario: Request during the generation
 - **WHEN** a client requests the tree while the boot generation is still running
 - **THEN** the request waits for that generation and no second model call is made
 
-#### Scenario: Generation failed earlier
-- **WHEN** a previous generation failed and a client requests the tree
+#### Scenario: Request soon after a failure
+- **WHEN** a generation failed less than 60 s ago and a client requests the tree
+- **THEN** the API answers `503` and makes no model call
+
+#### Scenario: Request a minute after a failure
+- **WHEN** a generation failed 60 s or more ago and a client requests the tree
 - **THEN** the API tries a new generation
 
 ### Requirement: Generated trees are usable
@@ -95,7 +99,7 @@ The attendee app SHALL request the tree once at startup and retry a failed reque
 - **THEN** the step shows the bundled tree's options, the request is cancelled and not retried
 
 ### Requirement: Finished sentence is shown back
-The attendee app SHALL show the finished sentence to the attendee on the reveal screen. The sentence SHALL stay on the attendee's phone and SHALL NOT be sent with the quiz answers.
+The attendee app SHALL show the finished sentence to the attendee on the reveal screen. It is also sent with the quiz answers, as described in "The sentence counts as one answer, weighed by Jev".
 
 #### Scenario: Sentence on the reveal
 - **WHEN** an attendee who finished the sentence reaches the reveal screen
