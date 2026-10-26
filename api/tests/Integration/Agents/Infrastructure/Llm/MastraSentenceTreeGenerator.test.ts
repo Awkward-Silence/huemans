@@ -2,10 +2,10 @@ import { SentenceTree } from '@Huemans/Agents/Domain/SentenceTree';
 import { MastraSentenceTreeGenerator } from '@Huemans/Agents/Infrastructure/Llm/MastraSentenceTreeGenerator';
 import { config } from '@Huemans/config';
 
-// Calls the real model, so it runs only with ANTHROPIC_API_KEY in .env.test (or CI's secret written there). About a minute.
-// Mastra loads its provider with a dynamic import, which Jest only runs with --experimental-vm-modules: use
-// `pnpm test:integration`, or `NODE_OPTIONS=--experimental-vm-modules pnpm jest <this file>`.
-const withKey = config.anthropic.apiKey ? describe : describe.skip;
+// Calls the real model (about two minutes, billed), so it runs only through `pnpm test:llm` with ANTHROPIC_API_KEY set
+// (.env.test.local, or CI's secret). That script also adds --experimental-vm-modules, which Jest needs for Mastra's
+// dynamic import of its provider and which costs too much memory to turn on for every suite.
+const withKey = config.anthropic.apiKey && process.env.LLM_TESTS === 'true' ? describe : describe.skip;
 
 withKey('MastraSentenceTreeGenerator', () => {
   it('testGeneratesADraftThatGrowsIntoACompleteTree', async () => {
