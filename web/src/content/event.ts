@@ -31,6 +31,8 @@ const eventCopy = {
     revealing: "Revealing…",
     revealed: "Icebreaker revealed on every phone",
     revealFailed: "We couldn't reveal the icebreaker. Try again.",
+    room: "The room, right now",
+    answered: (answered: number, total: number) => `${answered} of ${total} answered`,
     another: "Create another event",
   },
 };

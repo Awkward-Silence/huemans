@@ -119,7 +119,7 @@ const en = {
     cta: "Turn my phone into a badge",
     hint: "Screen stays on. Hold it chest height.",
     lockedTitle: "Not yet",
-    lockedBody: "The icebreaker unlocks when the last person finishes. It shows up here by itself.",
+    lockedBody: "The icebreaker unlocks when the host reveals it. It shows up here by itself.",
   },
   badge: {
     group: (color: string, nickname: string) => `${color} · ${nickname}`,

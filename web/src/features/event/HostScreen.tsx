@@ -1,15 +1,26 @@
 import { QRCodeSVG } from "qrcode.react";
-import { useEvent, useReveal } from "../../api/queries.ts";
+import { useEvent, useReveal, useRoom } from "../../api/queries.ts";
+import { copy } from "../../content/index.ts";
 import { eventCopy } from "../../content/event.ts";
-import { Button, ButtonLink, Eyebrow, Heading, Screen, Stack, Text } from "../../ui/index.ts";
+import {
+  Button,
+  ButtonLink,
+  Eyebrow,
+  GroupBars,
+  Heading,
+  Screen,
+  Stack,
+  Text,
+} from "../../ui/index.ts";
 import { joinUrlFor } from "./createEvent.ts";
 import styles from "./HostScreen.module.css";
 
-/** The host's screen for one event: the big QR code attendees scan, and the icebreaker reveal. */
+/** The host's screen for one event: the big QR code attendees scan, the live room and the icebreaker reveal. */
 function HostScreen({ eventId, infoUrl }: { eventId: string; infoUrl?: string }) {
   // The route loader has already fetched the event.
   const event = useEvent(eventId).data!;
   const reveal = useReveal(eventId);
+  const room = useRoom(eventId).data;
   const revealed = event.status === "revealed";
   const joinUrl = joinUrlFor(eventId);
 
@@ -43,6 +54,21 @@ function HostScreen({ eventId, infoUrl }: { eventId: string; infoUrl?: string })
           </Text>
         )}
       </Stack>
+      {room && (
+        <Stack gap="sm" align="stretch" className={styles.room}>
+          <Eyebrow align="center">{eventCopy.ready.room}</Eyebrow>
+          <GroupBars
+            groups={room.groups.map((group) => ({ ...group, label: copy.groups[group.color] }))}
+            youLabel=""
+            label={room.groups
+              .map((group) => `${copy.groups[group.color]} ${group.count}`)
+              .join(", ")}
+          />
+          <Text scale="small" tone="muted" align="center" tabular>
+            {eventCopy.ready.answered(room.answered, room.total)}
+          </Text>
+        </Stack>
+      )}
       <Stack gap="sm" pushEnd className={styles.actions}>
         {reveal.isError && (
           <Text scale="small" tone="danger" role="alert">

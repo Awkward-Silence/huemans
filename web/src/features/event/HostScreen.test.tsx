@@ -65,4 +65,24 @@ describe("host page", () => {
     ).toBeDisabled();
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
+
+  it("shows how the room is spreading over the colours", async () => {
+    const event = await api.createEvent({ name: "Friday Meetup" });
+    vi.spyOn(api, "getRoom").mockResolvedValue({
+      answered: 8,
+      total: 9,
+      groups: [
+        { color: "amber", count: 3 },
+        { color: "coral", count: 2 },
+        { color: "teal", count: 2 },
+        { color: "violet", count: 1 },
+      ],
+    });
+    openAt(`/host/${event.id}`);
+
+    expect(
+      await screen.findByRole("img", { name: "amber 3, coral 2, teal 2, violet 1" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("8 of 9 answered")).toBeInTheDocument();
+  });
 });
