@@ -63,6 +63,7 @@ describe("mock client", () => {
         answerId: question.answers[0]!.id,
       })),
       elapsedMs: 12_000,
+      sentence: null,
     });
 
     advance(1_000);
