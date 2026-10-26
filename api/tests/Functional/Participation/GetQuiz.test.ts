@@ -52,6 +52,10 @@ describe('GET /events/:eventId/quiz', () => {
     }
   });
 
+  it('testAnnouncesTheISentenceAfterTheQuestions', async () => {
+    expect((await quizOf()).sentence).toEqual({ id: 'sentence-i', starter: 'I', picks: 5 });
+  });
+
   it('testEveryPhoneGetsTheSameQuiz', async () => {
     expect(idsOf(await quizOf())).toEqual(idsOf(await quizOf()));
   });

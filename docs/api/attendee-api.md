@@ -135,6 +135,11 @@ The questions for this event. Every phone in the event must get **the same quest
     }>;
   }>;
   durationSeconds: number;    // int > 0; same value as Event.quizDurationSeconds
+  sentence?: {                // the "I ..." question, asked after the multiple-choice ones
+    id: Id;                   // "sentence-i"
+    starter: string;          // "I"
+    picks: number;            // words the attendee adds after the starter: 5
+  };
 }
 ```
 
@@ -153,7 +158,8 @@ The questions for this event. Every phone in the event must get **the same quest
       ]
     }
   ],
-  "durationSeconds": 20
+  "durationSeconds": 20,
+  "sentence": { "id": "sentence-i", "starter": "I", "picks": 5 }
 }
 ```
 
@@ -163,7 +169,7 @@ The questions for this event. Every phone in the event must get **the same quest
 - The questions are picked from the event id with a seeded shuffle: the same event always gets the same questions in the same order, with nothing stored, and different events get different mixes. They come from 5 different themes.
 - Answers are served without their `trait`, so the quiz can't give the grouping away. Traits are resolved server-side from `answerId`.
 - Content comes from the catalog (`api/src/Catalog/Infrastructure/Content/questions.json`, seeded into Postgres).
-- No `sentence` field yet: `word-suggestions` adds it. Until then `web/` in `http` mode adds its own sentence question.
+- `sentence` is always present from `api/`. Its words come from the sentence tree (`GET /sentence-tree`), not from this endpoint. `web/` treats the field as optional and skips the step without it.
 
 **Errors:** `404` unknown event; `400` if the id is not a UUIDv7.
 

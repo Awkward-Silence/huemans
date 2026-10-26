@@ -2,6 +2,7 @@ import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { QuizView } from './QuizView';
 import { QuizQuestion } from './ValueObject/QuizQuestion';
 import { QuizSettings } from './ValueObject/QuizSettings';
+import { SentenceQuestion } from './ValueObject/SentenceQuestion';
 
 /**
  * The questions an event asks, picked from the event id alone: every phone, and every restart, gets the same quiz
@@ -39,6 +40,7 @@ export class Quiz {
     return {
       questions: this.questions.map((question) => question.toPrimitives()),
       durationSeconds: this.settings.durationSeconds,
+      sentence: SentenceQuestion.standard().toPrimitives(),
     };
   }
 }

@@ -40,7 +40,7 @@ This design replaces an earlier one: a `POST .../word-suggestions` call for ever
 - A failure clears the memo, so a later request tries again.
 - `GrowSentenceTreeOnBoot` starts the generation at boot unless the key is missing or `SENTENCE_TREE_ON_BOOT=false`.
 
-**HTTP.** `GET /sentence-tree` returns the tree (`contracts/sentenceTree.d.ts`), or `503` when it is unavailable. A request made while the generation is running waits for it. CORS (`CORS_ORIGIN`, already on main) lets `web/` call it from another origin.
+**HTTP.** `GET /sentence-tree` returns the tree (`api/contracts/sentenceTree.d.ts`), or `503` when it is unavailable. A request made while the generation is running waits for it. CORS (`CORS_ORIGIN`, already on main) lets `web/` call it from another origin.
 
 **Prompt in the source.** `sentenceTreePrompt.ts` holds the instructions:
 - the app's vibe;

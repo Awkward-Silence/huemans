@@ -22,7 +22,7 @@ The hackathon requires AI features, and the quiz is the moment every attendee is
 ## Impact
 
 - `api/`: a new `Agents` bounded context (the one `ai-enrichment` also plans) with a `SentenceTreeGenerator` port, a Mastra/OpenAI adapter and the prompt. New dependency: `@mastra/core`. New environment variables: `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_REASONING_EFFORT` and `SENTENCE_TREE_ON_BOOT`.
-- Contracts: `contracts/sentenceTree.d.ts`.
+- Contracts: `api/contracts/sentenceTree.d.ts`.
 - `web/`: `ApiClient.getSentenceTree`, the sentence tree loader, and the sentence-builder step reading from the tree.
 - Depends on `quiz-and-answers` for the quiz response's `sentence` field. The web mock serves it meanwhile.
 - Owners: TBD (backend: Diego or Adrián, web: Daniel).

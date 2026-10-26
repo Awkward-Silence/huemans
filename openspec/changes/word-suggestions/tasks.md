@@ -17,12 +17,12 @@
 - [x] 3.2 `sentenceTreePrompt.ts` (vibe, not-offensive list, the grammar of the 5 slots, traits, shape) and `MastraSentenceTreeGenerator` (recursive structured output); verify a faked OpenAI response of `sentences.test.json` without ids round-trips to the same file
 - [x] 3.3 `GET /sentence-tree` (200, or 503 when unavailable) and `GrowSentenceTreeOnBoot`; verify `tests/Functional/Agents/SentenceTree.test.ts` with the generator faked
 - [x] 3.4 Integration test against the real model, skipped without `OPENAI_API_KEY` in `.env.test`
-- [x] 3.5 `contracts/sentenceTree.d.ts`
+- [x] 3.5 `api/contracts/sentenceTree.d.ts`
 - [ ] 3.6 Run the integration test with the real key and check one generated tree by eye (`curl localhost:3000/sentence-tree > t.json && npx tsx src/sentences/generate.ts t.json` in `tools/`); tune the prompt if needed
 
 ## 4. Attendee API contract
 
-- [ ] 4.1 Add the optional `sentence` field (`{ id: "sentence-i", starter: "I", picks: 5 }`) to the `quiz-and-answers` quiz response
+- [x] 4.1 Add the optional `sentence` field (`{ id: "sentence-i", starter: "I", picks: 5 }`) to the `quiz-and-answers` quiz response
 
 ## 6. Web: API layer
 
