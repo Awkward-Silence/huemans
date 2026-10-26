@@ -49,7 +49,7 @@ Every read targets exactly one event, so no SK::Criteria is needed. These are po
 |---|---|---|
 | EventLookup | Event's EventRepository.search | Checked first. Unknown event → RoomNotFound (`404`) before any count is read |
 | GroupCounter | Color Distribution's EventDistributionView | Members per color only; the personality types stay in Color Distribution |
-| JoinedAttendeeCounter | Participation's joined attendees | Stub until `quiz-and-answers` lands: reports the same number as `answered`, so the room shows everyone as answered |
+| JoinedAttendeeCounter | Participation's joined attendees | Attendees who joined the event (Participation's `joinedCount`), including those still on the quiz |
 
 ---
 
@@ -100,4 +100,4 @@ None — Room publishes no events and reacts to none.
 ## Open Questions
 
 - Color Distribution's model still lists `Color` as Local. It has to reference SK::Color instead (a separate edit to that model), and in code `Color` moves to `api/src/Shared/Domain/ValueObject/`.
-- JoinedAttendeeCounter is a stub until Participation exists; `quiz-and-answers` provides the real implementation.
+- JoinedAttendeeCounter reads Participation's joined count; submit only accepts attendees who joined, so `answered` never exceeds `total`.

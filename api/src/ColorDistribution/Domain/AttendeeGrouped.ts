@@ -1,4 +1,4 @@
-import type { AttendeeGrouped as AttendeeGroupedPayload } from '../../../../contracts/colorDistribution';
+import type { AttendeeGrouped as AttendeeGroupedPayload } from '../../../contracts/colorDistribution';
 import { DomainEvent } from '@Huemans/Shared/Domain/DomainEvent';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';

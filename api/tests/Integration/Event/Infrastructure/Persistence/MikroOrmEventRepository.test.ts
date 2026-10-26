@@ -41,4 +41,18 @@ describe('MikroOrmEventRepository', () => {
   it('testItFindsNothingForAnUnknownEvent', async () => {
     expect(await repository.search(EventId.random())).toBeNull();
   });
+
+  it('testItPersistsTheRevealedStatusFoundForUpdate', async () => {
+    await repository.save(Event.create(id, new EventName('Demo night')));
+    em.clear();
+
+    await em.transactional(async () => {
+      const event = await repository.searchForUpdate(id);
+      event!.reveal();
+      await repository.save(event!);
+    });
+    em.clear();
+
+    expect((await repository.search(id))?.toDTO().status).toBe('revealed');
+  });
 });

@@ -5,9 +5,8 @@ import { isCompleteTree } from "../domain/sentence.ts";
 /**
  * Wire format between web/ and api/, validated on every response.
  *
- * TODO(contracts): these shapes are the web side's proposal. When contracts/
- * exists, move the plain types there and check these schemas against them with
- * `import type` + `satisfies z.ZodType<Contract>` (no runtime import).
+ * The API's wire types are in api/contracts/. Podium builds each app from its
+ * own folder, so web/ can't import them: keep these schemas in step by hand.
  */
 
 const IdSchema = z.string().min(1);
@@ -18,6 +17,8 @@ const EventSchema = z.object({
   quizDurationSeconds: z.number().int().positive(),
   questionCount: z.number().int().positive(),
 });
+
+const CreateEventRequestSchema = z.object({ name: z.string() });
 
 const JoinRequestSchema = z.object({ name: z.string() });
 const JoinResponseSchema = z.object({ attendeeId: IdSchema });
@@ -78,6 +79,8 @@ const SentenceTreeSchema = z
 const SubmitAnswersRequestSchema = z.object({
   answers: z.array(z.object({ questionId: IdSchema, answerId: IdSchema })),
   elapsedMs: z.number().int().nonnegative(),
+  /** The finished "I ..." sentence; api/ lets Jev weigh its traits. Null when skipped. */
+  sentence: z.object({ question: z.string().min(1), answer: z.string().min(1) }).nullable(),
 });
 
 /** Grouping runs after submit, so the assignment can be pending for a moment. */
@@ -118,6 +121,7 @@ const IcebreakerSchema = z.discriminatedUnion("status", [
 ]);
 
 type Event = z.infer<typeof EventSchema>;
+type CreateEventRequest = z.infer<typeof CreateEventRequestSchema>;
 type JoinRequest = z.infer<typeof JoinRequestSchema>;
 type JoinResponse = z.infer<typeof JoinResponseSchema>;
 type Question = z.infer<typeof QuestionSchema>;
@@ -133,6 +137,7 @@ type ReadyIcebreaker = Extract<Icebreaker, { status: "ready" }>;
 
 export {
   AssignmentSchema,
+  CreateEventRequestSchema,
   EventSchema,
   IcebreakerSchema,
   JoinRequestSchema,
@@ -147,6 +152,7 @@ export {
 export type {
   AssignedGroup,
   Assignment,
+  CreateEventRequest,
   Event,
   Icebreaker,
   JoinRequest,

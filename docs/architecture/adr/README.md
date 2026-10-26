@@ -15,6 +15,7 @@ The architecture rules every change in this repo follows: humans and agents alik
 | [ADR-009](ADR-009-criteria-for-dynamic-queries.md) | Criteria for dynamic queries | Accepted |
 | [ADR-010](ADR-010-explicit-optionality.md) | Explicit optionality in the domain | Accepted |
 | [ADR-011](ADR-011-typed-validation-at-the-edge.md) | Typed validation at the edge | Accepted |
+| [ADR-012](ADR-012-ai-weighs-answers-on-submit.md) | AI may weigh answers on submit, behind a timeout and a fallback | Proposed |
 
 ## Adding an ADR
 

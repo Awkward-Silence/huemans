@@ -1,5 +1,5 @@
 import { Controller, Get, ServiceUnavailableException } from '@nestjs/common';
-import type { SentenceTreeResponse } from '../../../../../contracts/sentenceTree';
+import type { SentenceTreeResponse } from '../../../../contracts/sentenceTree';
 import { ApplicationService } from '@Huemans/Agents/Application/ApplicationService';
 import { SentenceTreeUnavailable } from '@Huemans/Agents/Domain/SentenceTreeUnavailable';
 

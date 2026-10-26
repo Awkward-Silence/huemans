@@ -14,6 +14,7 @@
     "test:unit": "jest --selectProjects Unit",
     "test:integration": "jest --selectProjects Integration",
     "test:functional": "jest --selectProjects Functional",
+    "test:e2e": "jest --config jest.e2e.config.ts",
     "migration:create": "dotenv -e .env -- mikro-orm migration:create",
     "migration:up": "dotenv -e .env -- mikro-orm migration:up",
     "migration:up:test": "dotenv -e .env.test -- mikro-orm migration:up",

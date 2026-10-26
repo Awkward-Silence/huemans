@@ -14,7 +14,7 @@ Hand-written validation spread across handlers is easy to skip and lets malforme
 
 ## Consequences
 
-Bad input is rejected with `400` before reaching the domain, and the payload type matches `contracts/`.
+Bad input is rejected with `400` before reaching the domain, and the payload type matches `api/contracts/`.
 
 ## In this repo
 

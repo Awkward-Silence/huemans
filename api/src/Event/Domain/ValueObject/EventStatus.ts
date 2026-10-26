@@ -12,4 +12,12 @@ export class EventStatus extends EnumValueObject<EventStatusValue> {
   static open(): EventStatus {
     return new EventStatus('open');
   }
+
+  static revealed(): EventStatus {
+    return new EventStatus('revealed');
+  }
+
+  isRevealed(): boolean {
+    return this.value === 'revealed';
+  }
 }

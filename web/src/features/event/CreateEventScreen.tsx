@@ -123,7 +123,7 @@ function EventReady({ event, onReset }: { event: CreatedEvent; onReset: () => vo
           <QRCodeSVG
             value={event.joinUrl}
             level="M"
-            marginSize={2}
+            marginSize={3}
             bgColor="transparent"
             fgColor="currentColor"
             title={eventCopy.ready.qrLabel(event.name)}

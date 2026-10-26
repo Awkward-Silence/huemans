@@ -6,10 +6,12 @@ import { TraitTypeMapping } from '@Huemans/ColorDistribution/Domain/ValueObject/
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { Trait, TraitValue } from '@Huemans/Shared/Domain/ValueObject/Trait';
+import { TraitWeight } from '@Huemans/Shared/Domain/ValueObject/TraitWeight';
+import { WeightedTrait } from '@Huemans/Shared/Domain/ValueObject/WeightedTrait';
 import { mappingWith } from './TraitTypeMappingMother';
 
 function profile(...traits: TraitValue[]): TraitProfile {
-  return new TraitProfile(traits.map((trait) => new Trait(trait)));
+  return new TraitProfile(traits.map((trait) => new WeightedTrait(new Trait(trait), TraitWeight.wholeAnswer())));
 }
 
 describe('EventDistribution', () => {
@@ -80,6 +82,15 @@ describe('EventDistribution', () => {
 
     distribution.assign(attendeeId, profile('curious', 'curious', 'sociable'), mapping);
 
+    expect(typeAssignedTo(attendeeId)).toBe('explorer');
+  });
+
+  it('testAttendeeWithNoTraitsStillJoinsAGroup', () => {
+    const attendeeId = AttendeeId.random();
+
+    distribution.assign(attendeeId, new TraitProfile([]), mapping);
+
+    expect(colorAssignedTo(attendeeId)).toBe('amber');
     expect(typeAssignedTo(attendeeId)).toBe('explorer');
   });
 

@@ -2,6 +2,7 @@ import { z } from "zod";
 import { sentenceTree } from "../../content/index.ts";
 import { GROUP_COLORS, GroupColorSchema } from "../../domain/groupColor.ts";
 import { readJson, writeJson } from "../../lib/storage.ts";
+import { uuidv7 } from "../../lib/uuid.ts";
 import type { ApiClient } from "../client.ts";
 import { ApiError, parseResponse } from "../errors.ts";
 import {
@@ -16,7 +17,7 @@ import {
 import { CROWD_WEIGHTS, GROUP_PROFILES, ICEBREAKER } from "./fixtures/groups.ts";
 import questionBank from "./fixtures/questions.json";
 import { SENTENCE_QUESTION } from "./fixtures/words.ts";
-import { distribute, leanFromTraits, pickGroup, type Counts } from "./grouping.ts";
+import { distribute, type Counts } from "./grouping.ts";
 
 /**
  * An in-browser backend for building and demoing the attendee flow without
@@ -41,6 +42,8 @@ type MockOptions = {
   groupingDelayMs: number;
   gatherSeconds: number;
   now: () => number;
+  /** Picks the group colour; replace it in tests to get a known colour. */
+  random: () => number;
   persist: boolean;
 };
 
@@ -55,6 +58,7 @@ const DEFAULT_OPTIONS: MockOptions = {
   groupingDelayMs: 1_200,
   gatherSeconds: 120,
   now: () => Date.now(),
+  random: () => Math.random(),
   persist: true,
 };
 
@@ -63,11 +67,11 @@ const AttendeeStateSchema = z.object({
   traits: z.array(z.string()).optional(),
   submittedAt: z.number().optional(),
   color: GroupColorSchema.optional(),
-  lean: z.array(z.object({ color: GroupColorSchema, percent: z.number() })).optional(),
-  balanced: z.boolean().optional(),
 });
 
 const EventStateSchema = z.object({
+  /** Set by createEvent; events opened by id alone are the demo night. */
+  name: z.string().optional(),
   attendees: z.record(z.string(), AttendeeStateSchema),
   firstSubmitAt: z.number().optional(),
 });
@@ -126,25 +130,32 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
   const unlockAt = (state: EventState) =>
     state.firstSubmitAt === undefined ? undefined : state.firstSubmitAt + options.crowdFinishMs;
 
+  const eventOf = (eventId: string) =>
+    parseResponse(
+      EventSchema,
+      {
+        id: eventId,
+        name: load(eventId).name ?? "Demo night",
+        quizDurationSeconds: options.quizDurationSeconds,
+        questionCount: options.questionCount,
+      },
+      "event",
+    );
+
   return {
-    getEvent: (eventId) =>
-      respond(() =>
-        parseResponse(
-          EventSchema,
-          {
-            id: eventId,
-            name: "Demo night",
-            quizDurationSeconds: options.quizDurationSeconds,
-            questionCount: options.questionCount,
-          },
-          "event",
-        ),
-      ),
+    createEvent: (body) =>
+      respond(() => {
+        const eventId = uuidv7();
+        save(eventId, { name: body.name, attendees: {} });
+        return eventOf(eventId);
+      }),
+
+    getEvent: (eventId) => respond(() => eventOf(eventId)),
 
     join: (eventId, body) =>
       respond(() => {
         const state = load(eventId);
-        const attendeeId = crypto.randomUUID();
+        const attendeeId = uuidv7();
         state.attendees[attendeeId] = { name: body.name };
         save(eventId, state);
         return parseResponse(JoinResponseSchema, { attendeeId }, "join");
@@ -172,17 +183,11 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
           const answer = question?.answers.find((candidate) => candidate.id === answerId);
           return answer ? [answer.trait] : [];
         });
-        const lean = leanFromTraits(traits);
-        const { color, balanced } = pickGroup(lean, roomCounts(state).counts);
+        // Each phone runs its own mock and can't see the others, so a random colour
+        // spreads a real room better than the answers would (they lean amber).
+        const color = GROUP_COLORS[Math.floor(options.random() * GROUP_COLORS.length)]!;
         const now = options.now();
-        state.attendees[attendeeId] = {
-          ...attendee,
-          traits,
-          submittedAt: now,
-          color,
-          lean,
-          balanced,
-        };
+        state.attendees[attendeeId] = { ...attendee, traits, submittedAt: now, color };
         state.firstSubmitAt ??= now;
         save(eventId, state);
       }),
@@ -198,7 +203,6 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
           return parseResponse(AssignmentSchema, { status: "pending" }, "assignment");
         }
         const profile = GROUP_PROFILES[attendee.color];
-        const lean = attendee.lean ?? [];
         return parseResponse(
           AssignmentSchema,
           {
@@ -209,10 +213,8 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
             traits: profile.traits,
             mates: Math.max(0, roomCounts(state).counts[attendee.color] - 1),
             reason: {
-              lean,
-              text: attendee.balanced
-                ? "Both groups were nearly full, so the tie went to the smaller one."
-                : "Most of your answers pointed here, and there was room for you.",
+              lean: [],
+              text: "Groups are mixed on purpose, so you'll meet people who answered differently.",
             },
           },
           "assignment",

@@ -3,6 +3,7 @@ export { Button, ButtonLink } from "./Button.tsx";
 export type { ButtonVariant } from "./Button.tsx";
 export { Chip } from "./Chip.tsx";
 export { ColorBlades } from "./ColorBlades.tsx";
+export { ColorLoader } from "./ColorLoader.tsx";
 export { ColorOrbs } from "./ColorOrbs.tsx";
 export { Countdown } from "./Countdown.tsx";
 export { FitText } from "./FitText.tsx";

@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import type { SentenceOptionResponse, SentenceTreeResponse } from '../../../../contracts/sentenceTree';
+import type { SentenceOptionResponse, SentenceTreeResponse } from '../../../contracts/sentenceTree';
 import { SENTENCE_TREE_GENERATOR, SentenceTreeGenerator } from '@Huemans/Agents/Domain/Port/SentenceTreeGenerator';
 import { SentenceTreeDraft } from '@Huemans/Agents/Domain/SentenceTreeDraft';
 import { SentenceTreeUnavailable } from '@Huemans/Agents/Domain/SentenceTreeUnavailable';

@@ -19,7 +19,6 @@ import { Route as JoinEventIdIcebreakerRouteImport } from './routes/join/$eventI
 import { Route as JoinEventIdNameRouteImport } from './routes/join/$eventId/name'
 import { Route as JoinEventIdQuizRouteImport } from './routes/join/$eventId/quiz'
 import { Route as JoinEventIdRevealRouteImport } from './routes/join/$eventId/reveal'
-import { Route as JoinEventIdRoomRouteImport } from './routes/join/$eventId/room'
 import { Route as JoinEventIdSortedRouteImport } from './routes/join/$eventId/sorted'
 import { Route as JoinEventIdWelcomeRouteImport } from './routes/join/$eventId/welcome'
 
@@ -73,11 +72,6 @@ const JoinEventIdRevealRoute = JoinEventIdRevealRouteImport.update({
   path: '/reveal',
   getParentRoute: () => JoinEventIdRouteRoute,
 } as any)
-const JoinEventIdRoomRoute = JoinEventIdRoomRouteImport.update({
-  id: '/room',
-  path: '/room',
-  getParentRoute: () => JoinEventIdRouteRoute,
-} as any)
 const JoinEventIdSortedRoute = JoinEventIdSortedRouteImport.update({
   id: '/sorted',
   path: '/sorted',
@@ -99,7 +93,6 @@ export interface FileRoutesByFullPath {
   '/join/$eventId/name': typeof JoinEventIdNameRoute
   '/join/$eventId/quiz': typeof JoinEventIdQuizRoute
   '/join/$eventId/reveal': typeof JoinEventIdRevealRoute
-  '/join/$eventId/room': typeof JoinEventIdRoomRoute
   '/join/$eventId/sorted': typeof JoinEventIdSortedRoute
   '/join/$eventId/welcome': typeof JoinEventIdWelcomeRoute
   '/join/$eventId/': typeof JoinEventIdIndexRoute
@@ -113,7 +106,6 @@ export interface FileRoutesByTo {
   '/join/$eventId/name': typeof JoinEventIdNameRoute
   '/join/$eventId/quiz': typeof JoinEventIdQuizRoute
   '/join/$eventId/reveal': typeof JoinEventIdRevealRoute
-  '/join/$eventId/room': typeof JoinEventIdRoomRoute
   '/join/$eventId/sorted': typeof JoinEventIdSortedRoute
   '/join/$eventId/welcome': typeof JoinEventIdWelcomeRoute
   '/join/$eventId': typeof JoinEventIdIndexRoute
@@ -129,7 +121,6 @@ export interface FileRoutesById {
   '/join/$eventId/name': typeof JoinEventIdNameRoute
   '/join/$eventId/quiz': typeof JoinEventIdQuizRoute
   '/join/$eventId/reveal': typeof JoinEventIdRevealRoute
-  '/join/$eventId/room': typeof JoinEventIdRoomRoute
   '/join/$eventId/sorted': typeof JoinEventIdSortedRoute
   '/join/$eventId/welcome': typeof JoinEventIdWelcomeRoute
   '/join/$eventId/': typeof JoinEventIdIndexRoute
@@ -146,7 +137,6 @@ export interface FileRouteTypes {
     | '/join/$eventId/name'
     | '/join/$eventId/quiz'
     | '/join/$eventId/reveal'
-    | '/join/$eventId/room'
     | '/join/$eventId/sorted'
     | '/join/$eventId/welcome'
     | '/join/$eventId/'
@@ -160,7 +150,6 @@ export interface FileRouteTypes {
     | '/join/$eventId/name'
     | '/join/$eventId/quiz'
     | '/join/$eventId/reveal'
-    | '/join/$eventId/room'
     | '/join/$eventId/sorted'
     | '/join/$eventId/welcome'
     | '/join/$eventId'
@@ -175,7 +164,6 @@ export interface FileRouteTypes {
     | '/join/$eventId/name'
     | '/join/$eventId/quiz'
     | '/join/$eventId/reveal'
-    | '/join/$eventId/room'
     | '/join/$eventId/sorted'
     | '/join/$eventId/welcome'
     | '/join/$eventId/'
@@ -260,13 +248,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JoinEventIdRevealRouteImport
       parentRoute: typeof JoinEventIdRouteRoute
     }
-    '/join/$eventId/room': {
-      id: '/join/$eventId/room'
-      path: '/room'
-      fullPath: '/join/$eventId/room'
-      preLoaderRoute: typeof JoinEventIdRoomRouteImport
-      parentRoute: typeof JoinEventIdRouteRoute
-    }
     '/join/$eventId/sorted': {
       id: '/join/$eventId/sorted'
       path: '/sorted'
@@ -290,7 +271,6 @@ interface JoinEventIdRouteRouteChildren {
   JoinEventIdNameRoute: typeof JoinEventIdNameRoute
   JoinEventIdQuizRoute: typeof JoinEventIdQuizRoute
   JoinEventIdRevealRoute: typeof JoinEventIdRevealRoute
-  JoinEventIdRoomRoute: typeof JoinEventIdRoomRoute
   JoinEventIdSortedRoute: typeof JoinEventIdSortedRoute
   JoinEventIdWelcomeRoute: typeof JoinEventIdWelcomeRoute
   JoinEventIdIndexRoute: typeof JoinEventIdIndexRoute
@@ -302,7 +282,6 @@ const JoinEventIdRouteRouteChildren: JoinEventIdRouteRouteChildren = {
   JoinEventIdNameRoute: JoinEventIdNameRoute,
   JoinEventIdQuizRoute: JoinEventIdQuizRoute,
   JoinEventIdRevealRoute: JoinEventIdRevealRoute,
-  JoinEventIdRoomRoute: JoinEventIdRoomRoute,
   JoinEventIdSortedRoute: JoinEventIdSortedRoute,
   JoinEventIdWelcomeRoute: JoinEventIdWelcomeRoute,
   JoinEventIdIndexRoute: JoinEventIdIndexRoute,

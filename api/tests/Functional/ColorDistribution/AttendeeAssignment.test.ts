@@ -1,11 +1,12 @@
 import { INestApplication } from '@nestjs/common';
-import type { AttendeeAssignment, AttendeePending } from '../../../../contracts/colorDistribution';
+import type { AttendeeAssignment, AttendeePending } from '../../../contracts/colorDistribution';
 import { ApplicationService as CatalogService } from '@Huemans/Catalog/Application/ApplicationService';
 import { PersonalityTypesNotDefined } from '@Huemans/Catalog/Domain/PersonalityTypesNotDefined';
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { EventCreated } from '@Huemans/Event/Domain/EventCreated';
-import { QuestionnaireCompleted } from '@Huemans/Shared/Domain/Event/QuestionnaireCompleted';
+import { QuestionnaireCompleted } from '@Huemans/Participation/Domain/QuestionnaireCompleted';
+import { wholeAnswers } from '../../Support/traits';
 import { publish } from '../../Support/events';
 import { realContent, seedCatalogFiles } from '../../Support/catalog';
 import { bootFunctional, getJson } from '../../Support/functional';
@@ -32,7 +33,10 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
 
   it('testAssignedAttendeeReadsTheirGroup', async () => {
     const dreamer = realContent().profiles.find((profile) => profile.type === 'dreamer')!;
-    await publish(app, new QuestionnaireCompleted(attendeeId, eventId, ['romantic', 'nostalgic', 'sociable']));
+    await publish(
+      app,
+      new QuestionnaireCompleted(attendeeId, eventId, wholeAnswers('romantic', 'nostalgic', 'sociable')),
+    );
 
     const response = await getJson(app, `/events/${eventId}/attendees/${attendeeId}/assignment`);
 
@@ -56,7 +60,7 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment', () => {
     const planner = Object.entries(realContent().mapping)
       .filter(([, type]) => type === 'planner')
       .map(([trait]) => trait);
-    await publish(app, new QuestionnaireCompleted(attendeeId, eventId, planner.slice(0, 4)));
+    await publish(app, new QuestionnaireCompleted(attendeeId, eventId, wholeAnswers(...planner.slice(0, 4))));
 
     const response = await getJson(app, `/events/${eventId}/attendees/${attendeeId}/assignment`);
 
@@ -113,7 +117,10 @@ describe('GET /events/:eventId/attendees/:attendeeId/assignment without catalog 
     const eventId = EventId.random().value;
     const attendeeId = AttendeeId.random().value;
     await publish(app, new EventCreated(eventId));
-    await publish(app, new QuestionnaireCompleted(attendeeId, eventId, ['romantic', 'nostalgic', 'sociable']));
+    await publish(
+      app,
+      new QuestionnaireCompleted(attendeeId, eventId, wholeAnswers('romantic', 'nostalgic', 'sociable')),
+    );
 
     const response = await getJson(app, `/events/${eventId}/attendees/${attendeeId}/assignment`);
 

@@ -9,6 +9,8 @@ import { MikroOrmEventDistributionRepository } from '@Huemans/ColorDistribution/
 import { AttendeeId } from '@Huemans/Shared/Domain/ValueObject/AttendeeId';
 import { EventId } from '@Huemans/Shared/Domain/ValueObject/EventId';
 import { Trait, TRAITS } from '@Huemans/Shared/Domain/ValueObject/Trait';
+import { TraitWeight } from '@Huemans/Shared/Domain/ValueObject/TraitWeight';
+import { WeightedTrait } from '@Huemans/Shared/Domain/ValueObject/WeightedTrait';
 import { MikroOrmTransactionManager } from '@Huemans/Shared/Infrastructure/Persistence/MikroOrm/MikroOrmTransactionManager';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { bootIntegration } from '../../../../Support/integration';
@@ -40,7 +42,7 @@ describe('MikroOrmEventDistributionRepository', () => {
     em = module.get(EntityManager);
     eventId = EventId.random();
     mapping = new TraitTypeMapping(TRAITS.map((trait) => [new Trait(trait), new PersonalityType('explorer')] as const));
-    curious = new TraitProfile([new Trait('curious')]);
+    curious = new TraitProfile([new WeightedTrait(new Trait('curious'), TraitWeight.wholeAnswer())]);
   });
 
   // thinkTimeMs holds the transaction open between load and save, so concurrent calls really overlap.

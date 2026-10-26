@@ -1,5 +1,6 @@
 import type {
   Assignment,
+  CreateEventRequest,
   Event,
   Icebreaker,
   JoinRequest,
@@ -11,10 +12,11 @@ import type {
 } from "./schemas.ts";
 
 /**
- * Everything the attendee app asks of the backend. Implementations must
+ * Everything the app asks of the backend. Implementations must
  * return data that already passed its schema.
  */
 interface ApiClient {
+  createEvent(body: CreateEventRequest): Promise<Event>;
   getEvent(eventId: string): Promise<Event>;
   join(eventId: string, body: JoinRequest): Promise<JoinResponse>;
   getQuiz(eventId: string): Promise<Quiz>;

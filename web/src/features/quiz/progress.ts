@@ -1,4 +1,5 @@
 import type { Question, SentenceQuestion, SubmitAnswersRequest } from "../../api/schemas.ts";
+import { copy } from "../../content/index.ts";
 
 type AnswerMap = Record<string, string>;
 
@@ -14,6 +15,18 @@ function toAnswerList(questions: Question[], answers: AnswerMap): SubmitAnswersR
     const answerId = answers[question.id];
     return answerId ? [{ questionId: question.id, answerId }] : [];
   });
+}
+
+/** The finished sentence as submitted, or null when it was skipped or the quiz has none. */
+function toSentenceAnswer(
+  question: SentenceQuestion | undefined,
+  picks: readonly string[],
+): SubmitAnswersRequest["sentence"] {
+  if (!question || picks.length < question.picks) return null;
+  return {
+    question: `${copy.sentence.title}: ${question.starter} ...`,
+    answer: [question.starter, ...picks].join(" "),
+  };
 }
 
 /**
@@ -60,5 +73,6 @@ export {
   sentenceStatus,
   themeLabel,
   toAnswerList,
+  toSentenceAnswer,
 };
 export type { AnswerMap, SentenceStatus };

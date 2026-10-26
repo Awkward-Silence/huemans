@@ -27,7 +27,7 @@ describe('JsonCatalogContentSource', () => {
   it('testAuthorsTheRealContent', () => {
     const { questions, icebreakers, personalityTypes } = new JsonCatalogContentSource().read();
 
-    expect(questions).toHaveLength(50);
+    expect(questions).toHaveLength(53);
     expect(icebreakers).toHaveLength(51);
     expect(Object.keys(personalityTypes.toDTO().mapping)).toHaveLength(33);
     expect(personalityTypes.profileOf(new PersonalityType('planner')).nickname).toBe('The Planners');

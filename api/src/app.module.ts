@@ -4,6 +4,8 @@ import { AgentsModule } from '@Huemans/Agents/Infrastructure/AgentsModule';
 import { CatalogModule } from '@Huemans/Catalog/Infrastructure/CatalogModule';
 import { ColorDistributionModule } from '@Huemans/ColorDistribution/Infrastructure/ColorDistributionModule';
 import { EventModule } from '@Huemans/Event/Infrastructure/EventModule';
+import { NightIcebreakerModule } from '@Huemans/NightIcebreaker/Infrastructure/NightIcebreakerModule';
+import { ParticipationModule } from '@Huemans/Participation/Infrastructure/ParticipationModule';
 import { RoomModule } from '@Huemans/Room/Infrastructure/RoomModule';
 import { mikroOrmConfig } from '@Huemans/Shared/Infrastructure/Persistence/MikroOrm/mikro-orm.config';
 import { SharedModule } from '@Huemans/Shared/Infrastructure/SharedModule';
@@ -17,8 +19,10 @@ import { HealthController } from './Health/HealthController';
     CatalogModule,
     EventModule,
     ColorDistributionModule,
+    ParticipationModule,
     RoomModule,
     AgentsModule,
+    NightIcebreakerModule,
   ],
   controllers: [HealthController],
   providers: [DatabaseHealthProbe],

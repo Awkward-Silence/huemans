@@ -1,6 +1,6 @@
 /**
  * The "I ..." sentence: the starter plus the words the attendee picked.
- * It is fun only and never leaves the phone.
+ * It is submitted with the answers, where api/ may weigh its traits.
  */
 
 /** How many options every pick offers. */

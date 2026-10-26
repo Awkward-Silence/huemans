@@ -8,6 +8,7 @@ import {
   sentenceStatus,
   themeLabel,
   toAnswerList,
+  toSentenceAnswer,
 } from "./progress.ts";
 
 const question = (id: string): Question => ({
@@ -74,6 +75,22 @@ describe("sentenceStatus", () => {
     expect(sentenceStatus(sentence, ["loudly", "sing to", "every", "sleepy", "goat"], false)).toBe(
       "done",
     );
+  });
+});
+
+describe("toSentenceAnswer", () => {
+  const sentence = { id: "sentence-i", starter: "I", picks: 3 };
+
+  it("sends the finished sentence with its question", () => {
+    expect(toSentenceAnswer(sentence, ["loudly", "sing to", "goats"])).toEqual({
+      question: "Finish the sentence: I ...",
+      answer: "I loudly sing to goats",
+    });
+  });
+
+  it("sends nothing for an unfinished or missing sentence", () => {
+    expect(toSentenceAnswer(sentence, ["loudly"])).toBeNull();
+    expect(toSentenceAnswer(undefined, [])).toBeNull();
   });
 });
 
