@@ -3,6 +3,8 @@ import { MastraSentenceTreeGenerator } from '@Huemans/Agents/Infrastructure/Llm/
 import { config } from '@Huemans/config';
 
 // Calls the real model, so it runs only with OPENAI_API_KEY in .env.test (or CI's secret written there). About a minute.
+// Mastra loads its provider with a dynamic import, which Jest only runs with --experimental-vm-modules: use
+// `pnpm test:integration`, or `NODE_OPTIONS=--experimental-vm-modules pnpm jest <this file>`.
 const withKey = config.openAi.apiKey ? describe : describe.skip;
 
 withKey('MastraSentenceTreeGenerator', () => {
