@@ -1,3 +1,8 @@
+.room {
+  width: 100%;
+  padding-top: var(--space-xl);
+}
+
 .actions {
   width: 100%;
   padding-top: var(--space-xl);
