@@ -39,8 +39,8 @@
 
 ## 8. End-to-end checks
 
-- [ ] 8.1 With `VITE_API_MODE=http` against the local API and a real key, run the full attendee flow and verify the sentence step shows generated words with no visible wait
-- [ ] 8.2 Repeat with `ANTHROPIC_API_KEY` unset, and verify the flow completes on the bundled tree
+- [x] 8.1 With `VITE_API_MODE=http` against the local API and a real key, run the full attendee flow and verify the sentence step shows generated words with no visible wait
+- [x] 8.2 Repeat with `ANTHROPIC_API_KEY` unset, and verify the flow completes on the bundled tree
 
 ## Workflow follow-up
 

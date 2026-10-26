@@ -50,7 +50,7 @@ When no tree can be generated (no `ANTHROPIC_API_KEY`, provider error, unusable 
 - **THEN** `GET /sentence-tree` answers `503` at once and no model call is made
 
 ### Requirement: The sentence counts as one answer, weighed by Jev
-On submit, the finished sentence SHALL be sent as `{ question, answer }` and Participation SHALL let Jev weigh its traits ([ADR-012](../../../../../docs/architecture/adr/ADR-012-ai-weighs-answers-on-submit.md)). The sentence SHALL be worth one answer in total, spread over the traits Jev finds, so it can tip a close call but not override the multiple-choice answers. The `trait` of each tree option SHALL NOT feed the trait profile: the tree's traits (chosen when the tree is generated) and Jev's weighing (probabilities over the finished sentence) stay separate, so the two can be compared. Submitting the quiz SHALL never wait on the sentence tree.
+On submit, the finished sentence SHALL be sent as `{ question, answer }` and Participation SHALL let Jev weigh its traits ([ADR-012](../../../../../../docs/architecture/adr/ADR-012-ai-weighs-answers-on-submit.md)). The sentence SHALL be worth one answer in total, spread over the traits Jev finds, so it can tip a close call but not override the multiple-choice answers. The `trait` of each tree option SHALL NOT feed the trait profile: the tree's traits (chosen when the tree is generated) and Jev's weighing (probabilities over the finished sentence) stay separate, so the two can be compared. Submitting the quiz SHALL never wait on the sentence tree.
 
 #### Scenario: Jev weighs the sentence
 - **WHEN** an attendee submits a finished sentence and Jev answers within its timeout
