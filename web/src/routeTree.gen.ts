@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EventRouteImport } from './routes/event'
 import { Route as DevKitchenSinkRouteImport } from './routes/dev/kitchen-sink'
+import { Route as HostEventIdRouteImport } from './routes/host/$eventId'
 import { Route as JoinEventIdRouteRouteImport } from './routes/join/$eventId/route'
 import { Route as JoinEventIdIndexRouteImport } from './routes/join/$eventId/index'
 import { Route as JoinEventIdBadgeRouteImport } from './routes/join/$eventId/badge'
@@ -35,6 +36,11 @@ const EventRoute = EventRouteImport.update({
 const DevKitchenSinkRoute = DevKitchenSinkRouteImport.update({
   id: '/dev/kitchen-sink',
   path: '/dev/kitchen-sink',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HostEventIdRoute = HostEventIdRouteImport.update({
+  id: '/host/$eventId',
+  path: '/host/$eventId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JoinEventIdRouteRoute = JoinEventIdRouteRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/event': typeof EventRoute
   '/join/$eventId': typeof JoinEventIdRouteRouteWithChildren
   '/dev/kitchen-sink': typeof DevKitchenSinkRoute
+  '/host/$eventId': typeof HostEventIdRoute
   '/join/$eventId/badge': typeof JoinEventIdBadgeRoute
   '/join/$eventId/icebreaker': typeof JoinEventIdIcebreakerRoute
   '/join/$eventId/name': typeof JoinEventIdNameRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/event': typeof EventRoute
   '/dev/kitchen-sink': typeof DevKitchenSinkRoute
+  '/host/$eventId': typeof HostEventIdRoute
   '/join/$eventId/badge': typeof JoinEventIdBadgeRoute
   '/join/$eventId/icebreaker': typeof JoinEventIdIcebreakerRoute
   '/join/$eventId/name': typeof JoinEventIdNameRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/event': typeof EventRoute
   '/join/$eventId': typeof JoinEventIdRouteRouteWithChildren
   '/dev/kitchen-sink': typeof DevKitchenSinkRoute
+  '/host/$eventId': typeof HostEventIdRoute
   '/join/$eventId/badge': typeof JoinEventIdBadgeRoute
   '/join/$eventId/icebreaker': typeof JoinEventIdIcebreakerRoute
   '/join/$eventId/name': typeof JoinEventIdNameRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/event'
     | '/join/$eventId'
     | '/dev/kitchen-sink'
+    | '/host/$eventId'
     | '/join/$eventId/badge'
     | '/join/$eventId/icebreaker'
     | '/join/$eventId/name'
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
     | '/'
     | '/event'
     | '/dev/kitchen-sink'
+    | '/host/$eventId'
     | '/join/$eventId/badge'
     | '/join/$eventId/icebreaker'
     | '/join/$eventId/name'
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '/event'
     | '/join/$eventId'
     | '/dev/kitchen-sink'
+    | '/host/$eventId'
     | '/join/$eventId/badge'
     | '/join/$eventId/icebreaker'
     | '/join/$eventId/name'
@@ -174,6 +186,7 @@ export interface RootRouteChildren {
   EventRoute: typeof EventRoute
   JoinEventIdRouteRoute: typeof JoinEventIdRouteRouteWithChildren
   DevKitchenSinkRoute: typeof DevKitchenSinkRoute
+  HostEventIdRoute: typeof HostEventIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -197,6 +210,13 @@ declare module '@tanstack/react-router' {
       path: '/dev/kitchen-sink'
       fullPath: '/dev/kitchen-sink'
       preLoaderRoute: typeof DevKitchenSinkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/host/$eventId': {
+      id: '/host/$eventId'
+      path: '/host/$eventId'
+      fullPath: '/host/$eventId'
+      preLoaderRoute: typeof HostEventIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/join/$eventId': {
@@ -295,6 +315,7 @@ const rootRouteChildren: RootRouteChildren = {
   EventRoute: EventRoute,
   JoinEventIdRouteRoute: JoinEventIdRouteRouteWithChildren,
   DevKitchenSinkRoute: DevKitchenSinkRoute,
+  HostEventIdRoute: HostEventIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,32 +1,25 @@
 import { useMutation } from "@tanstack/react-query";
-import { QRCodeSVG } from "qrcode.react";
+import { useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
-import { useReveal } from "../../api/queries.ts";
 import { eventCopy } from "../../content/event.ts";
-import {
-  Button,
-  ButtonLink,
-  Eyebrow,
-  Heading,
-  Screen,
-  Stack,
-  Text,
-  TextField,
-} from "../../ui/index.ts";
+import { Button, Eyebrow, Heading, Screen, Stack, Text, TextField } from "../../ui/index.ts";
 import {
   createEvent,
   EVENT_NAME_MAX_LENGTH,
   EventNameSchema,
   InfoUrlSchema,
-  type CreatedEvent,
 } from "./createEvent.ts";
 import styles from "./CreateEventScreen.module.css";
 
-/** Host page: name the event, then show the big QR code attendees scan. */
+/** Name the event, then hand over to its host page (/host/:eventId) with the QR code. */
 function CreateEventScreen() {
-  const create = useMutation({ mutationFn: createEvent });
+  const navigate = useNavigate();
+  const create = useMutation({
+    mutationFn: createEvent,
+    onSuccess: ({ eventId, infoUrl }) =>
+      navigate({ to: "/host/$eventId", params: { eventId }, search: { info: infoUrl } }),
+  });
 
-  if (create.data) return <EventReady event={create.data} onReset={create.reset} />;
   return <EventForm onSubmit={create.mutate} pending={create.isPending} failed={create.isError} />;
 }
 
@@ -108,75 +101,6 @@ function EventForm({
           </Button>
         </Stack>
       </form>
-    </Screen>
-  );
-}
-
-function EventReady({ event, onReset }: { event: CreatedEvent; onReset: () => void }) {
-  const reveal = useReveal(event.eventId);
-  const revealed = reveal.data?.status === "revealed";
-
-  return (
-    <Screen align="center">
-      <Stack gap="lg" align="center">
-        <Stack gap="xs" align="center">
-          <Eyebrow>{eventCopy.ready.eyebrow}</Eyebrow>
-          <Heading scale="headline">{event.name}</Heading>
-        </Stack>
-        <div className={styles.qr}>
-          <QRCodeSVG
-            value={event.joinUrl}
-            level="M"
-            marginSize={3}
-            bgColor="transparent"
-            fgColor="currentColor"
-            title={eventCopy.ready.qrLabel(event.name)}
-            className={styles.qrCode}
-          />
-        </div>
-        <Text scale="small" tone="muted" className={styles.url}>
-          {event.joinUrl}
-        </Text>
-        {event.infoUrl && (
-          <Text scale="small" className={styles.url}>
-            {eventCopy.ready.moreInfo}:{" "}
-            <a href={event.infoUrl} target="_blank" rel="noreferrer" className={styles.link}>
-              {event.infoUrl}
-            </a>
-          </Text>
-        )}
-      </Stack>
-      <Stack gap="sm" pushEnd className={styles.actions}>
-        {reveal.isError && (
-          <Text scale="small" tone="danger" role="alert">
-            {eventCopy.ready.revealFailed}
-          </Text>
-        )}
-        <Button
-          icon={revealed ? undefined : "arrowRight"}
-          loading={reveal.isPending}
-          disabled={revealed}
-          onClick={() => reveal.mutate()}
-        >
-          {revealed
-            ? eventCopy.ready.revealed
-            : reveal.isPending
-              ? eventCopy.ready.revealing
-              : eventCopy.ready.reveal}
-        </Button>
-        <ButtonLink
-          variant="ghost"
-          to="/join/$eventId"
-          params={{ eventId: event.eventId }}
-          target="_blank"
-          icon="arrowRight"
-        >
-          {eventCopy.ready.open}
-        </ButtonLink>
-        <Button variant="ghost" onClick={onReset}>
-          {eventCopy.ready.another}
-        </Button>
-      </Stack>
     </Screen>
   );
 }

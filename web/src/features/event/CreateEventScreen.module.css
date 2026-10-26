@@ -15,26 +15,3 @@
   width: 100%;
   padding-top: var(--space-xl);
 }
-
-/* A light tile with a quiet zone, so the code scans from across a room on any theme. */
-.qr {
-  width: 100%;
-  padding: var(--space-sm);
-  border-radius: var(--radius-lg);
-  background: var(--color-light);
-  color: var(--color-on-light);
-}
-
-.qrCode {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.url {
-  overflow-wrap: anywhere;
-}
-
-.link {
-  color: var(--color-accent);
-}

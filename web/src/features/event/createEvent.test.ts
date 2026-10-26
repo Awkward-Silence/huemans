@@ -61,10 +61,8 @@ describe("createEvent", () => {
 
     expect(create).toHaveBeenCalledWith({ name: "Friday Meetup" });
     expect(event).toEqual({
-      name: "Friday Meetup",
-      infoUrl: "https://meetup.com/friday",
       eventId: "0199c0de-0000-7000-8000-000000000002",
-      joinUrl: `${window.location.origin}/join/0199c0de-0000-7000-8000-000000000002`,
+      infoUrl: "https://meetup.com/friday",
     });
   });
 });

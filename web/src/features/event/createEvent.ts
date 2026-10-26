@@ -20,22 +20,19 @@ const InfoUrlSchema = z
 
 type CreateEventInput = { name: string; infoUrl?: string };
 
-type CreatedEvent = CreateEventInput & {
-  eventId: string;
-  /** What the QR code encodes: the attendee entry point for this event. */
-  joinUrl: string;
-};
+type CreatedEvent = { eventId: string; infoUrl?: string };
 
+/** What the QR code encodes: the attendee entry point for this event. */
 const joinUrlFor = (eventId: string, origin = window.location.origin) =>
   `${origin}/join/${encodeURIComponent(eventId)}`;
 
 /**
- * Creates the event and the link its QR code encodes. api/ does not store the
- * info URL yet, so it is not sent: only the host's ready screen shows it.
+ * Creates the event. api/ does not store the info URL yet, so it is not sent:
+ * it is handed back for the host page to carry in its URL.
  */
 async function createEvent({ name, infoUrl }: CreateEventInput): Promise<CreatedEvent> {
   const event = await api.createEvent({ name });
-  return { name: event.name, infoUrl, eventId: event.id, joinUrl: joinUrlFor(event.id) };
+  return { eventId: event.id, infoUrl };
 }
 
 export { createEvent, EVENT_NAME_MAX_LENGTH, EventNameSchema, InfoUrlSchema, joinUrlFor };
