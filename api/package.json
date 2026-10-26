@@ -7,7 +7,7 @@
     "build": "nest build",
     "start": "nest start",
     "start:dev": "nest start --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "mikro-orm migration:up && node dist/Catalog/Infrastructure/Seed/seed.js && node dist/Event/Infrastructure/Cli/seedDemoEvent.js && node dist/main",
     "lint": "eslint \"{src,tests}/**/*.ts\"",
     "format": "prettier --write \"{src,tests}/**/*.ts\"",
     "test": "jest",
