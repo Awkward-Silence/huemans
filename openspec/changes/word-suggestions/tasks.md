@@ -2,7 +2,7 @@
 
 ## 1. Setup
 
-- [x] 1.1 Add `@mastra/core` (1.68.0) to `api/package.json`, and `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL` (`claude-opus-5-5`) and `SENTENCE_TREE_ON_BOOT` to `.env.example` and `src/config.ts`; verify `pnpm build` passes and the app starts with no key set
+- [x] 1.1 Add `@mastra/core` (1.68.0) to `api/package.json`, and `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL` (`claude-sonnet-5-5`) and `SENTENCE_TREE_ON_BOOT` to `.env.example` and `src/config.ts`; verify `pnpm build` passes and the app starts with no key set
 - [x] 1.2 Create `api/src/Agents/{Domain,Application,Infrastructure}` with `AgentsModule` imported in `AppModule`
 
 ## 2. Domain (unit tests first)

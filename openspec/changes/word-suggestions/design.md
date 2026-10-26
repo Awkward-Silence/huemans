@@ -27,7 +27,7 @@ This design replaces an earlier one: a `POST .../word-suggestions` call for ever
 - There are no ORM entities and no migration.
 
 **One structured call for the whole tree.**
-- Mastra `Agent` on Claude: model `ANTHROPIC_MODEL` (default `claude-opus-5-5`, at its default effort), up to 32k output tokens to leave room for thinking, a 180 s deadline. It replaced OpenAI `gpt-5-mini`, which had no working key for the team. Mastra 1.68's model list predates `claude-opus-5-5`, but its router passes the id through.
+- Mastra `Agent` on Claude: model `ANTHROPIC_MODEL` (default `claude-sonnet-5-5`, at its default effort), up to 32k output tokens to leave room for thinking, a 180 s deadline. It replaced OpenAI `gpt-5-mini`, which had no working key for the team. Mastra 1.68's model list predates `claude-sonnet-5-5`, but its router passes the id through.
 - Structured output with a recursive zod schema `{ text, trait, next }`. Mastra turns it into `$ref` definitions, so the schema stays shallow; spelled out, the 5 picks would nest 11 levels deep.
 - Mastra turns array bounds into hints, so the counts are not enforced by the schema. The prompt asks for 3 options per pick, and the domain checks.
 - The model returns no ids. The domain derives them from each option's path, so they always match the tree. A round trip of `sentences.test.json` with its ids removed gives back the same file.

@@ -33,7 +33,7 @@ export class MastraSentenceTreeGenerator implements SentenceTreeGenerator {
         id: 'sentence-tree',
         name: 'Sentence tree',
         instructions: SENTENCE_TREE_INSTRUCTIONS,
-        // Mastra's model list predates claude-opus-5-5; its router passes unlisted ids through to Anthropic.
+        // Mastra's model list predates claude-sonnet-5-5; its router passes unlisted ids through to Anthropic.
         model: {
           id: `anthropic/${config.anthropic.model}`,
           apiKey: config.anthropic.apiKey,
