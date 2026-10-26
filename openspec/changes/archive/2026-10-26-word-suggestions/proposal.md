@@ -10,7 +10,7 @@ The hackathon requires AI features, and the quiz is the moment every attendee is
 - Add `GET /sentence-tree`: the whole "I ..." tree (3 options per pick, 243 sentences) in the shape of `tools/src/sentences/sentences.test.json`. **One call**, made by the attendee app at startup. There is no per-word suggestion call.
 - Generate the tree in `api/` with one structured LLM call (Claude through Mastra, key in `ANTHROPIC_API_KEY`), using a prompt kept in the source: funny, catchy and family-friendly. It is generated at boot and served from memory. Without a key or on failure, the endpoint answers 503.
 - The attendee app retries the load, falls back to its bundled tree when the load failed, and waits at most 400 ms for a load still running before it cancels it and uses the bundled tree.
-- The finished sentence counts as **one answer**: on submit, Jev weighs its traits ([ADR-012](../../../docs/architecture/adr/ADR-012-ai-weighs-answers-on-submit.md)). The tree's own per-option traits don't feed grouping, so the generated (algorithmic) traits and Jev's (probabilistic) weighing can be compared. The finished sentence is kept on the phone and shown back to the attendee. Submitting the quiz never waits on the tree, and the attendee can skip the question.
+- The finished sentence counts as **one answer**: on submit, Jev weighs its traits ([ADR-012](../../../../docs/architecture/adr/ADR-012-ai-weighs-answers-on-submit.md)). The tree's own per-option traits don't feed grouping, so the generated (algorithmic) traits and Jev's (probabilistic) weighing can be compared. The finished sentence is kept on the phone and shown back to the attendee. Submitting the quiz never waits on the tree, and the attendee can skip the question.
 
 ## Capabilities
 
