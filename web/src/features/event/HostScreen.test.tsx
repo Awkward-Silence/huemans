@@ -2,8 +2,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { createMemoryHistory, RouterProvider } from "@tanstack/react-router";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
-import { api } from "../../api/index.ts";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { api, ApiError } from "../../api/index.ts";
 import { createQueryClient } from "../../app/queryClient.ts";
 import { createAppRouter } from "../../app/router.tsx";
 
@@ -20,6 +20,10 @@ function openAt(url: string) {
 }
 
 describe("host page", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("shows the event's QR code and reveals the icebreaker once", async () => {
     const event = await api.createEvent({ name: "Friday Meetup" });
     openAt(`/host/${event.id}?info=https%3A%2F%2Fmeetup.com%2Ffriday`);
@@ -43,5 +47,22 @@ describe("host page", () => {
     expect(
       await screen.findByRole("button", { name: /Icebreaker revealed on every phone/ }),
     ).toBeDisabled();
+  });
+
+  it("tells the host when the reveal fails and lets them try again", async () => {
+    const event = await api.createEvent({ name: "Friday Meetup" });
+    vi.spyOn(api, "reveal").mockRejectedValueOnce(new ApiError("network", "offline"));
+    openAt(`/host/${event.id}`);
+
+    await userEvent.click(await screen.findByRole("button", { name: /Reveal the icebreaker/ }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "We couldn't reveal the icebreaker. Try again.",
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /Reveal the icebreaker/ }));
+    expect(
+      await screen.findByRole("button", { name: /Icebreaker revealed on every phone/ }),
+    ).toBeDisabled();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 });
