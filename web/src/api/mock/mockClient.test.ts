@@ -116,6 +116,28 @@ describe("mock client", () => {
     ]);
   });
 
+  it("unlocks the icebreaker as soon as the host reveals it", async () => {
+    const { api, advance } = setup();
+    const event = await api.createEvent({ name: "Friday Meetup" });
+    expect(event.status).toBe("open");
+    const quiz = await api.getQuiz(event.id);
+    const { attendeeId } = await api.join(event.id, { name: "Ana" });
+    await api.submitAnswers(event.id, attendeeId, {
+      answers: quiz.questions.map((question) => ({
+        questionId: question.id,
+        answerId: question.answers[0]!.id,
+      })),
+      elapsedMs: 12_000,
+      sentence: null,
+    });
+    advance(1_000);
+    expect(await api.getIcebreaker(event.id, attendeeId)).toEqual({ status: "locked" });
+
+    expect(await api.reveal(event.id)).toMatchObject({ status: "revealed" });
+    expect((await api.getIcebreaker(event.id, attendeeId)).status).toBe("ready");
+    expect(await api.getEvent(event.id)).toMatchObject({ status: "revealed" });
+  });
+
   it("rejects unknown attendees", async () => {
     const { api } = setup();
     await expect(api.getAssignment("demo", "nobody")).rejects.toMatchObject({ kind: "not-found" });

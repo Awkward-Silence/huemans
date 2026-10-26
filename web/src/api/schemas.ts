@@ -14,6 +14,8 @@ const IdSchema = z.string().min(1);
 const EventSchema = z.object({
   id: IdSchema,
   name: z.string(),
+  /** "revealed" once the host has revealed the night's icebreaker. */
+  status: z.enum(["open", "revealed"]),
   quizDurationSeconds: z.number().int().positive(),
   questionCount: z.number().int().positive(),
 });

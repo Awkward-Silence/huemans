@@ -10,7 +10,7 @@ export type CreateEventRequest = {
 
 /**
  * POST /events (201) and GET /events/:eventId (200).
- * Fits the web's EventSchema (web/src/api/schemas.ts); `status` is extra.
+ * Fits the web's EventSchema (web/src/api/schemas.ts).
  */
 export type EventResponse = {
   id: string;

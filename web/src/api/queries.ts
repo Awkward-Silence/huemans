@@ -71,6 +71,14 @@ function useJoin(eventId: string) {
   return useMutation({ mutationFn: (name: string) => api.join(eventId, { name }) });
 }
 
+function useReveal(eventId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.reveal(eventId),
+    onSuccess: (event) => queryClient.setQueryData(queryKeys.event(eventId), event),
+  });
+}
+
 function useSubmitAnswers(eventId: string, attendeeId: string) {
   const queryClient = useQueryClient();
   return useMutation({
@@ -92,6 +100,7 @@ export {
   useIcebreaker,
   useJoin,
   useQuiz,
+  useReveal,
   useRoom,
   useSubmitAnswers,
 };

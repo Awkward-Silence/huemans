@@ -39,7 +39,7 @@ npm install
 npm run dev          # http://localhost:5173
 ```
 
-Open `/join/demo` for the attendee flow (any event id works) or `/event` to create an event and show its QR code.
+Open `/join/demo` for the attendee flow (any event id works) or `/event` to create an event; it opens `/host/:eventId`, the host's QR code and icebreaker reveal (reloadable).
 
 ### Frontend with the real API
 
