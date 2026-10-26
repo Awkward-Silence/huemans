@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { QRCodeSVG } from "qrcode.react";
 import { useState, type FormEvent } from "react";
+import { useReveal } from "../../api/queries.ts";
 import { eventCopy } from "../../content/event.ts";
 import {
   Button,
@@ -112,6 +113,9 @@ function EventForm({
 }
 
 function EventReady({ event, onReset }: { event: CreatedEvent; onReset: () => void }) {
+  const reveal = useReveal(event.eventId);
+  const revealed = reveal.data?.status === "revealed";
+
   return (
     <Screen align="center">
       <Stack gap="lg" align="center">
@@ -143,7 +147,25 @@ function EventReady({ event, onReset }: { event: CreatedEvent; onReset: () => vo
         )}
       </Stack>
       <Stack gap="sm" pushEnd className={styles.actions}>
+        {reveal.isError && (
+          <Text scale="small" tone="danger" role="alert">
+            {eventCopy.ready.revealFailed}
+          </Text>
+        )}
+        <Button
+          icon={revealed ? undefined : "arrowRight"}
+          loading={reveal.isPending}
+          disabled={revealed}
+          onClick={() => reveal.mutate()}
+        >
+          {revealed
+            ? eventCopy.ready.revealed
+            : reveal.isPending
+              ? eventCopy.ready.revealing
+              : eventCopy.ready.reveal}
+        </Button>
         <ButtonLink
+          variant="ghost"
           to="/join/$eventId"
           params={{ eventId: event.eventId }}
           target="_blank"

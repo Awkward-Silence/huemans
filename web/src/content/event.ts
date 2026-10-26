@@ -27,6 +27,10 @@ const eventCopy = {
     qrLabel: (name: string) => `QR code to join ${name}`,
     moreInfo: "More info",
     open: "Open the event",
+    reveal: "Reveal the icebreaker",
+    revealing: "Revealing…",
+    revealed: "Icebreaker revealed on every phone",
+    revealFailed: "We couldn't reveal the icebreaker. Try again.",
     another: "Create another event",
   },
 };

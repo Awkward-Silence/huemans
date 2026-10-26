@@ -49,6 +49,7 @@ describe("createEvent", () => {
     const create = vi.spyOn(api, "createEvent").mockResolvedValue({
       id: "0199c0de-0000-7000-8000-000000000002",
       name: "Friday Meetup",
+      status: "open",
       quizDurationSeconds: 20,
       questionCount: 5,
     });

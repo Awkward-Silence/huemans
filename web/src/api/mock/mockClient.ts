@@ -74,6 +74,7 @@ const EventStateSchema = z.object({
   name: z.string().optional(),
   attendees: z.record(z.string(), AttendeeStateSchema),
   firstSubmitAt: z.number().optional(),
+  revealedAt: z.number().optional(),
 });
 
 type EventState = z.infer<typeof EventStateSchema>;
@@ -127,20 +128,25 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
     };
   };
 
+  /** The host's reveal, or else when the simulated crowd is done, so a phone alone still unlocks. */
   const unlockAt = (state: EventState) =>
-    state.firstSubmitAt === undefined ? undefined : state.firstSubmitAt + options.crowdFinishMs;
+    state.revealedAt ??
+    (state.firstSubmitAt === undefined ? undefined : state.firstSubmitAt + options.crowdFinishMs);
 
-  const eventOf = (eventId: string) =>
-    parseResponse(
+  const eventOf = (eventId: string) => {
+    const state = load(eventId);
+    return parseResponse(
       EventSchema,
       {
         id: eventId,
-        name: load(eventId).name ?? "Demo night",
+        name: state.name ?? "Demo night",
+        status: state.revealedAt === undefined ? "open" : "revealed",
         quizDurationSeconds: options.quizDurationSeconds,
         questionCount: options.questionCount,
       },
       "event",
     );
+  };
 
   return {
     createEvent: (body) =>
@@ -151,6 +157,14 @@ function createMockClient(overrides: Partial<MockOptions> = {}): ApiClient {
       }),
 
     getEvent: (eventId) => respond(() => eventOf(eventId)),
+
+    reveal: (eventId) =>
+      respond(() => {
+        const state = load(eventId);
+        state.revealedAt ??= options.now();
+        save(eventId, state);
+        return eventOf(eventId);
+      }),
 
     join: (eventId, body) =>
       respond(() => {

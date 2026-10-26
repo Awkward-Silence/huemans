@@ -18,6 +18,8 @@ import type {
 interface ApiClient {
   createEvent(body: CreateEventRequest): Promise<Event>;
   getEvent(eventId: string): Promise<Event>;
+  /** The host's reveal: unlocks the night's icebreaker on every phone. A second call is a no-op. */
+  reveal(eventId: string): Promise<Event>;
   join(eventId: string, body: JoinRequest): Promise<JoinResponse>;
   getQuiz(eventId: string): Promise<Quiz>;
   submitAnswers(eventId: string, attendeeId: string, body: SubmitAnswersRequest): Promise<void>;
