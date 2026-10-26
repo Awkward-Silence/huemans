@@ -17,6 +17,8 @@ const EventSchema = z.object({
   questionCount: z.number().int().positive(),
 });
 
+const CreateEventRequestSchema = z.object({ name: z.string() });
+
 const JoinRequestSchema = z.object({ name: z.string() });
 const JoinResponseSchema = z.object({ attendeeId: IdSchema });
 
@@ -98,6 +100,7 @@ const IcebreakerSchema = z.discriminatedUnion("status", [
 ]);
 
 type Event = z.infer<typeof EventSchema>;
+type CreateEventRequest = z.infer<typeof CreateEventRequestSchema>;
 type JoinRequest = z.infer<typeof JoinRequestSchema>;
 type JoinResponse = z.infer<typeof JoinResponseSchema>;
 type Question = z.infer<typeof QuestionSchema>;
@@ -114,6 +117,7 @@ type ReadyIcebreaker = Extract<Icebreaker, { status: "ready" }>;
 
 export {
   AssignmentSchema,
+  CreateEventRequestSchema,
   EventSchema,
   IcebreakerSchema,
   JoinRequestSchema,
@@ -129,6 +133,7 @@ export {
 export type {
   AssignedGroup,
   Assignment,
+  CreateEventRequest,
   Event,
   Icebreaker,
   JoinRequest,
