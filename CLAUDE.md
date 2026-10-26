@@ -13,6 +13,7 @@ Sources of truth: `initial-raw-specs.md` (product spec, written by the team), `d
 ```bash
 pnpm install
 cp .env.example .env && sed 's#/huemans$#/huemans_test#' .env.example > .env.test   # first time only
+# secrets (ANTHROPIC_API_KEY, JEV_API_KEY) go in .env.local / .env.test.local: git-ignored, they win over .env / .env.test
 docker compose up -d                 # Postgres 17: databases huemans + huemans_test
 pnpm migration:up && pnpm migration:up:test
 pnpm catalog:seed && pnpm catalog:seed:test   # catalog content, once per database (a second run does nothing); any deploy runs it after migration:up
