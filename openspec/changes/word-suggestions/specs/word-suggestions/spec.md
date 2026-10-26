@@ -45,14 +45,22 @@ When no tree can be generated (no `OPENAI_API_KEY`, provider error, unusable out
 - **WHEN** the API runs without `OPENAI_API_KEY`
 - **THEN** `GET /sentence-tree` answers `503` at once and no model call is made
 
-### Requirement: The sentence is fun only
-The sentence SHALL carry no trait. It SHALL NOT affect the attendee's trait profile, personality type or color group. Submitting the quiz SHALL never wait on the sentence tree.
+### Requirement: The sentence counts as one answer, weighed by Jev
+On submit, the finished sentence SHALL be sent as `{ question, answer }` and Participation SHALL let Jev weigh its traits ([ADR-012](../../../../../docs/architecture/adr/ADR-012-ai-weighs-answers-on-submit.md)). The sentence SHALL be worth one answer in total, spread over the traits Jev finds, so it can tip a close call but not override the multiple-choice answers. The `trait` of each tree option SHALL NOT feed the trait profile: the tree's traits (chosen when the tree is generated) and Jev's weighing (probabilities over the finished sentence) stay separate, so the two can be compared. Submitting the quiz SHALL never wait on the sentence tree.
 
-#### Scenario: Grouping ignores the sentence
-- **WHEN** two attendees give the same multiple-choice answers and build different sentences
-- **THEN** both get the same trait profile and personality type
+#### Scenario: Jev weighs the sentence
+- **WHEN** an attendee submits a finished sentence and Jev answers within its timeout
+- **THEN** the sentence adds one answer's worth of traits to the attendee's profile
 
-#### Scenario: Submit while a suggestion is pending
+#### Scenario: Jev unavailable
+- **WHEN** Jev has no key, times out or fails
+- **THEN** the sentence adds no traits and the multiple-choice answers decide alone
+
+#### Scenario: Skipped sentence
+- **WHEN** an attendee skips the sentence question
+- **THEN** the quiz is submitted with `sentence: null` and the multiple-choice answers decide alone
+
+#### Scenario: Submit while the tree is loading
 - **WHEN** the sentence tree request is still in flight and the quiz is submitted
 - **THEN** the submit is sent immediately and its result does not depend on the tree
 

@@ -6,7 +6,7 @@ export interface SentenceQuestionPrimitives {
 
 /**
  * The "I ..." sentence that closes every quiz: the attendee adds `picks` words after the starter, from Agents'
- * sentence tree. Fixed for the MVP, and it carries no trait of its own.
+ * sentence tree. Fixed for the MVP; on submit Jev weighs the finished sentence's traits (ADR-012).
  */
 export class SentenceQuestion {
   private constructor(
