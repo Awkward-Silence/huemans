@@ -9,3 +9,19 @@ web:
   src: web
   lang: nodejs
   framework: react
+
+# api: the NestJS backend, at https://api-ffe90049.apperture.dev.
+# Values are never written here: ${KEY} names a key of the podium-secrets Secret
+# in the project's namespace, which the operator creates; a missing key just
+# leaves the variable unset (without JEV_API_KEY the sentence adds no traits).
+# Hostium mounts a Postgres for the service and hands its URI in DATABASE_URL.
+api:
+  src: api
+  lang: nodejs
+  framework: nestjs
+  environment:
+    JEV_API_KEY: ${JEV_API_KEY}
+    ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+  database:
+    enable: true
+    URL: ${DATABASE_URL}
