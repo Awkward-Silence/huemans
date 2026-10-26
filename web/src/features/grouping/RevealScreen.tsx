@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { quizQuery } from "../../api/queries.ts";
+import { useEffect, useRef } from "react";
+import { quizQuery, useIcebreaker } from "../../api/queries.ts";
 import { copy } from "../../content/index.ts";
 import {
   ButtonLink,
@@ -13,7 +14,7 @@ import {
   Text,
 } from "../../ui/index.ts";
 import { useJoinedSession } from "../join/session.ts";
-import { STEP_ROUTES } from "../join/steps.ts";
+import { STEP_ROUTES, useGoToStep } from "../join/steps.ts";
 import { sentenceStatus } from "../quiz/progress.ts";
 import { AssignedGroupGate } from "./AssignedGroupGate.tsx";
 import styles from "./RevealScreen.module.css";
@@ -24,6 +25,7 @@ const CONTENT_AFTER = "0.55s";
 /** Step 5: the colour floods the screen, with the attendee's sentence if they finished it. */
 function RevealScreen({ eventId }: { eventId: string }) {
   const session = useJoinedSession(eventId);
+  useOpenIcebreakerWhenRevealed(eventId, session.attendeeId);
   const sentenceQuestion = useQuery(quizQuery(eventId)).data?.sentence;
   const sentence =
     sentenceQuestion &&
@@ -97,6 +99,21 @@ function RevealScreen({ eventId }: { eventId: string }) {
       }}
     </AssignedGroupGate>
   );
+}
+
+/**
+ * Moves on to the icebreaker when the host reveals it while this screen is up.
+ * Only on the change from locked to ready: someone who comes back to their
+ * colour, or first sees it after the reveal, stays on it.
+ */
+function useOpenIcebreakerWhenRevealed(eventId: string, attendeeId: string) {
+  const status = useIcebreaker(eventId, attendeeId).data?.status;
+  const goToStep = useGoToStep(eventId);
+  const previous = useRef(status);
+  useEffect(() => {
+    if (previous.current === "locked" && status === "ready") void goToStep("icebreaker");
+    previous.current = status;
+  }, [status, goToStep]);
 }
 
 export { RevealScreen };

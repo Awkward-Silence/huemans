@@ -17,6 +17,7 @@ import {
   Screen,
   Stack,
   Text,
+  type ButtonVariant,
 } from "../../ui/index.ts";
 import { AssignedGroupGate } from "../grouping/AssignedGroupGate.tsx";
 import { STEP_ROUTES } from "../join/steps.ts";
@@ -47,12 +48,15 @@ function Icebreaker({
 
   if (icebreaker.isError) return <ErrorScreen reset={() => void icebreaker.refetch()} />;
   if (!icebreaker.data) return <PendingScreen />;
-  if (!ready) return <Locked />;
+  if (!ready) return <Locked eventId={eventId} />;
 
   const colorName = capitalize(copy.groups[group.color]);
   return (
     <Screen group={group.color}>
       <Stack gap="lg">
+        <Text scale="subtitle" tone="groupText">
+          {copy.icebreaker.you(colorName, group.nickname)}
+        </Text>
         <Stack direction="row" gap="xs" align="center">
           <PulseDot />
           <Eyebrow>{copy.icebreaker.eyebrow}</Eyebrow>
@@ -100,15 +104,29 @@ function Icebreaker({
         <Text scale="caption" tone="muted" align="center">
           {copy.icebreaker.hint}
         </Text>
+        <BackToColour eventId={eventId} variant="ghost" />
       </Stack>
     </Screen>
   );
 }
 
 /** Waits here: the icebreaker query keeps polling and swaps this out once it unlocks. */
-function Locked() {
+function Locked({ eventId }: { eventId: string }) {
   return (
-    <MessageScreen title={copy.icebreaker.lockedTitle} body={copy.icebreaker.lockedBody} busy />
+    <MessageScreen
+      title={copy.icebreaker.lockedTitle}
+      body={copy.icebreaker.lockedBody}
+      busy
+      action={<BackToColour eventId={eventId} />}
+    />
+  );
+}
+
+function BackToColour({ eventId, variant }: { eventId: string; variant?: ButtonVariant }) {
+  return (
+    <ButtonLink to={STEP_ROUTES.reveal} params={{ eventId }} variant={variant}>
+      {copy.icebreaker.back}
+    </ButtonLink>
   );
 }
 
