@@ -111,6 +111,8 @@ const en = {
   },
   icebreaker: {
     eyebrow: "One question · everyone · tonight",
+    you: (color: string, nickname: string) => `You're ${color} · ${nickname}`,
+    back: "Back to my colour",
     whyTitle: "Why this one",
     meet: (color: string, spot: string) => `${color}, meet at ${spot}`,
     heading: (mates: number, color: string) =>
